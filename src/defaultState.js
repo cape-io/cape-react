@@ -27,12 +27,10 @@ export default {
     },
     // @TODO The server needs filter based on permissions besides auth.
     navLinks: [
-      createNavLink('chat', {authenticated: true}),
-      createNavLink('widgets'),
-      createNavLink('survey'),
       createNavLink('about', {text: 'About Us'}),
-      createNavLink('login', {authenticated: false, text: 'Login or Join'}),
+      createNavLink('login-join', {authenticated: false, text: 'Login or Join'}),
       createNavLink('logout', {authenticated: true, className: 'logout-link'}),
+      createNavLink('mixer', {authenticated: true}),
     ],
   },
 };
