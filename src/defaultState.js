@@ -15,7 +15,7 @@ export default {
       chat: 'https://www.hipchat.com/gv1XLjgaV',
       bugs: 'https://github.com/cape-io/cape-editor/issues',
     },
-    title: 'CAPE.io',
+    title: 'CAPE Editor',
     tagline: 'Create Anywhere Publish Everywhere',
     'login-join': {
       headerMsg: 'Login or Join',
