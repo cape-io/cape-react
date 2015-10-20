@@ -12,12 +12,12 @@ import {
 import Logout from './components/Logout';
 
 export default (store) => {
-  const requireLogin = (nextState, replaceState, cb) => {
+  function requireLogin(nextState, replaceState, cb) {
     function checkAuth() {
       const { auth: { user }} = store.getState();
       if (!user) {
         // oops, not logged in, so can't be here!
-        replaceState(null, '/login');
+        replaceState(null, '/login-join');
       }
       cb();
     }
@@ -27,7 +27,7 @@ export default (store) => {
     } else {
       checkAuth();
     }
-  };
+  }
 
   function handleLogout(nextState, replaceState, next) {
     const { auth: { user }} = store.getState();

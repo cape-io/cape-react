@@ -3,7 +3,10 @@
   "description": "CAPE Editor",
   "author": "Kai Curry <kai@cape.io> (http://github.com/webmasterkai)",
   "contributors": [
-    {"name": "Tim Lupfer", "email": "tim@cape.io"}
+    {
+      "name": "Tim Lupfer",
+      "email": "tim@cape.io"
+    }
   ],
   "license": "MIT",
   "version": "0.0.6",
@@ -148,6 +151,7 @@
     "karma-mocha-reporter": "^1.1.1",
     "karma-sourcemap-loader": "^0.3.5",
     "karma-webpack": "^1.7.0",
+    "lodash": "^3.10.1",
     "mocha": "^2.3.3",
     "node-sass": "^3.3.3",
     "react-a11y": "^0.2.6",

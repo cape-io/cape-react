@@ -13,11 +13,14 @@ function checkAuthenticated(user) {
   };
 }
 
-function mapStateToProps({auth: {user}, db: {navLinks, support}}) {
+function mapStateToProps({auth: {user}, db: {navLinks, support, title, image, description}}) {
   return {
+    description,
+    image,
     // The client only cares if the user is authenticated or not. Right?
     navLinks: navLinks.filter(checkAuthenticated(user)),
     support,
+    title,
     user,
   };
 }

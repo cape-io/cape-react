@@ -3,34 +3,31 @@ import { IndexLink, Link } from 'react-router';
 import DocumentMeta from 'react-document-meta';
 import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
-import { InfoBar } from 'components';
 
-const title = 'React Redux Example';
-const description = 'All the modern best practices in one example.';
-const image = 'https://react-redux.herokuapp.com/logo.jpg';
-
-const meta = {
-  title,
-  description,
-  meta: {
-    charSet: 'utf-8',
-    property: {
-      'og:site_name': title,
-      'og:image': image,
-      'og:locale': 'en_US',
-      'og:title': title,
-      'og:description': description,
-      'twitter:card': 'summary',
-      'twitter:site': '@CAPE_io',
-      'twitter:creator': '@kaicurry',
-      'twitter:title': title,
-      'twitter:description': description,
-      'twitter:image': image,
-      'twitter:image:width': '200',
-      'twitter:image:height': '200',
+function makeMeta({title, description, image}) {
+  return {
+    title,
+    description,
+    meta: {
+      charSet: 'utf-8',
+      property: {
+        'og:site_name': title,
+        'og:image': image,
+        'og:locale': 'en_US',
+        'og:title': title,
+        'og:description': description,
+        'twitter:card': 'summary',
+        'twitter:site': '@CAPE_io',
+        'twitter:creator': '@kaicurry',
+        'twitter:title': title,
+        'twitter:description': description,
+        'twitter:image': image,
+        'twitter:image:width': '200',
+        'twitter:image:height': '200',
+      },
     },
-  },
-};
+  };
+}
 
 const NavbarLink = ({to, className, component, children}) => {
   const Comp = component || Link;
@@ -52,6 +49,9 @@ export default class App extends Component {
     logout: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired,
     support: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
   };
 
   static contextTypes = {
@@ -83,16 +83,18 @@ export default class App extends Component {
 
   // Is that really the best way to decide what menu items to display?
   render() {
-    const { user, navLinks, support } = this.props;
+    const { user, navLinks, support, title, description, image } = this.props;
+    const headMeta = makeMeta({title, description, image});
     const styles = require('./App.scss');
     return (
       <div className={styles.app}>
-        <DocumentMeta {...meta}/>
+        <DocumentMeta { ...headMeta } />
+
         <nav className="navbar navbar-default navbar-fixed-top">
           <div className="container">
             <NavbarLink to="/" className="navbar-brand" component={IndexLink}>
               <div className={styles.brand}/>
-              React Redux Example
+              { title }
             </NavbarLink>
 
             <ul className="nav navbar-nav">
@@ -108,16 +110,16 @@ export default class App extends Component {
             <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.name}</strong>.</p>}
             <ul className="nav navbar-nav navbar-right">
               <li>
-                <a href="https://github.com/erikras/react-redux-universal-hot-example"
+                <a href="https://github.com/cape-io/cape-editor"
                    target="_blank" title="View on Github"><i className="fa fa-github"/></a>
               </li>
             </ul>
           </div>
         </nav>
+
         <div className={styles.appContent}>
           {this.props.children}
         </div>
-        <InfoBar/>
 
         <div className="well text-center">
           {'Have questions? Ask for help in the '}
@@ -129,6 +131,7 @@ export default class App extends Component {
             {'Github Issues'}
           </a>.
         </div>
+
       </div>
     );
   }
