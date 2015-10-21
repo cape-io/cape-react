@@ -4,6 +4,15 @@ import isArray from 'lodash.isarray';
 
 import * as validation from './validation';
 
+// Take an item string or array and turn it into a validation function.
+function itemToFunc(validators, item) {
+  if (isArray(item)) {
+    // Make sure the length is 2.
+    return validators[item[0]](item[1]);
+  }
+  return validators[item[0]];
+}
+
 function fieldValidation({required, validators}) {
   const validationMethods = [];
   if (required) {
@@ -11,11 +20,7 @@ function fieldValidation({required, validators}) {
   }
   if (validators) {
     validators.forEach(item => {
-      if (isArray(item)) {
-        validationMethods.push(validation[item[0]](item[1]));
-      } else {
-        validationMethods.push(validation[item]);
-      }
+      validationMethods.push(itemToFunc(validation, item));
     });
   }
   return validationMethods;

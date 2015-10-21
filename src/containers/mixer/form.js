@@ -1,10 +1,12 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-// import pluck from 'lodash.pluck';
+// import { bindActionCreators } from 'redux';
+import find from 'lodash.find';
+import pluck from 'lodash.pluck';
 import DocumentMeta from 'react-document-meta';
-import { initialize } from 'redux-form';
-// import formValidation from '../../utils/formValidation';
+import { connectReduxForm } from 'redux-form';
+import formValidation from '../../utils/formValidation';
+import Form from '../../components/Form/Form';
 
 // Define our custom functions and action handlers.
 // Move to another file someday/somehow?
@@ -25,25 +27,25 @@ import { initialize } from 'redux-form';
 //   });
 // }
 
-function handleSubmit(data) {
-  window.alert('Data submitted! ' + JSON.stringify(data));
-  return initialize('survey', {});
-}
+// function handleSubmit(data) {
+//   window.alert('Data submitted! ' + JSON.stringify(data));
+//   return initialize('survey', {});
+// }
+//
+// function handleInitialize() {
+//   return initialize('survey', {
+//     name: 'Little Bobby Curry',
+//     email: 'bobby@gmail.com',
+//     occupation: 'Redux Wizard',
+//     currentlyEmployed: true,
+//     sex: 'male',
+//   });
+// }
 
-function handleInitialize() {
-  return initialize('survey', {
-    name: 'Little Bobby Curry',
-    email: 'bobby@gmail.com',
-    occupation: 'Redux Wizard',
-    currentlyEmployed: true,
-    sex: 'male',
-  });
-}
-
-const actionCreators = {
-  onSubmit: handleSubmit,
-  handleInitialize,
-};
+// const actionCreators = {
+//   onSubmit: handleSubmit,
+//   handleInitialize,
+// };
 
 // const reduxFormOptions = {
 //   form: 'survey',
@@ -56,31 +58,54 @@ const actionCreators = {
 // Redux connections.
 
 function mapStateToProps(state, {params: {id}}) {
-  console.log(id);
+  const {title, description, fields} = find(state.db.contentTypes, {id});
+  // console.log(id);
   // state.db.contentTypes.find();
   return {
-    title: 'Survey Title',
-    form: state.form,
+    id,
+    title,
+    description,
+    formFields: fields,
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    ...bindActionCreators(actionCreators, dispatch),
-    dispatch,
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     ...bindActionCreators(actionCreators, dispatch),
+//     dispatch,
+//   };
+// }
+
+// function handleSubmit(id) {
+//   return (data) => {
+//     window.alert('See console for data.');
+//     console.log(data);
+//     initialize(id, {});
+//   };
+// }
 
 // I'd really like to make this nicer. I hate the DocumentMeta thing.
-function Component({title}) {
+// For now it is easier.
+function Component({id, title, description, formFields}) {
+  const formOptions = {
+    form: id,
+    fields: pluck(formFields, 'id'),
+    validate: formValidation(formFields),
+  };
+  const FormEl = connectReduxForm(formOptions)(Form);
   return (
-    <div>
+    <div className="container">
       <DocumentMeta title={title} />
-      <p>hello</p>
+      <h1>{ title }</h1>
+      <p className="lead">{ description }</p>
+      <FormEl formFields={formFields} />
     </div>
   );
 }
 Component.props = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  formFields: PropTypes.array.isRequired,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+export default connect(mapStateToProps)(Component);

@@ -27,7 +27,7 @@ function Input({field, label, type, showFlags, options, asyncValidating, styles,
   return (
     <div className={'form-group' + (error && touched ? ' has-error' : '')}>
       <label htmlFor={name} className="col-sm-2">{label}</label>
-      <div className={'col-sm-8 ' + inputGroupStyle}>
+      <div className={'col-sm-6 ' + inputGroupStyle}>
         { asyncValidating && <i className={'fa fa-cog fa-spin ' + styles.cog}/> }
         { InputEl }
         { error && touched && <div className="text-danger">{error}</div> }

@@ -18,7 +18,7 @@ function Mixer({contentTypes}) {
   );
 }
 Mixer.propTypes = {
-  contentTypes: PropTypes.object.isRequired,
+  contentTypes: PropTypes.array.isRequired,
 };
 
 export default Mixer;
