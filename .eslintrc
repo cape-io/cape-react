@@ -9,7 +9,12 @@
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
     "react/jsx-quotes": 0,
-    "id-length": [2, {"min": 3, "max": 20, "properties": "never", "exceptions": ["r", "_", "id", "rq"]}],
+    "id-length": [2, {
+      "min": 3,
+      "max": 30,
+      "properties": "never",
+      "exceptions": ["r", "_", "id", "rq", "db", "cb", "io"]
+    }],
     "import/no-named-as-default": 2,
     "import/default": 0,
     "jsx-quotes": 2,
