@@ -8,13 +8,27 @@ export const genderOptions = [
 ];
 
 // Helper to create a field object.
-function createField(label, type = 'text', rest) {
-  const {id} = rest;
+function createField(label, type = 'text', rest = {}) {
+  const { id, validators, ...other } = rest;
+  const idField = id || _.camelCase(label);
+  const validationOptions = validators || [];
+
+  switch (idField) {
+    case 'email':
+      validationOptions.push('isEmail');
+      break;
+    default:
+      if (type === 'text') {
+        validationOptions.push(['maxLength', 100]);
+      }
+      break;
+  }
   return {
-    id: id || _.camelCase(label),
+    id: idField,
     label,
     type,
-    ...rest,
+    validators: validationOptions,
+    ...other,
   };
 }
 

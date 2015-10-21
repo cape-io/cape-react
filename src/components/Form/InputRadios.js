@@ -23,7 +23,7 @@ function InputRadios({options, field, ...rest}) {
   return (
     <div>
       {
-        options.map( ({value, label} )=> {
+        options.map( ({value, label}) => {
           const id = `{$field.name}-${value}`;
           return (
             <RadioOption
