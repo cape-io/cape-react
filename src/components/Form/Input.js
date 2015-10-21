@@ -5,7 +5,7 @@ import InputRadios from './InputRadios';
 import InputSelect from './InputSelect';
 import InputDate from './InputDate';
 
-function Input({field, label, type, showFlags, options, asyncValidating, styles, ...other}) {
+function Input({field, label, type, showFlags, options, required, asyncValidating, styles, ...other}) {
   const { active, dirty, error, name, touched, visited, ...inputProps } = field;
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
@@ -23,10 +23,11 @@ function Input({field, label, type, showFlags, options, asyncValidating, styles,
   } else {
     InputEl = <input type={type} className={isTypeText && 'form-control'} id={name} {...inputProps} />;
   }
-
+  let labelMsg = label;
+  if (required) labelMsg = labelMsg + '*';
   return (
     <div className={'form-group' + (error && touched ? ' has-error' : '')}>
-      <label htmlFor={name} className="col-sm-2">{label}</label>
+      <label htmlFor={name} className="col-sm-2">{ labelMsg }</label>
       <div className={'col-sm-6 ' + inputGroupStyle}>
         { asyncValidating && <i className={'fa fa-cog fa-spin ' + styles.cog}/> }
         { InputEl }
