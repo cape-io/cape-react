@@ -67,7 +67,7 @@ export default class App extends Component {
       if (redirectLocation) {
         this.props.pushState(null, redirectLocation);
       } else {
-        this.props.pushState(null, '/loginSuccess');
+        this.props.pushState(null, '/mixer');
       }
     } else if (this.props.user && !nextProps.user) {
       // logout
