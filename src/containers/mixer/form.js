@@ -3,35 +3,35 @@ import { connect } from 'react-redux';
 import find from 'lodash.find';
 import pluck from 'lodash.pluck';
 import DocumentMeta from 'react-document-meta';
-import { connectReduxForm, initialize } from 'redux-form';
+import { connectReduxForm } from 'redux-form';
 import validate from '../../utils/formValidation';
 import Form from '../../components/Form/Form';
+import { updateMe } from '../../redux/modules/mixer';
 
 // Redux connections.
 
-function mapStateToProps(state, {params: {id}}) {
-  const {fields, ...rest} = find(state.db.contentTypes, {id});
+function mapStateToProps(state, {params: {groupId, typeId}}) {
+  const {fields, ...rest} = find(state.db.contentTypes, {groupId, typeId});
   // console.log(id);
   // state.db.contentTypes.find();
   return {
     ...rest,
-    id,
     formFields: fields,
   };
 }
 
 // I'd really like to make this nicer. I hate the DocumentMeta thing.
 // For now it is easier.
-function Component({id, title, description, formFields, ...rest}) {
+function Component({groupId, typeId, title, description, formFields, onSubmit, ...rest}) {
+  const id = groupId + '/' + typeId;
   const formOptions = {
     form: id,
     fields: pluck(formFields, 'id'),
     validate: validate(formFields),
   };
   function handleSubmit(data) {
-    window.alert('Data submitted!');
     console.log({id, ...data});
-    return initialize(id, {});
+    onSubmit(id, data);
   }
   const FormEl = connectReduxForm(formOptions)(Form);
   return (
@@ -53,4 +53,4 @@ Component.props = {
   description: PropTypes.string.isRequired,
   formFields: PropTypes.array.isRequired,
 };
-export default connect(mapStateToProps)(Component);
+export default connect(mapStateToProps, {onSubmit: updateMe})(Component);

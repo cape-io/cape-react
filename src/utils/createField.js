@@ -8,6 +8,7 @@ export const genderOptions = [
 ];
 
 // Helper to create a field object.
+// Returns simple object that defines the attributes of the field.
 function createField(label, type = 'text', rest = {}) {
   const { id, validators, ...other } = rest;
   const idField = id || _.camelCase(label);

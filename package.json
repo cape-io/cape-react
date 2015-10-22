@@ -109,7 +109,7 @@
     "react-inline-css": "2.0.0",
     "react-redux": "^4.0.0",
     "react-router": "1.0.0-rc3",
-    "react-select": "^0.8.0",
+    "react-select": "0.8.x",
     "react-widgets": "^3.0.0-beta.1",
     "redux": "3.0.3",
     "redux-form": "2.4.x",

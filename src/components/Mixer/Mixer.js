@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import DocumentMeta from 'react-document-meta';
 
+// Display a list of content types the user can edit.
 function Mixer({contentTypes}) {
   return (
     <div className="container">
@@ -9,8 +10,10 @@ function Mixer({contentTypes}) {
       <DocumentMeta title="CAPE: Mixer"/>
       <ul>
       {
-        contentTypes.map( ({id, title}) => (
-          <li key={id}><Link to={`/mixer/${id}`}>{ title }</Link></li>
+        contentTypes.map( ({ groupId, typeId, title }) => (
+          <li key={groupId + '-' + typeId}>
+            <Link to={`/mixer/${groupId}/${typeId}`}>{ title }</Link>
+          </li>
         ))
       }
       </ul>

@@ -1,9 +1,9 @@
 import createField, { genderOptions, usStates } from '../utils/createField';
 
 export default {
-  id: 'acf-profile',
+  groupId: 'acf', // Space/Bin/Container/Database ID
+  typeId: 'profile', // Content Type/Table ID
   title: 'ACF Profile',
-  type: 'profile',
   description: 'Profile displayed in the Members Section of composersforum.org',
   fields: [
     createField('First Name', 'text', {required: true}),
