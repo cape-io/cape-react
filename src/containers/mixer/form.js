@@ -31,7 +31,7 @@ function Component({groupId, typeId, title, description, formFields, onSubmit, .
   };
   function handleSubmit(data) {
     console.log({id, ...data});
-    onSubmit(id, data);
+    onSubmit(groupId, typeId, data);
   }
   const FormEl = connectReduxForm(formOptions)(Form);
   return (

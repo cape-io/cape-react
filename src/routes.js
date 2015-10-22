@@ -50,9 +50,9 @@ export default (store) => {
 
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
+        <Route path="loginSuccess" component={LoginSuccess} />
         <Route path="mixer" component={Mixer} />
         <Route path="mixer/:groupId/:typeId" component={MixerForm} />
-        <Route path="loginSuccess" component={LoginSuccess} />
       </Route>
 
       { /* Routes */ }

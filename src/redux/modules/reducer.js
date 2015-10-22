@@ -6,6 +6,7 @@ import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
 import db from './db';
+import mixer from './mixer';
 
 export default combineReducers({
   router: routerStateReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
   db,
   form,
   info,
+  mixer,
   widgets,
 });

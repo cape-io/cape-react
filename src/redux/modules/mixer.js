@@ -1,6 +1,7 @@
 const LOAD = 'mixer/LOAD';
 const LOAD_SUCCESS = 'mixer/LOAD_SUCCESS';
 const LOAD_FAIL = 'mixer/LOAD_FAIL';
+const UPDATE = 'mixer/UPDATE';
 
 const initialState = {
   loaded: false,
@@ -27,6 +28,16 @@ export default function info(state = initialState, action = {}) {
         loaded: false,
         error: action.error,
       };
+    case UPDATE:
+      let groupState = state[action.meta.groupId] || {};
+      groupState = {
+        ...groupState,
+        [action.meta.typeId]: action.payload,
+      };
+      return {
+        ...state,
+        [action.meta.groupId]: groupState,
+      };
     default:
       return state;
   }
@@ -43,14 +54,33 @@ export function load() {
   };
 }
 
-const UPDATE = 'mixer/UPDATE';
-const UPDATE_SUCCESS = 'mixer/UPDATE_SUCCESS';
-const UPDATE_FAIL = 'mixer/UPDATE_FAIL';
-
-export function updateMe(id, data) {
-  const url = `http://kc.l:3031/api/content/me/${id}`;
+function handleUpdateMe({data, groupId, typeId}) {
   return {
-    types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
-    promise: (client) => client.put(url).send(data),
+    type: UPDATE,
+    payload: data,
+    meta: {groupId, typeId},
+  };
+}
+
+export function updateMe(groupId, typeId, data) {
+  return (dispatch) => {
+    // Dispatch route update?
+    // dispatch({type: SEND_TOKEN});
+    // Run async call.
+    const options = {
+      method: 'put',
+      body: JSON.stringify(data),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+    function handleResponse(resp) {
+      return dispatch(handleUpdateMe({data, groupId, typeId, resp}));
+    }
+    fetch(`http://kc.l:3031/api/content/me/${groupId}/${typeId}`, options)
+      .then((response) => response.json())
+      .then(handleResponse)
+      .catch(handleResponse);
   };
 }
