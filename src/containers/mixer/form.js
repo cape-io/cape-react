@@ -29,7 +29,8 @@ function Component({id, title, description, formFields, ...rest}) {
     validate: validate(formFields),
   };
   function handleSubmit(data) {
-    window.alert('Data submitted! ' + JSON.stringify(data));
+    window.alert('Data submitted!');
+    console.log({id, ...data});
     return initialize(id, {});
   }
   const FormEl = connectReduxForm(formOptions)(Form);
@@ -40,7 +41,7 @@ function Component({id, title, description, formFields, ...rest}) {
       <p className="lead">{ description }</p>
       <FormEl
         formFields={formFields}
-        handleSubmit={handleSubmit}
+        onSubmit={handleSubmit}
         {...rest}
       />
     </div>

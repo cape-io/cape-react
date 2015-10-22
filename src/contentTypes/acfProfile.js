@@ -11,7 +11,7 @@ export default {
     createField('Last Name', 'text', {required: true}),
     createField('Birthday', 'datetime', {help: 'Used for password resets.'}),
     createField('Gender', 'radio', {options: genderOptions}),
-    createField('State', 'select', {options: usStates}),
+    createField('State', 'select', {options: usStates, required: true}),
     {
       id: 'genre',
       label: 'Musical Genre',
