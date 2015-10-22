@@ -62,8 +62,13 @@ export default class App extends Component {
     // This feels like a hack. I want to trigger the redirect within Redux action.
     // Perhaps it should happen in the login component?
     if (!this.props.user && nextProps.user) {
+      const redirectLocation = nextProps.location.query.destination;
       // Redirect after login.
-      this.props.pushState(null, '/loginSuccess');
+      if (redirectLocation) {
+        this.props.pushState(null, redirectLocation);
+      } else {
+        this.props.pushState(null, '/loginSuccess');
+      }
     } else if (this.props.user && !nextProps.user) {
       // logout
       this.props.pushState(null, '/');

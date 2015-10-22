@@ -13,12 +13,12 @@ import {
 import Logout from './components/Logout';
 
 export default (store) => {
-  function requireLogin(nextState, replaceState, cb) {
+  function requireLogin({location}, replaceState, cb) {
     function checkAuth() {
       const { auth: { user }} = store.getState();
       if (!user) {
         // oops, not logged in, so can't be here!
-        replaceState(null, '/login-join');
+        replaceState(null, '/login-join', {destination: location.pathname});
       }
       cb();
     }
@@ -51,7 +51,7 @@ export default (store) => {
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
         <Route path="mixer" component={Mixer} />
-        <Route path="mixer/:id" component={MixerForm} />
+        <Route path="mixer/:groupId/:typeId" component={MixerForm} />
         <Route path="loginSuccess" component={LoginSuccess} />
       </Route>
 
