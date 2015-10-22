@@ -1,5 +1,4 @@
 import memoize from 'lru-memoize';
-import mapValues from 'lodash.mapvalues';
 import isArray from 'lodash.isarray';
 
 import * as validation from './validation';
@@ -8,9 +7,15 @@ import * as validation from './validation';
 function itemToFunc(validators, item) {
   if (isArray(item)) {
     // Make sure the length is 2.
+    if (!validators[item[0]]) {
+      console.error(item[0], 'is not a validation function');
+    }
     return validators[item[0]](item[1]);
   }
-  return validators[item[0]];
+  if (!validators[item]) {
+    console.error(item, 'is not a validation function');
+  }
+  return validators[item];
 }
 
 function fieldValidation({required, validators}) {
@@ -23,10 +28,21 @@ function fieldValidation({required, validators}) {
       validationMethods.push(itemToFunc(validation, item));
     });
   }
-  return validationMethods;
+  if (validationMethods.length) {
+    return validationMethods;
+  }
 }
 
 export default function formValidation(fields) {
-  const validator = validation.createValidator(mapValues(fields, fieldValidation));
+  // console.log(fields);
+  const fieldValidatorObj = {};
+  fields.forEach(field => {
+    const fieldRules = fieldValidation(field);
+    if (fieldRules) {
+      fieldValidatorObj[field.id] = fieldRules;
+    }
+  });
+  // console.log(fieldValidatorObj);
+  const validator = validation.createValidator(fieldValidatorObj);
   return memoize(10)(validator);
 }

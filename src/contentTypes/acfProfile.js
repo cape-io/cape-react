@@ -1,4 +1,4 @@
-import createField, { genderOptions, usStates } from './createField';
+import createField, { genderOptions, usStates } from '../utils/createField';
 
 export default {
   id: 'acf-profile',
