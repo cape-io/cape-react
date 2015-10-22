@@ -63,20 +63,24 @@ function handleUpdateMe({data, groupId, typeId}) {
 }
 
 export function updateMe(groupId, typeId, data) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     // Dispatch route update?
     // dispatch({type: SEND_TOKEN});
+    const record = {
+      ...data,
+      userId: getState().auth.user.name,
+    };
     // Run async call.
     const options = {
       method: 'put',
-      body: JSON.stringify(data),
+      body: JSON.stringify(record),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     };
     function handleResponse(resp) {
-      return dispatch(handleUpdateMe({data, groupId, typeId, resp}));
+      return dispatch(handleUpdateMe({record, groupId, typeId, resp}));
     }
     fetch(`http://kc.l:3031/api/content/me/${groupId}/${typeId}`, options)
       .then((response) => response.json())
