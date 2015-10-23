@@ -1,25 +1,17 @@
 const LOAD = 'mixer/LOAD';
-const LOAD_SUCCESS = 'mixer/LOAD_SUCCESS';
 const LOAD_FAIL = 'mixer/LOAD_FAIL';
 const UPDATE = 'mixer/UPDATE';
 
 const initialState = {
-  loaded: false,
+  loading: false,
 };
 
-export default function info(state = initialState, action = {}) {
+export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
       return {
         ...state,
         loading: true,
-      };
-    case LOAD_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        loaded: true,
-        data: action.result,
       };
     case LOAD_FAIL:
       return {
@@ -32,7 +24,7 @@ export default function info(state = initialState, action = {}) {
       let groupState = state[action.meta.groupId] || {};
       groupState = {
         ...groupState,
-        [action.meta.typeId]: action.payload,
+        [action.meta.typeId]: action.payload || action.result,
       };
       return {
         ...state,
@@ -41,17 +33,6 @@ export default function info(state = initialState, action = {}) {
     default:
       return state;
   }
-}
-
-export function isLoaded(globalState) {
-  return globalState.info && globalState.info.loaded;
-}
-
-export function load() {
-  return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/loadInfo'),
-  };
 }
 
 function handleUpdateMe({data, groupId, typeId}) {
@@ -89,13 +70,23 @@ export function updateMe(groupId, typeId, data) {
   };
 }
 
-export function loadFormValues(groupId, typeId, userId) {
-  return (dispatch) => {
-    function handleResponse(data) {
-      return dispatch(handleUpdateMe({data, groupId, typeId}));
-    }
-    fetch(`http://kc.l:3031/api/content/me/${groupId}/${typeId}/${userId}`)
-      .then((response) => response.json())
-      .then(handleResponse);
+export function formInfo({auth: {user}, mixer, router: { params } }) {
+  // Pull group and type from router params.
+  const { groupId, typeId } = params;
+  // Check to see if we have data for this form already.
+  return {
+    loaded: mixer && mixer[groupId] && mixer[groupId][typeId],
+    groupId,
+    typeId,
+    userId: user.name,
+  };
+}
+
+export function load({groupId, typeId, userId}) {
+  const url = `http://kc.l:3031/api/content/me/${groupId}/${typeId}/${userId}`;
+  return {
+    types: [LOAD, UPDATE, LOAD_FAIL],
+    promise: (client) => client.get(url),
+    meta: {groupId, typeId},
   };
 }

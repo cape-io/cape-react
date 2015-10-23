@@ -9,6 +9,7 @@ export default {
     createField('First Name', 'text', {required: true}),
     createField('Middle Name'),
     createField('Last Name', 'text', {required: true}),
+    createField('Display Name'),
     createField('Birthday', 'datetime', {help: 'Used for password resets.'}),
     createField('Gender', 'radio', {options: genderOptions}),
     createField('State', 'select', {options: usStates, required: true}),

@@ -6,7 +6,7 @@ import DocumentMeta from 'react-document-meta';
 import { connectReduxForm } from 'redux-form';
 import validate from '../../utils/formValidation';
 import Form from '../../components/Form/Form';
-import { updateMe, loadFormValues } from '../../redux/modules/mixer';
+import { updateMe, load as loadFormValues, formInfo } from '../../redux/modules/mixer';
 
 // Redux connections.
 
@@ -37,14 +37,11 @@ class MixerForm extends Component {
   // This static method is called on the component before it is mounted.
   // Or so I'm told.
   static fetchDataDeferred(getState, dispatch) {
-    // We need mixer and router from state.
-    const { auth: { user }, mixer, router: { params } } = getState();
-    // Pull group and type from router params.
-    const { groupId, typeId } = params;
+    const state = getState();
     // Check to see if we have data for this form already.
-    const isLoaded = mixer[groupId] && mixer[groupId][typeId];
-    if (!isLoaded) {
-      return dispatch(loadFormValues(groupId, typeId, user.name));
+    const { loaded, ...info } = formInfo(state);
+    if (!loaded) {
+      return dispatch(loadFormValues(info));
     }
   }
   render() {
