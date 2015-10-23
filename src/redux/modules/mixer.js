@@ -88,3 +88,14 @@ export function updateMe(groupId, typeId, data) {
       .catch(handleResponse);
   };
 }
+
+export function loadFormValues(groupId, typeId, userId) {
+  return (dispatch) => {
+    function handleResponse(data) {
+      return dispatch(handleUpdateMe({data, groupId, typeId}));
+    }
+    fetch(`http://kc.l:3031/api/content/me/${groupId}/${typeId}/${userId}`)
+      .then((response) => response.json())
+      .then(handleResponse);
+  };
+}
