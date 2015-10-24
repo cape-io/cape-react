@@ -12,7 +12,9 @@ export default {
     createField('Display Name'),
     createField('Birthday', 'datetime', {help: 'Used for password resets.'}),
     createField('Gender', 'radio', {options: genderOptions}),
+    createField('City'),
     createField('State', 'select', {options: usStates, required: true}),
+    createField('Zip'),
     {
       id: 'genre',
       label: 'Musical Genre',
@@ -24,5 +26,13 @@ export default {
         {value: '6', label: 'Country'},
       ],
     },
+    createField('Intro', 'textarea', {minRows: 3}),
+    createField('Biography', 'textarea', {id: 'bio', minRows: 6}),
+    createField('Artist Statement', 'textarea', {id: 'statement', minRows: 7}),
   ],
 };
+
+// Recordings.
+// Compositions. title, program note, year.
+// Reviews.
+// Links.

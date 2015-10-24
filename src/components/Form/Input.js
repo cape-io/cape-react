@@ -4,6 +4,7 @@ import InputFlags from './InputFlags';
 import InputRadios from './InputRadios';
 import InputSelect from './InputSelect';
 import InputDate from './InputDate';
+import InputTextarea from './InputTextarea';
 
 function Input({field, label, type, showFlags, options, required, asyncValidating, styles, ...other}) {
   const { active, dirty, error, name, touched, visited, ...inputProps } = field;
@@ -14,15 +15,34 @@ function Input({field, label, type, showFlags, options, required, asyncValidatin
   const inputGroupStyle = isTypeText ? styles.inputGroup : '';
 
   let InputEl = false;
-  if (type === 'radio') {
-    InputEl = <InputRadios styles={styles.radioLabel} field={field} type={type} options={options} />;
-  } else if (type === 'select') {
-    InputEl = <InputSelect options={options} {...field} />;
-  } else if (type === 'datetime') {
-    InputEl = <InputDate field={field} {...other} />;
-  } else {
-    InputEl = <input type={type} className={isTypeText && 'form-control'} id={name} {...inputProps} />;
+  switch (type) {
+    case 'radio':
+      InputEl = (
+        <InputRadios
+          styles={styles.radioLabel}
+          field={field}
+          type={type}
+          options={options}
+        />);
+      break;
+    case 'select':
+      InputEl = <InputSelect options={options} {...field} />;
+      break;
+    case 'datetime':
+      InputEl = <InputDate field={field} {...other} />;
+      break;
+    case 'textarea':
+      InputEl = <InputTextarea {...field} {...other} />;
+      break;
+    default:
+      InputEl = (
+        <input
+          type={type}
+          className={isTypeText && 'form-control'}
+          id={name} {...inputProps}
+        />);
   }
+
   return (
     <div className={'form-group' + (error && touched ? ' has-error' : '')}>
       <label htmlFor={name} className="col-sm-2">
