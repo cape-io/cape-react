@@ -13,6 +13,7 @@ function SurveyForm(props) {
     invalid,
     resetForm,
     pristine,
+    showFlags,
     valid,
     } = props;
   const styles = require('./Form.scss');
@@ -27,12 +28,11 @@ function SurveyForm(props) {
               asyncValidating={hasAsyncValidate && asyncValidating}
               field={fields[id]}
               styles={styles}
-              showFlags
+              showFlags={showFlags}
               {...other}
             />
           ))
         }
-
         <div className="form-group">
           <div className="col-sm-offset-2 col-sm-10">
             <button className="btn btn-success" onClick={handleSubmit}>
@@ -58,6 +58,7 @@ SurveyForm.propTypes = {
   resetForm: PropTypes.func.isRequired,
   invalid: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
+  showFlags: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
   formFields: PropTypes.array.isRequired,
 };
