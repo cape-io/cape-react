@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import DocumentMeta from 'react-document-meta';
+import Authenticated from './Authenticated';
 
 export default class Login extends Component {
   static propTypes = {
@@ -35,15 +36,7 @@ export default class Login extends Component {
           <p>{ leadMsg }</p>
         </div>
         }
-        {user &&
-        <div>
-          <p>You are currently logged in as {user.name}.</p>
-
-          <div>
-            <button className="btn btn-danger" onClick={logout}><i className="fa fa-sign-out"/>{' '}Log Out</button>
-          </div>
-        </div>
-        }
+        { user && <Authenticated name={user.displayName} logout={logout} /> }
       </div>
     );
   }

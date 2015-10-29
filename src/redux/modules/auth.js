@@ -77,6 +77,12 @@ export function isLoaded(globalState) {
   return globalState.auth && globalState.auth.loaded;
 }
 
+export function isAuthenticated(globalState) {
+  return globalState.auth &&
+    globalState.auth.user &&
+    globalState.auth.user.isAuthenticated;
+}
+
 export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
