@@ -9,7 +9,7 @@
     }
   ],
   "license": "MIT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "repository": {
     "type": "git",
     "url": "https://github.com/cape-io/cape-editor"
@@ -17,8 +17,9 @@
   "bugs": {
     "url": "https://github.com/cape-io/cape-editor/issues"
   },
-  "homepage": "https://www.cape.io",
+  "homepage": "https://edit.cape.io",
   "keywords": [
+    "cape",
     "react",
     "isomorphic",
     "universal",
@@ -27,16 +28,13 @@
   ],
   "main": "bin/server.js",
   "scripts": {
-    "start": "concurrent --kill-others \"npm run start-prod\" \"npm run start-prod-api\"",
-    "start-prod": "node ./node_modules/better-npm-run start-prod",
-    "start-prod-api": "node ./node_modules/better-npm-run start-prod-api",
+    "start": "node ./node_modules/better-npm-run start-prod",
     "build": "webpack --verbose --colors --display-error-details --config webpack/prod.config.js",
     "postinstall": "webpack --display-error-details --config webpack/prod.config.js",
     "lint": "eslint -c .eslintrc src api",
     "start-dev": "node ./node_modules/better-npm-run start-dev",
-    "start-dev-api": "node ./node_modules/better-npm-run start-dev-api",
     "watch-client": "node ./node_modules/better-npm-run watch-client",
-    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\" \"npm run start-dev-api\"",
+    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run start-dev\"",
     "test": "karma start"
   },
   "betterScripts": {
@@ -45,15 +43,7 @@
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
-        "APIPORT": 3030
-      }
-    },
-    "start-prod-api": {
-      "command": "node ./bin/api.js",
-      "env": {
-        "NODE_PATH": "./api",
-        "NODE_ENV": "production",
-        "APIPORT": 3030
+        "PORT": 3002
       }
     },
     "start-dev": {
@@ -61,16 +51,7 @@
       "env": {
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
-        "PORT": 3000,
-        "APIPORT": 3030
-      }
-    },
-    "start-dev-api": {
-      "command": "node ./bin/api.js",
-      "env": {
-        "NODE_PATH": "./api",
-        "NODE_ENV": "development",
-        "APIPORT": 3030
+        "PORT": 3000
       }
     },
     "watch-client": {
@@ -99,7 +80,7 @@
     "lodash.pluck": "^3.1.2",
     "lru-memoize": "1.0.0",
     "map-props": "1.0.0",
-    "moment": "^2.10.6",
+    "moment": "2.x",
     "multireducer": "1.0.2",
     "piping": "0.3.0",
     "pretty-error": "1.2.0",
@@ -112,8 +93,8 @@
     "react-redux": "^4.0.0",
     "react-router": "1.0.0-rc3",
     "react-select": "0.8.x",
-    "react-textarea-autosize": "^3.1.0",
-    "react-widgets": "^3.0.0-beta.1",
+    "react-textarea-autosize": "3.1.x",
+    "react-widgets": "3.0.x",
     "redux": "3.0.x",
     "redux-form": "2.4.x",
     "serialize-javascript": "1.1.2",
