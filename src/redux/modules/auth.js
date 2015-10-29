@@ -88,7 +88,7 @@ export function login(name) {
   // I want to trigger the redirect on success here.
   return {
     types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
-    promise: (client) => client.post('/login', {
+    promise: (client) => client.post('/user/login', {
       data: {
         name: name,
       },
@@ -99,6 +99,6 @@ export function login(name) {
 export function logout() {
   return {
     types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
-    promise: (client) => client.get('/logout'),
+    promise: (client) => client.get('/user/logout'),
   };
 }
