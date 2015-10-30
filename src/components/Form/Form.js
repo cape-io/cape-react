@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import { reduxForm } from 'redux-form';
+
 import Input from './Input';
 import ReduxFormProps from './ReduxFormProps';
 
@@ -64,4 +66,4 @@ SurveyForm.propTypes = {
 };
 SurveyForm.defaultProps = {};
 
-export default SurveyForm;
+export default reduxForm()(SurveyForm);
