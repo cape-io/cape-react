@@ -1,0 +1,13 @@
+{
+  "apps" : [
+    {
+      "name"      : "ACF",
+      "script"    : "./bin/server.js",
+      "env_production" : {
+        "NODE_ENV": "production",
+        "NODE_PATH": "./src",
+        "PORT": 3002
+      }
+    },
+  ],
+}
