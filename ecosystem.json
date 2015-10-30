@@ -1,7 +1,7 @@
 {
   "apps" : [
     {
-      "name"      : "ACF",
+      "name"      : "EDIT",
       "script"    : "./bin/server.js",
       "env_production" : {
         "NODE_ENV": "production",
