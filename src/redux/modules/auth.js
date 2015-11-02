@@ -9,7 +9,15 @@ const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
 const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
 
 const initialState = {
+  isAuthenticated: false,
   loaded: false,
+  loading: false,
+  loggingIn: false,
+  providerId: false,
+  status: 0,
+  user: {
+    userId: null, // NOTE: Can be authenticated without userId.
+  },
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -22,9 +30,9 @@ export default function reducer(state = initialState, action = {}) {
     case LOAD_SUCCESS:
       return {
         ...state,
+        ...action.result,
         loading: false,
         loaded: true,
-        user: action.result,
       };
     case LOAD_FAIL:
       return {
@@ -60,7 +68,8 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         loggingOut: false,
-        user: action.result,
+        ...initialState,
+        ...action.result,
       };
     case LOGOUT_FAIL:
       return {
@@ -75,12 +84,6 @@ export default function reducer(state = initialState, action = {}) {
 
 export function isLoaded(globalState) {
   return globalState.auth && globalState.auth.loaded;
-}
-
-export function isAuthenticated(globalState) {
-  return globalState.auth &&
-    globalState.auth.user &&
-    globalState.auth.user.isAuthenticated;
 }
 
 export function load() {

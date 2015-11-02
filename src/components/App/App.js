@@ -108,7 +108,7 @@ export default class App extends Component {
               }
             </ul>
             {user &&
-            <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.name}</strong>.</p>}
+            <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.displayName}</strong>.</p>}
             <ul className="nav navbar-nav navbar-right">
               <li>
                 <a href="https://github.com/cape-io/cape-editor"

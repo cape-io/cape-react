@@ -49,7 +49,7 @@
     "start-dev": {
       "command": "node ./bin/server.js",
       "env": {
-        "API": "http://v5.cape.io:3001/api",
+        "API": "http://localhost:3003/api",
         "NODE_PATH": "./src",
         "NODE_ENV": "development",
         "PORT": 3000

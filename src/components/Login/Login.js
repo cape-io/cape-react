@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import DocumentMeta from 'react-document-meta';
+import Anonymous from './Anonymous';
 import Authenticated from './Authenticated';
 
 export default class Login extends Component {
@@ -8,6 +9,7 @@ export default class Login extends Component {
     leadMsg: PropTypes.string.isRequired,
     login: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
+    status: PropTypes.number.isRequired,
     user: PropTypes.object,
   }
 
@@ -20,23 +22,27 @@ export default class Login extends Component {
   }
 
   render() {
-    const { headerMsg, user, logout, leadMsg } = this.props;
+    const { headerMsg, logout, leadMsg, status, user } = this.props;
     const styles = require('./Login.scss');
+    let Content = false;
+    // No auth.
+    if (!status) {
+      Content = <Anonymous leadMsg={leadMsg} />;
+    } else if (status === 1) {
+      Content = <p>Link or Join</p>;
+    } else if (status === 2) {
+      Content = <Authenticated name={user.displayName} logout={logout} />;
+    } else {
+      Content = <p>Error</p>;
+    }
+    // No userId.
+
+    // Auth.
     return (
       <div className={styles.loginPage + ' container'}>
         <DocumentMeta title="Login"/>
         <h1>{ headerMsg }</h1>
-        {!user &&
-        <div>
-          <form className="login-form" onSubmit={::this.handleSubmit}>
-            <input type="text" ref="username" placeholder="you@example.com"/>
-            <button className="btn btn-success" onClick={::this.handleSubmit}><i className="fa fa-sign-in"/>{' '}Log In
-            </button>
-          </form>
-          <p>{ leadMsg }</p>
-        </div>
-        }
-        { user && <Authenticated name={user.displayName} logout={logout} /> }
+        { Content }
       </div>
     );
   }
