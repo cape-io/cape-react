@@ -21,6 +21,8 @@ class ApiClient_ {
               if (req.get('cookie')) {
                 request.set('cookie', req.get('cookie'));
               }
+            } else {
+              request.withCredentials();
             }
             if (options && options.data) {
               request.send(options.data);

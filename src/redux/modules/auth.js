@@ -1,12 +1,15 @@
-const LOAD = 'redux-example/auth/LOAD';
-const LOAD_SUCCESS = 'redux-example/auth/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/auth/LOAD_FAIL';
-const LOGIN = 'redux-example/auth/LOGIN';
-const LOGIN_SUCCESS = 'redux-example/auth/LOGIN_SUCCESS';
-const LOGIN_FAIL = 'redux-example/auth/LOGIN_FAIL';
-const LOGOUT = 'redux-example/auth/LOGOUT';
-const LOGOUT_SUCCESS = 'redux-example/auth/LOGOUT_SUCCESS';
-const LOGOUT_FAIL = 'redux-example/auth/LOGOUT_FAIL';
+const LOAD = 'auth/auth/LOAD';
+const LOAD_SUCCESS = 'auth/auth/LOAD_SUCCESS';
+const LOAD_FAIL = 'auth/auth/LOAD_FAIL';
+const JOIN = 'auth/auth/LOGIN';
+const JOIN_SUCCESS = 'auth/auth/LOGIN_SUCCESS';
+const JOIN_FAIL = 'auth/auth/LOGIN_FAIL';
+const LOGIN = 'auth/auth/LOGIN';
+const LOGIN_SUCCESS = 'auth/auth/LOGIN_SUCCESS';
+const LOGIN_FAIL = 'auth/auth/LOGIN_FAIL';
+const LOGOUT = 'auth/auth/LOGOUT';
+const LOGOUT_SUCCESS = 'auth/auth/LOGOUT_SUCCESS';
+const LOGOUT_FAIL = 'auth/auth/LOGOUT_FAIL';
 
 const initialState = {
   isAuthenticated: false,
@@ -41,17 +44,20 @@ export default function reducer(state = initialState, action = {}) {
         loaded: false,
         error: action.error,
       };
+    case JOIN:
     case LOGIN:
       return {
         ...state,
         loggingIn: true,
       };
+    case JOIN_SUCCESS:
     case LOGIN_SUCCESS:
       return {
         ...state,
         loggingIn: false,
-        user: action.result,
+        ...action.result,
       };
+    case JOIN_FAIL:
     case LOGIN_FAIL:
       return {
         ...state,
@@ -90,6 +96,18 @@ export function load() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/user/me'),
+  };
+}
+export function join({displayName, email}) {
+  // I want to trigger the redirect on success here.
+  return {
+    types: [JOIN, JOIN_SUCCESS, JOIN_FAIL],
+    promise: (client) => client.post('/user/join', {
+      data: {
+        displayName,
+        email,
+      },
+    }),
   };
 }
 
