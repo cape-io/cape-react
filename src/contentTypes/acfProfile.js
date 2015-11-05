@@ -1,4 +1,12 @@
 import createField, { genderOptions, usStates } from '../utils/createField';
+const musicTypeOptions = [
+  {value: 'composer', label: 'Composer'},
+  {value: 'performer', label: 'Performer'},
+  {value: 'ensemble', label: 'Ensemble'},
+  {value: 'edu', label: 'Educator'},
+  {value: 'org', label: 'Organization (arts presenter, school, library, foundation)'},
+  {value: 'none', label: 'None of the above/Friend of ACF'},
+];
 
 export default {
   groupId: 'acf', // Space/Bin/Container/Database ID
@@ -26,13 +34,31 @@ export default {
         {value: '6', label: 'Country'},
       ],
     },
-    createField('Intro', 'textarea', {minRows: 3}),
-    createField('Biography', 'textarea', {id: 'bio', minRows: 6}),
+    createField('Intro Text', 'textarea', {id: 'intro', minRows: 3}),
+    createField('Brief Biography', 'textarea', {id: 'bio', minRows: 6}),
     createField('Artist Statement', 'textarea', {id: 'statement', minRows: 7}),
+    createField('Profile Types', 'text', {options: musicTypeOptions}),
+    createField('Search Image', 'file', {id: 'searchImg'}),
+    createField('Profile Photo', 'file', {id: 'photo'}),
+    // Recent Works - Compositions. title, program note, year.
+    createField('Recent Works', 'textarea'),
+    createField('Reviews', 'textarea'),
   ],
 };
 
-// Recordings.
-// Compositions. title, program note, year.
 // Reviews.
 // Links.
+
+// Recordings.
+
+// ACF Membership Fields.
+  // active: Active Membership (bool)
+  // userId: CAPE User Id
+  // recurlyId: Recurly Id
+  // uid: Drupal User Id
+  // nid: Drupal Node Id
+  // cfmUid: Old User Id
+  // expires: Membership Expiration datetime
+  // since: Member since
+  // sortBy: Sort Text
+  // lastImport: Last import from Drupal.
