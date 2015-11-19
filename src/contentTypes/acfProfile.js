@@ -13,6 +13,7 @@ export default {
   typeId: 'profile', // Content Type/Table ID
   title: 'ACF Profile',
   description: 'Profile displayed in the Members Section of composersforum.org',
+  // Field should probably be an object. Fields should be an array of ids.
   fields: [
     createField('First Name', 'text', {required: true}),
     createField('Middle Name'),
