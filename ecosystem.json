@@ -10,4 +10,15 @@
       }
     },
   ],
+  "deploy" : {
+    "production" : {
+      "user" : "nodeus",
+      "host" : "dong.cape.io",
+      "ref"  : "origin/master",
+      "repo" : "https://github.com/cape-io/cape-editor.git",
+      "path" : "/srv/node/cape-editor",
+      "port" : "60022",
+      "post-deploy" : "npm i && pm2 startOrRestart ecosystem.json --env production"
+    }
+  }
 }
