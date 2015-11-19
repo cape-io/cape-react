@@ -27,7 +27,7 @@ const server = new http.Server(app);
 app.use(compression());
 app.use(favicon(path.join(__dirname, '..', 'static', 'favicon.ico')));
 
-app.use(require('serve-static')(path.join(__dirname, '..', 'static')));
+app.use(Express.static(path.join(__dirname, '..', 'static')));
 
 if (__DEVELOPMENT__) {
   const httpProxy = require('http-proxy');
@@ -119,7 +119,7 @@ if (config.port) {
     if (err) {
       console.error(err);
     }
-    console.info('==> 💻  Open http://localhost:%s in a browser to view the app.', config.port);
+    console.info('==> 💻  Open http://%s:%s in a browser to view the app.', config.host, config.port);
   });
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');
