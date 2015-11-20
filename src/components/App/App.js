@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { IndexLink, Link } from 'react-router';
+import { IndexLink } from 'react-router';
 import DocumentMeta from 'react-document-meta';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
+import NavbarLink from './NavbarLink';
 
 function makeMeta({title, description, image}) {
   return {
@@ -27,18 +28,6 @@ function makeMeta({title, description, image}) {
     },
   };
 }
-
-const NavbarLink = ({to, className, component, children}) => {
-  const Comp = component || Link;
-
-  return (
-    <Comp to={to} className={className} activeStyle={{
-      color: '#33e0ff',
-    }}>
-      {children}
-    </Comp>
-  );
-};
 
 export default class App extends Component {
   static propTypes = {
