@@ -16,7 +16,6 @@ const NavbarLink = ({to, className, component, children}) => {
 NavbarLink.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,
-  component: PropTypes.node,
   to: PropTypes.string.isRequired,
 };
 
