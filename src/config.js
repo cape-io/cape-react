@@ -1,4 +1,4 @@
-// require('babel/polyfill');
+require('babel/polyfill');
 
 const environment = {
   development: {
@@ -9,31 +9,43 @@ const environment = {
   },
 }[process.env.NODE_ENV || 'development'];
 
-function createMeta(title) {
+const siteInfo = {
+  author: {
+    twitter: '@CAPE_io',
+  },
+  title: 'CAPE Editor',
+  description: 'Create Anywhere Publish Everywhere',
+  social: {
+    twitter: '@CAPE_io',
+  },
+};
+
+function createMeta(info) {
   return {
     charSet: 'utf-8',
     property: {
-      'og:site_name': title,
+      'og:site_name': info.title,
+      'og:image': info.logo && info.logo.src,
       'og:locale': 'en_US',
-      'og:title': title,
-      'og:description': 'Create Anywhere Publish Everywhere',
+      'og:title': info.title,
+      'og:description': info.description,
       'twitter:card': 'summary',
-      'twitter:site': '@CAPE_io',
-      'twitter:creator': '@CAPE_io',
-      'twitter:title': title,
-      'twitter:description': 'Create Anywhere Publish Everywhere',
+      'twitter:site': info.social.twitter,
+      'twitter:creator': info.author.twitter,
+      'twitter:title': info.title,
+      'twitter:description': info.description,
+      'twitter:image': info.logo && info.logo.src,
+      'twitter:image:width': info.logo && info.logo.width.toString(),
+      'twitter:image:height': info.logo && info.logo.height.toString(),
     },
   };
 }
+siteInfo.meta = createMeta(siteInfo);
 
 module.exports = Object.assign({
   host: process.env.HOST || 'localhost',
   port: process.env.PORT,
-  apiHost: process.env.APIHOST || 'edit.cape.io',
-  apiPort: process.env.APIPORT || 80,
-  app: {
-    title: 'CAPE Editor',
-    description: 'All the modern best practices in one example.',
-    meta: createMeta('CAPE Editor'),
-  },
+  apiHost: process.env.APIHOST || 'localhost',
+  apiPort: process.env.APIPORT,
+  app: siteInfo,
 }, environment);
