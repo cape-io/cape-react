@@ -1,57 +1,55 @@
-import React, { PropTypes } from 'react';
-import { reduxForm } from 'redux-form';
+import React, { PropTypes } from 'react'
 
-import Input from './Input';
-import ReduxFormProps from './ReduxFormProps';
+import Input from './Input'
+import ReduxFormProps from './ReduxFormProps'
+import SubmitButtons from './SubmitButtons'
 
-function SurveyForm(props) {
+function Form(props) {
   const {
     asyncValidating,
     dirty,
     fields,
     active,
     handleSubmit,
-    formFields,
+    formInfo,
     invalid,
     resetForm,
     pristine,
     showFlags,
     valid,
-    } = props;
-  const styles = require('./Form.scss');
+    } = props
+  const styles = {}
 
   return (
     <div>
       <form className="form-horizontal" onSubmit={handleSubmit}>
         {
-          formFields.map( ({id, hasAsyncValidate, ...other}) => (
-            <Input
-              key={id}
-              asyncValidating={hasAsyncValidate && asyncValidating}
-              field={fields[id]}
-              styles={styles}
-              showFlags={showFlags}
-              {...other}
-            />
-          ))
+          formInfo.fields.map( fieldId => {
+            const { id, hasAsyncValidate, ...other } = formInfo.field[fieldId]
+            return (
+              <Input
+                key={fieldId}
+                asyncValidating={hasAsyncValidate && asyncValidating}
+                field={fields[fieldId]}
+                styles={styles}
+                showFlags={showFlags}
+                {...other}
+              />
+            )
+          })
         }
-        <div className="form-group">
-          <div className="col-sm-offset-2 col-sm-10">
-            <button className="btn btn-success" onClick={handleSubmit}>
-              <i className="fa fa-paper-plane"/> Submit
-            </button>
-            <button className="btn btn-warning" onClick={resetForm} style={{marginLeft: 15}}>
-              <i className="fa fa-undo"/> Reset
-            </button>
-          </div>
-        </div>
+        <SubmitButtons
+          {...formInfo.submit}
+          handleSubmit={handleSubmit}
+          resetForm={resetForm}
+        />
       </form>
 
-      <ReduxFormProps {...{active, dirty, pristine, valid, invalid}} />
+      <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
     </div>
-  );
+  )
 }
-SurveyForm.propTypes = {
+Form.propTypes = {
   active: PropTypes.string,
   asyncValidating: PropTypes.bool.isRequired,
   fields: PropTypes.object.isRequired,
@@ -62,8 +60,10 @@ SurveyForm.propTypes = {
   pristine: PropTypes.bool.isRequired,
   showFlags: PropTypes.bool.isRequired,
   valid: PropTypes.bool.isRequired,
-  formFields: PropTypes.array.isRequired,
-};
-SurveyForm.defaultProps = {};
+  formInfo: PropTypes.object.isRequired,
+}
+Form.defaultProps = {
+  showFlags: false,
+}
 
-export default reduxForm()(SurveyForm);
+export default Form

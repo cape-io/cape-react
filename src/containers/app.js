@@ -1,33 +1,64 @@
-import { connect } from 'react-redux';
-import Component from '../components/App/App';
-import { logout } from '../redux/modules/auth';
-import { pushState } from 'redux-router';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { pushState } from 'redux-router'
+import { resetErrorMessage } from '../redux/actions'
 
-// Filter out menu items based on authentication.
-function checkAuthenticated(user) {
-  return (item) => {
-    const {authenticated} = item;
-    if (authenticated === false && user) return false;
-    if (authenticated === true && !user) return false;
-    return true;
-  };
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.handleDismissClick = this.handleDismissClick.bind(this)
+  }
+
+  handleDismissClick(err) {
+    this.props.resetErrorMessage()
+    err.preventDefault()
+  }
+
+  renderErrorMessage() {
+    const { errorMessage } = this.props
+    if (!errorMessage) {
+      return null
+    }
+
+    return (
+      <p style={{ backgroundColor: '#e99', padding: 10 }}>
+        <b>{errorMessage}</b>
+        {' '}
+        (<a href="#"
+            onClick={this.handleDismissClick}>
+          Dismiss
+        </a>)
+      </p>
+    )
+  }
+
+  render() {
+    const { children } = this.props
+    return (
+      <div className="container">
+        { this.renderErrorMessage() }
+        { children }
+      </div>
+    )
+  }
 }
 
-function mapStateToProps({auth: {user}, db: {navLinks, support, title, image, description}}) {
+App.propTypes = {
+  // Injected by React Redux
+  errorMessage: PropTypes.string,
+  resetErrorMessage: PropTypes.func.isRequired,
+  pushState: PropTypes.func.isRequired,
+  // Injected by React Router
+  children: PropTypes.node,
+}
+
+function mapStateToProps(state) {
   return {
-    description,
-    image,
-    // The client only cares if the user is authenticated or not. Right?
-    navLinks: navLinks.filter(checkAuthenticated(user)),
-    support,
-    title,
-    user,
-  };
+    errorMessage: state.errorMessage,
+  }
 }
 
-const mapDispatchToProps = {
-  logout,
+export default connect(mapStateToProps, {
+  resetErrorMessage,
   pushState,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+})(App)

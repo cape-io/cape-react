@@ -1,8 +1,6 @@
-.idea/
-node_modules/
-dist/
-*.iml
-webpack-stats.json
+.DS_Store
+node_modules
+dist
 npm-debug.log
-src/config-kc.js
+webpack-stats.json
 webpack-assets.json
