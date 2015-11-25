@@ -3,11 +3,10 @@ import { IndexRoute, Route } from 'react-router'
 
 import {
     App,
-    Counter,
     List,
+    Login,
     LoginForm,
     User,
-    UserPage,
   } from './containers'
 
 /**
@@ -16,12 +15,11 @@ import {
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={List} />
-    <Route path="counter" component={Counter} increment={1} color="darkred" />
     <Route path="user" component={User}>
       <IndexRoute component={LoginForm} />
       <Route
         path=":login"
-        component={UserPage}
+        component={Login}
       />
     </Route>
   </Route>

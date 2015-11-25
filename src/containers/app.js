@@ -21,14 +21,14 @@ class App extends Component {
     }
 
     return (
-      <p style={{ backgroundColor: '#e99', padding: 10 }}>
+      <div className="alert alert-danger" role="alert">
         <b>{errorMessage}</b>
         {' '}
         (<a href="#"
             onClick={this.handleDismissClick}>
           Dismiss
         </a>)
-      </p>
+      </div>
     )
   }
 

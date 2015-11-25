@@ -1,34 +1,34 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react'
 
-import ProviderLinks from './ProviderLinks';
+import ProviderLinks from './ProviderLinks'
 
 // Basic suggestion button.
 function Login({photo, providers, sendingToken, sentTokenSuccess, email, onClick}) {
-  const loginProviders = [];
+  const loginProviders = []
   function addProviderInfo(type, label) {
     const info = {
       type,
       key: type,
-    };
-    if (type === 'email') {
-      info.onClick = () => onClick(email);
-      info.label = `Email a login link to ${label}`;
-    } else {
-      info.link = `/user/login/${type}`;
-      info.label = `Sign in with ${label}`;
     }
-    loginProviders.push(info);
+    if (type === 'email') {
+      info.onClick = () => onClick(email)
+      info.label = `Email a login link to ${label}`
+    } else {
+      info.link = `/user/login/${type}`
+      info.label = `Sign in with ${label}`
+    }
+    loginProviders.push(info)
   }
-  addProviderInfo('email', email);
+  addProviderInfo('email', email)
   providers.forEach(provider => {
     if (provider === 'google') {
-      addProviderInfo('google', 'Google');
+      addProviderInfo('google', 'Google')
     }
-  });
+  })
 
-  let PhotoEl = false;
+  let PhotoEl = false
   if (photo) {
-    PhotoEl = <img src={photo.previewUrl} />;
+    PhotoEl = <img src={photo.previewUrl} />
   }
 
   return (
@@ -39,12 +39,12 @@ function Login({photo, providers, sendingToken, sentTokenSuccess, email, onClick
       { sentTokenSuccess ? <h3>Please check your email</h3> : false }
       <pre>{ JSON.stringify(loginProviders, null, 2) }</pre>
     </div>
-  );
+  )
 }
 
 Login.propTypes = {
   photo: PropTypes.object,
-};
+}
 Login.defaultProps = {
-};
-export default Login;
+}
+export default Login
