@@ -3,9 +3,11 @@ import React, { PropTypes } from 'react'
 // Basic suggestion button.
 function Loading({ message }) {
   return (
-    <h2 className="loading">
-      { message }
-    </h2>
+    <div className="alert alert-info" role="alert">
+      <h2 className="loading">
+        { message }
+      </h2>
+    </div>
   )
 }
 
