@@ -6,7 +6,6 @@ import { reducer as formReducer } from 'redux-form'
 
 import paginate from './reducers/paginate'
 import db from './modules/db'
-import email from './modules/email'
 
 // Updates an entity cache in response to any action with response.entities.
 // Define our default entities collection database.
@@ -57,7 +56,6 @@ const pagination = combineReducers({
 
 const rootReducer = combineReducers({
   db,
-  email,
   entities,
   form: formReducer,
   pagination,

@@ -1,8 +1,5 @@
 {
   "stage": 0,
-  "plugins": [
-    "typecheck"
-  ],
   "env": {
     "development": {
       "plugins": [

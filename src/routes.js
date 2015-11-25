@@ -4,11 +4,8 @@ import { IndexRoute, Route } from 'react-router'
 import {
     App,
     Counter,
-    Explore,
-    GithubUserPage,
     List,
     LoginForm,
-    RepoPage,
     User,
     UserPage,
   } from './containers'
@@ -25,16 +22,6 @@ export default (
       <Route
         path=":login"
         component={UserPage}
-      />
-    </Route>
-    <Route path="gh" component={Explore}>
-      <Route
-        path=":login/:name"
-        component={RepoPage}
-      />
-      <Route
-        path=":login"
-        component={GithubUserPage}
       />
     </Route>
   </Route>
