@@ -1,23 +1,17 @@
-import { connect } from 'react-redux';
-import Component from '../components/Login/Login';
-import * as authActions from 'redux/modules/auth';
+import { connect } from 'react-redux'
+import Component from '../components/Login/Login'
 
-function mapStateToProps({auth: {user, provider, status}, db}) {
-  const path = 'login-join';
+function mapStateToProps(state) {
+  const { login } = state.router.params
+  const {
+    entities: { users },
+  } = state
 
-  let headerMsg = db[path].headerMsg;
-  if (status === 1) {
-    headerMsg = 'Link or Join';
-  } else if (status === 2) {
-    headerMsg = 'Logged In';
-  }
+  const user = users[login]
+
   return {
-    headerMsg,
-    leadMsg: db[path].leadMsg,
-    status,
     user,
-    provider,
-  };
+  }
 }
 
-export default connect(mapStateToProps, authActions)(Component);
+export default connect(mapStateToProps)(Component)

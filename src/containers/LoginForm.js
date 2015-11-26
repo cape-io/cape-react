@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { pushState } from 'redux-router'
 
-import FieldGroup from '../components/Form/Form'
+import Login from '../components/Login'
 // import * as actions from '../../redux/modules/email'
 import { createValidator } from '../utils/formValidation'
 
@@ -14,9 +14,12 @@ const FORM_ID = 'cape/login'
 // Which part of the Redux global state does our component want to receive as props?
 function mapStateToProps(state) {
   const {
-    entities: { forms },
+    entities: { forms, users, session },
+    router: { params = {} },
   } = state
   const form = forms[FORM_ID]
+  const login = params.login || ''
+  const user = users[login]
   return {
     // A unique name for this form.
     form: form.id,
@@ -24,6 +27,12 @@ function mapStateToProps(state) {
     fields: form.fields,
     // Details needed for the form html elements.
     formInfo: form,
+    initialValues: {
+      email: login,
+    },
+    login,
+    session: session.me,
+    user,
   }
 }
 
@@ -37,7 +46,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   function handleSubmit({ email }) {
     dispatchProps.pushState(null, `/user/${email}`)
   }
+  if (stateProps.session.isAuthenticated) {
+    dispatchProps.pushState(null, 'mixer')
+  }
+  // More props that we need for reduxForm().
   const otherProps = {
+    destroyOnUnmount: false,
     onSubmit: handleSubmit,
     validate: createValidator(stateProps.formInfo),
   }
@@ -47,4 +61,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps, mergeProps),
   reduxForm()
-)(FieldGroup)
+)(Login)

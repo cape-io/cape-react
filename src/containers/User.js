@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import { loadForm, loadUser } from '../redux/actions'
+import { loadForm, loadSession, loadUser } from '../redux/actions'
 import JoinLogin from '../components/JoinLogin'
 import Loading from '../components/Loading'
 
@@ -13,8 +13,11 @@ function loadData(props) {
   const { login } = props
   // Load up information about the login form.
   props.loadForm(FORM_ID)
-  // Also load information about the user/email?
+  // Load info about the user session.
+  props.loadSession()
+  // Also load information about the user/email.
   if (login) {
+    // Load information about the login value.
     props.loadUser(login)
   }
 }
@@ -22,6 +25,11 @@ function loadData(props) {
 class UserPage extends Component {
   componentWillMount() {
     loadData(this.props)
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.login !== this.props.login) {
+      loadData(nextProps)
+    }
   }
   render() {
     const { form, login, user, ...rest } = this.props
@@ -64,15 +72,8 @@ function mapStateToProps(state) {
 // This gets merged into props too.
 const mapDispatchToProps = {
   loadForm,
+  loadSession,
   loadUser,
 }
 
-// Do not merge in most ownProps.
-// function mergeProps(stateProps, dispatchProps, { children }) {
-//   return {
-//     ...stateProps,
-//     ...dispatchProps,
-//     children,
-//   }
-// }
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage)

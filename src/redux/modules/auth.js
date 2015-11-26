@@ -89,19 +89,28 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  return globalState.auth && globalState.auth.loaded
+  const { session } = globalState.entities
+  return session.me || false
 }
 
-export function load() {
-  return {
-    types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/user/me'),
-  }
+export function isAuthenticated(globalState) {
+  const me = isLoaded(globalState)
+  return me && me.isAuthenticated
 }
-export function join({displayName, email}) {
+
+// export function load() {
+//   return dispatch => {
+//     dispatch(requestPosts(reddit))
+//     return fetch(`http://www.reddit.com/r/${reddit}.json`)
+//       .then(req => req.json())
+//       .then(json => dispatch(receivePosts(reddit, json)))
+//   }
+// }
+
+export function join({ displayName, email }) {
   // I want to trigger the redirect on success here.
   return {
-    types: [JOIN, JOIN_SUCCESS, JOIN_FAIL],
+    types: [ JOIN, JOIN_SUCCESS, JOIN_FAIL ],
     promise: (client) => client.post('/user/join', {
       data: {
         displayName,
@@ -114,7 +123,7 @@ export function join({displayName, email}) {
 export function login(name) {
   // I want to trigger the redirect on success here.
   return {
-    types: [LOGIN, LOGIN_SUCCESS, LOGIN_FAIL],
+    types: [ LOGIN, LOGIN_SUCCESS, LOGIN_FAIL ],
     promise: (client) => client.post('/user/login', {
       data: {
         name: name,
@@ -125,7 +134,7 @@ export function login(name) {
 
 export function logout() {
   return {
-    types: [LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL],
+    types: [ LOGOUT, LOGOUT_SUCCESS, LOGOUT_FAIL ],
     promise: (client) => client.get('/user/logout'),
   }
 }
