@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { updatePath } from 'redux-simple-router'
 
 import { loadForm, loadSession, loadUser } from '../redux/actions'
 import JoinLogin from '../components/JoinLogin'
@@ -30,6 +31,9 @@ class UserPage extends Component {
     if (nextProps.login !== this.props.login) {
       loadData(nextProps)
     }
+    if (nextProps.isAuthenticated) {
+      this.props.updatePath('/mixer')
+    }
   }
   render() {
     const { form, login, user, ...rest } = this.props
@@ -48,6 +52,7 @@ UserPage.propTypes = {
   loadForm: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
   login: PropTypes.string,
+  updatePath: PropTypes.func.isRequired,
 }
 
 // This is where we define computed fields (reselect module) or make other changes.
@@ -55,7 +60,7 @@ UserPage.propTypes = {
 function mapStateToProps(state, ownProps) {
   const { login } = ownProps.params
   const {
-    entities: { forms, users },
+    entities: { forms, users, session },
   } = state
   // Decide what headerMsg and leadMsg to have based on the route.
   // Is it better to have different templates or different data?
@@ -65,6 +70,7 @@ function mapStateToProps(state, ownProps) {
     form: forms[FORM_ID],
     login,
     user: users[login],
+    isAuthenticated: session.me && session.me.isAuthenticated,
   }
 }
 
@@ -74,6 +80,7 @@ const mapDispatchToProps = {
   loadForm,
   loadSession,
   loadUser,
+  updatePath,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage)
