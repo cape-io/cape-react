@@ -18,6 +18,7 @@ function getNextPageUrl(response) {
 }
 
 const APIS = {
+  api: '/api/',
   cape: 'http://v5.api.cape.io/api/',
   github: 'https://api.github.com/',
 }
@@ -28,24 +29,26 @@ function callApi({ endpoint, schema, api }) {
   const apiRoot = APIS[api] || ''
   const fullUrl = apiRoot + endpoint
 
-  return fetch(fullUrl)
-    .then( response =>
-      response.json()
-      .then( json => ({ json, response }))
+  return fetch(fullUrl, {
+    credentials: 'same-origin',
+  })
+  .then( response =>
+    response.json()
+    .then( json => ({ json, response }))
+  )
+  .then(({ json, response }) => {
+    if (!response.ok) {
+      return Promise.reject(json)
+    }
+    // Make sure the response is in camelCase.
+    const camelizedJson = camelizeKeys(json)
+    const nextPageUrl = getNextPageUrl(response) || undefined
+    // console.log(camelizedJson)
+    return Object.assign({},
+      normalize(camelizedJson, schema),
+      { nextPageUrl }
     )
-    .then(({ json, response }) => {
-      if (!response.ok) {
-        return Promise.reject(json)
-      }
-      // Make sure the response is in camelCase.
-      const camelizedJson = camelizeKeys(json)
-      const nextPageUrl = getNextPageUrl(response) || undefined
-      // console.log(camelizedJson)
-      return Object.assign({},
-        normalize(camelizedJson, schema),
-        { nextPageUrl }
-      )
-    })
+  })
 }
 
 // We use this Normalizr schemas to transform API responses from a nested form
@@ -57,27 +60,20 @@ function callApi({ endpoint, schema, api }) {
 // Read more about Normalizr: https://github.com/gaearon/normalizr
 
 const userSchema = new Schema('users', {
-  idAttribute: 'login',
+  idAttribute: 'value',
 })
-
-const repoSchema = new Schema('repos', {
-  idAttribute: 'fullName',
+const sessionSchema = new Schema('session', {
+  idAttribute: () => 'me',
 })
-
 const formSchema = new Schema('forms')
-
-repoSchema.define({
-  owner: userSchema,
-})
 
 // Schemas for Github API responses.
 export const Schemas = {
   USER: userSchema,
   USER_ARRAY: arrayOf(userSchema),
-  REPO: repoSchema,
-  REPO_ARRAY: arrayOf(repoSchema),
   FORM: formSchema,
   FORM_ARRAY: arrayOf(formSchema),
+  SESSION: sessionSchema,
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.

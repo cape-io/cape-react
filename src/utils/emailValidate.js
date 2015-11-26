@@ -1,6 +1,7 @@
 import includes from 'lodash/collection/includes'
 import { validate } from 'email-validator'
 
+// Sync result of email validation.
 export default function emailValidate(value) {
   function makeStatus(status, errorMsg, hasErrors = true) {
     return {

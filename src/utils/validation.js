@@ -1,11 +1,15 @@
 import isEmpty from 'lodash/lang/isEmpty'
+import emailValidate from './emailValidate'
 
 // Functions should return error message string.
 
 export function isEmail(value) {
-  // Let's not start a debate on email regex. This is just for an example app!
-  if (!isEmpty(value) && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-    return 'Invalid email address'
+  if (!value) {
+    return undefined
+  }
+  const { errorMsg, hasErrors } = emailValidate(value)
+  if (hasErrors) {
+    return errorMsg
   }
 }
 

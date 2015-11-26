@@ -10,19 +10,19 @@ function fetchUser(login) {
   return {
     [CALL_API]: {
       types: [ USER_REQUEST, USER_SUCCESS, USER_FAILURE ],
-      api: 'github',
-      endpoint: `users/${login}`,
+      api: 'cape',
+      endpoint: `user/email/${login}`,
       schema: Schemas.USER,
     },
   }
 }
 
-// Fetches a single user from Github API unless it is cached.
+// Fetches a single login user by email from CAPE.
 // Relies on Redux Thunk middleware.
-export function loadUser(login, requiredFields = []) {
+export function loadUser(login) {
   return (dispatch, getState) => {
     const user = getState().entities.users[login]
-    if (user && requiredFields.every(key => user.hasOwnProperty(key))) {
+    if (user) {
       return null
     }
 
@@ -162,6 +162,34 @@ export function loadForm(formId) {
     return dispatch(fetchForm(formId))
   }
 }
+
+export const SESS_REQUEST = 'SESS_REQUEST'
+export const SESS_SUCCESS = 'SESS_SUCCESS'
+export const SESS_FAILURE = 'SESS_FAILURE'
+
+// Fetches a single user from Github API.
+// Relies on the custom API middleware defined in ../middleware/api.js.
+function fetchSession() {
+  return {
+    [CALL_API]: {
+      types: [ SESS_REQUEST, SESS_SUCCESS, SESS_FAILURE ],
+      api: 'api',
+      endpoint: 'user/me',
+      schema: Schemas.SESSION,
+    },
+  }
+}
+
+export function loadSession() {
+  return (dispatch, getState) => {
+    const session = getState().entities.session || {}
+    // if (session) {
+    //   return null
+    // }
+    return dispatch(fetchSession(session))
+  }
+}
+
 
 // Resets the currently visible error message.
 export function resetErrorMessage() {
