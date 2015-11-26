@@ -1,25 +1,24 @@
-import React, { PropTypes, Component } from 'react';
-import { connect } from 'react-redux';
-import find from 'lodash.find';
-import pluck from 'lodash.pluck';
-import DocumentMeta from 'react-document-meta';
-import { connectReduxForm } from 'redux-form';
-import validate from '../../utils/formValidation';
-import Form from '../../components/Form/Form';
-import { updateMe, load as loadFormValues, formInfo } from '../../redux/modules/mixer';
+import React, { PropTypes, Component } from 'react'
+import { connect } from 'react-redux'
+import find from 'lodash/collection/find'
+import pluck from 'lodash/collection/pluck'
+import { connectReduxForm } from 'redux-form'
+import validate from '../../utils/formValidation'
+import Form from '../../components/Form/Form'
+import { updateMe, load as loadFormValues, formInfo } from '../../redux/modules/mixer'
 
 // Redux connections.
 
-function mapStateToProps(state, {params: {groupId, typeId}}) {
-  const { db: { contentTypes }, mixer } = state;
-  const {fields, ...rest} = find(contentTypes, {groupId, typeId});
-  // console.log(id);
-  // state.db.contentTypes.find();
+function mapStateToProps(state, { params: { groupId, typeId } }) {
+  const { db: { contentTypes }, mixer } = state
+  const { fields, ...rest } = find(contentTypes, { groupId, typeId })
+  // console.log(id)
+  // state.db.contentTypes.find()
   return {
     ...rest,
     formFields: fields,
     initialValues: mixer[groupId] && mixer[groupId][typeId],
-  };
+  }
 }
 
 // I'd really like to make this nicer. I hate the DocumentMeta thing.
@@ -37,11 +36,11 @@ class MixerForm extends Component {
   // This static method is called on the component before it is mounted.
   // Or so I'm told.
   static fetchDataDeferred(getState, dispatch) {
-    const state = getState();
+    const state = getState()
     // Check to see if we have data for this form already.
-    const { loaded, ...info } = formInfo(state);
+    const { loaded, ...info } = formInfo(state)
     if (!loaded) {
-      return dispatch(loadFormValues(info));
+      return dispatch(loadFormValues(info))
     }
   }
   render() {
@@ -50,22 +49,21 @@ class MixerForm extends Component {
       typeId, title, initialValues,
       onSubmit,
       ...rest,
-      } = this.props;
-    const id = groupId + '/' + typeId;
+      } = this.props
+    const id = groupId + '/' + typeId
     const formOptions = {
       form: id,
       fields: pluck(formFields, 'id'),
       validate: validate(formFields),
-    };
-    function handleSubmit(data) {
-      console.log({id, ...data});
-      onSubmit(groupId, typeId, data);
     }
-    const FormEl = connectReduxForm(formOptions)(Form);
+    function handleSubmit(data) {
+      console.log({ id, ...data })
+      onSubmit(groupId, typeId, data)
+    }
+    const FormEl = connectReduxForm(formOptions)(Form)
     // There should be a wrapper component and then the FormEl should be the child.
     return (
       <div className="container">
-        <DocumentMeta title={title} />
         <h1>{ title }</h1>
         <p className="lead">{ description }</p>
         <FormEl
@@ -75,9 +73,9 @@ class MixerForm extends Component {
           {...rest}
         />
       </div>
-    );
+    )
   }
 }
 
-// Component.props = ;
-export default connect(mapStateToProps, {onSubmit: updateMe})(MixerForm);
+// Component.props =
+export default connect(mapStateToProps, { onSubmit: updateMe })(MixerForm)
