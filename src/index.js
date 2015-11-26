@@ -1,7 +1,19 @@
 import React from 'react'
 import { render } from 'react-dom'
-// Describe what babel polyfill does.
+// Add the latest es2016+ stuff that we love.
 import 'babel-polyfill'
+// Simple bindings to keep react-router and redux in sync.
+import { syncReduxAndRouter } from 'redux-simple-router'
+// Easily manage session history.
+import { createHistory } from 'history'
+// Enhance your history object with a scroll behavior.
+// https://github.com/rackt/scroll-behavior
+// Attempts to imitate native browser scroll behavior.
+import useScroll from 'scroll-behavior/lib/useStandardScroll'
+// Init our history object for use by router.
+const history = useScroll(createHistory)()
+// Save the current URL string to redux state and keep it updated.
+syncReduxAndRouter(history, store)
 
 // Root React component.
 import Root from './containers/Root'
@@ -14,5 +26,6 @@ const store = configureStore(initialState)
 
 // Define our destination where we insert our root react component.
 const destEl = document.getElementById('root')
-// The root component only needs the Redux store as a prop.
-render(<Root store={store} />, destEl)
+
+// The root component needs the Redux `store` and router history as props.
+render(<Root store={store} history={history} />, destEl)

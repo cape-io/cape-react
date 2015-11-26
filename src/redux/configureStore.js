@@ -14,15 +14,6 @@ import rootReducer from './reducer'
 // The redux state sidebar thing store enhancer.
 import DevTools from '../containers/DevTools'
 
-// Redux Router stuff.
-import { reduxReactRouter } from 'redux-router'
-import createHistory from 'history/lib/createBrowserHistory'
-// Jump to top of page when switching routes.
-import useScroll from 'scroll-behavior/lib/useStandardScroll'
-const scrollablehistory = useScroll(createHistory)
-// Our custom routes.
-import routes from '../routes'
-
 // Define the middeware we want to apply to the store.
 const middleware = [
   api,
@@ -31,7 +22,6 @@ const middleware = [
 
 const finalCreateStore = compose(
   applyMiddleware(...middleware),
-  reduxReactRouter({ routes, createHistory: scrollablehistory }),
   // Logger must be last middleware in chain(#20).
   applyMiddleware(createLogger()),
   DevTools.instrument()
@@ -49,6 +39,5 @@ export default function configureStore(initialState) {
       store.replaceReducer(nextRootReducer)
     })
   }
-
   return store
 }
