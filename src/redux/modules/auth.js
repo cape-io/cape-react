@@ -95,7 +95,7 @@ export function isLoaded(globalState) {
 
 export function isAuthenticated(globalState) {
   const me = isLoaded(globalState)
-  return me && me.isAuthenticated
+  return me && me.isAuthenticated && me.user && me.user.userId
 }
 
 // export function load() {

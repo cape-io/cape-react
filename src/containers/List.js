@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 export default class List extends Component {
 
   static propTypes = {
-    routes: PropTypes.object,
+    routes: PropTypes.array,
   }
 
   render() {
@@ -13,7 +13,7 @@ export default class List extends Component {
       <div>
         <h1>Route Index</h1>
         <ul>
-          { pages.map( route => (
+          { pages.map( route => ( route.path &&
             <li key={route.path}>
               <Link to={'/' + route.path}>{route.path}</Link>
             </li>

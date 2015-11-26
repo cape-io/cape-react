@@ -169,7 +169,7 @@ export const SESS_FAILURE = 'SESS_FAILURE'
 
 // Fetches a single user from Github API.
 // Relies on the custom API middleware defined in ../middleware/api.js.
-function fetchSession() {
+export function fetchSession() {
   return {
     [CALL_API]: {
       types: [ SESS_REQUEST, SESS_SUCCESS, SESS_FAILURE ],

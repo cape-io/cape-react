@@ -6,9 +6,9 @@ function contentTypeInfo({ groupId, typeId, title }) {
   return { groupId, typeId, title }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ entities }) {
   return {
-    contentTypes: state.db.contentTypes.map(contentTypeInfo),
+    contentTypes: [],
   }
 }
 

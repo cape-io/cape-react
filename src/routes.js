@@ -1,7 +1,7 @@
 import React from 'react'
 import { IndexRoute, Route } from 'react-router'
 import { isAuthenticated, isLoaded as isAuthLoaded } from './redux/modules/auth'
-import { loadSession } from './redux/actions'
+import { fetchSession } from './redux/actions'
 
 import {
     App,
@@ -17,21 +17,23 @@ import {
  */
 export default function createRoutes(store) {
   function requireLogin({ location }, replaceState, cb) {
-    console.log('requireLogin')
     function checkAuth() {
-      console.log('checkAuth!')
+      console.log('checkAuth')
       if (!isAuthenticated(store.getState())) {
         // oops, not logged in, so can't be here!
+        console.log('redirect')
         replaceState(null, '/user', { destination: location.pathname })
       }
       cb()
     }
 
-    if (!isAuthLoaded(store.getState())) {
+    if (!isAuthLoaded(store.getState()) && location.action === 'POP') {
       // Perform an async action and do something on the result.
-      store.dispatch(loadSession()).then(checkAuth)
+      console.log('load sess info', location)
+      store.dispatch(fetchSession()).then(checkAuth)
     } else {
       checkAuth()
+      cb()
     }
   }
 
