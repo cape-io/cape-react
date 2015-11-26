@@ -1,7 +1,7 @@
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { pushState } from 'redux-router'
+import { updatePath } from 'redux-simple-router'
 
 import Login from '../components/Login'
 // import * as actions from '../../redux/modules/email'
@@ -12,13 +12,12 @@ const FORM_ID = 'cape/login'
 
 // This is where we define computed fields (reselect module) or make other changes.
 // Which part of the Redux global state does our component want to receive as props?
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  const { login } = ownProps.params || ''
   const {
     entities: { forms, users, session },
-    router: { params = {} },
   } = state
   const form = forms[FORM_ID]
-  const login = params.login || ''
   const user = users[login]
   return {
     // A unique name for this form.
@@ -39,16 +38,16 @@ function mapStateToProps(state) {
 // Which action creators does it want to receive by props?
 // This gets merged into props too.
 const mapDispatchToProps = {
-  pushState,
+  updatePath,
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
   function handleSubmit({ email }) {
-    dispatchProps.pushState(null, `/user/${email}`)
+    dispatchProps.updatePath(`/user/${email}`)
   }
-  if (stateProps.session.isAuthenticated) {
-    dispatchProps.pushState(null, 'mixer')
-  }
+  // if (stateProps.session.isAuthenticated) {
+  //   dispatchProps.updatePath('mixer')
+  // }
   // More props that we need for reduxForm().
   const otherProps = {
     destroyOnUnmount: false,

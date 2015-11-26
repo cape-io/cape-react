@@ -17,6 +17,7 @@ import {
  */
 export default function createRoutes(store) {
   function requireLogin({ location }, replaceState, cb) {
+    console.log('requireLogin')
     function checkAuth() {
       console.log('checkAuth!')
       if (!isAuthenticated(store.getState())) {

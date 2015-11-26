@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { pushState } from 'redux-router'
+import { updatePath } from 'redux-simple-router'
 import { resetErrorMessage } from '../redux/actions'
 
 class App extends Component {
@@ -47,7 +47,7 @@ App.propTypes = {
   // Injected by React Redux
   errorMessage: PropTypes.string,
   resetErrorMessage: PropTypes.func.isRequired,
-  pushState: PropTypes.func.isRequired,
+  updatePath: PropTypes.func.isRequired,
   // Injected by React Router
   children: PropTypes.node,
 }
@@ -60,5 +60,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   resetErrorMessage,
-  pushState,
+  updatePath,
 })(App)

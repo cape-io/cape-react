@@ -1,6 +1,7 @@
 import * as ActionTypes from './actions'
 import merge from 'lodash/object/merge'
-import { routerStateReducer as router } from 'redux-router'
+// Handle saving url to state.
+import { routeReducer } from 'redux-simple-router'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 
@@ -13,6 +14,7 @@ const defaultEntityState = {
   forms: {},
   repos: {},
   users: {},
+  session: {},
 }
 function entities(state = defaultEntityState, action) {
   if (action.response && action.response.entities) {
@@ -57,10 +59,11 @@ const pagination = combineReducers({
 const rootReducer = combineReducers({
   db,
   entities,
+  errorMessage,
   form: formReducer,
   pagination,
-  errorMessage,
-  router,
+  // Special place to save url. { changeId, path }
+  routing: routeReducer,
 })
 
 export default rootReducer

@@ -12,17 +12,18 @@ import { createHistory } from 'history'
 import useScroll from 'scroll-behavior/lib/useStandardScroll'
 // Init our history object for use by router.
 const history = useScroll(createHistory)()
+
+// Define our inital state object. This could be a fetch() to an API endpoint.
+const initialState = window.__data || {}
+// Configure and create our Redux store.
+const store = configureStore(initialState)
+
 // Save the current URL string to redux state and keep it updated.
 syncReduxAndRouter(history, store)
 
 // Root React component.
 import Root from './containers/Root'
 import configureStore from './redux/configureStore'
-
-// Define our inital state object. This could be a fetch() to an API endpoint.
-const initialState = window.__data || {}
-// Configure and create our Redux store.
-const store = configureStore(initialState)
 
 // Define our destination where we insert our root react component.
 const destEl = document.getElementById('root')

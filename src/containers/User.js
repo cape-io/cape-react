@@ -52,8 +52,8 @@ UserPage.propTypes = {
 
 // This is where we define computed fields (reselect module) or make other changes.
 // Which part of the Redux global state does our component want to receive as props?
-function mapStateToProps(state) {
-  const { login } = state.router.params
+function mapStateToProps(state, ownProps) {
+  const { login } = ownProps.params
   const {
     entities: { forms, users },
   } = state
