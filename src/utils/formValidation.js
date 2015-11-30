@@ -1,10 +1,13 @@
-import mapValues from 'lodash/object/mapValues'
+// import mapValues from 'lodash/object/mapValues'
 import forEach from 'lodash/collection/forEach'
+import get from 'lodash/object/get'
+import set from 'lodash/object/set'
 import isArray from 'lodash/lang/isArray'
 import isString from 'lodash/lang/isString'
 // import memoize from 'lodash/function/memoize'
 
 import * as validationFuncs from './validation'
+import { getField } from './forms'
 
 const validators = validationFuncs
 
@@ -48,14 +51,23 @@ function fieldValidation(value, validators) {
 }
 
 // Take the field info object and create a validation function.
-export function createValidator({ field }) {
+export function createValidator({ field, fields }) {
   // Create a function that accepts the form data object.
   return (data = {}) => {
+    const fieldErrors = {}
     // Loop through every field in the form.
     // Returns an object of errors.
-    return mapValues(field, (fieldInfo, fieldId) => (
+    forEach(fields, (fieldId) => {
+      const fieldInfo = getField(field, fieldId)
+      const { validators } = fieldInfo
+      const value = get(data, fieldId)
       // Validate the field value.
-      fieldValidation(data[fieldId], fieldInfo.validators)
-    ))
+      const validationErr = fieldValidation(value, validators)
+      if (validationErr) {
+        set(fieldErrors, fieldId, validationErr)
+      }
+    })
+    console.log(fieldErrors)
+    return fieldErrors
   }
 }

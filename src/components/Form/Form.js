@@ -4,19 +4,7 @@ import get from 'lodash/object/get'
 import Input from './Input'
 import ReduxFormProps from './ReduxFormProps'
 import SubmitButtons from './SubmitButtons'
-
-function getField(fieldsInfoObj, fieldId) {
-  const id = fieldId.split('.')
-  if (id.length === 1) {
-    return fieldsInfoObj[id[0]]
-  }
-  else if (id.length === 2) {
-    return fieldsInfoObj[id[0]].field[id[1]]
-  }
-  else {
-    throw new Error('invalid fieldId')
-  }
-}
+import { getField } from '../../utils/forms'
 
 function Form(props) {
   const {
