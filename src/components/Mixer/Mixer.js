@@ -2,15 +2,18 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
 // Display a list of content types the user can edit.
-function Mixer({contentTypes}) {
+function Mixer({ contentTypes }) {
   return (
     <div className="container">
       <h1>Mixer</h1>
       <ul>
       {
-        contentTypes.map( ({ groupId, typeId, title }) => (
+        contentTypes.map( ({ groupId, typeId, entityId, title }) => (
           <li key={groupId + '-' + typeId}>
-            <Link to={`/mixer/${groupId}/${typeId}`}>{ title }</Link>
+            <Link
+              to={`mixer/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
+              { title }
+            </Link>
           </li>
         ))
       }

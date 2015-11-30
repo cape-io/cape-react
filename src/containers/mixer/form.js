@@ -1,81 +1,104 @@
 import React, { PropTypes, Component } from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
-import find from 'lodash/collection/find'
-import pluck from 'lodash/collection/pluck'
-import { connectReduxForm } from 'redux-form'
-import validate from '../../utils/formValidation'
+import { reduxForm } from 'redux-form'
+import { updatePath } from 'redux-simple-router'
+import { createValidator } from '../../utils/formValidation'
+import { loadForm } from '../../redux/actions'
+import Loading from '../../components/Loading'
 import Form from '../../components/Form/Form'
-import { updateMe, load as loadFormValues, formInfo } from '../../redux/modules/mixer'
+
+// import { updateMe, load as loadFormValues, formInfo } from '../../redux/modules/mixer'
 
 // Redux connections.
 
-function mapStateToProps(state, { params: { groupId, typeId } }) {
-  const { db: { contentTypes }, mixer } = state
-  const { fields, ...rest } = find(contentTypes, { groupId, typeId })
+function mapStateToProps(state, { params }) {
+  const {
+    entities: { forms },
+  } = state
+  const { groupId, typeId, entityId } = params
+  const contentType = `${groupId}/${typeId}`
+  const defaultForm = {
+    fields: [],
+    id: contentType,
+    loading: true,
+  }
+  const form = forms[contentType] || defaultForm
+  // Grab the values for the form.
+  const entities = state.entities[contentType] || {}
+  const initialValues = entities[entityId] || {}
   // console.log(id)
   // state.db.contentTypes.find()
   return {
-    ...rest,
-    formFields: fields,
-    initialValues: mixer[groupId] && mixer[groupId][typeId],
+    entity: params,
+    fields: form.fields,
+    form: form.id,
+    formInfo: form,
+    initialValues,
   }
 }
+// Which action creators does it want to receive by props?
+// This gets merged into props too.
+const mapDispatchToProps = {
+  loadForm,
+  updatePath,
+}
 
-// I'd really like to make this nicer. I hate the DocumentMeta thing.
-// For now it is easier.
+function handleSubmit(data) {
+  console.log(data)
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
+  // if (stateProps.session.isAuthenticated) {
+  //   dispatchProps.updatePath('mixer')
+  // }
+  // More props that we need for reduxForm().
+  const otherProps = {
+    destroyOnUnmount: false,
+    onSubmit: handleSubmit,
+    validate: createValidator(stateProps.formInfo),
+  }
+  return Object.assign(otherProps, ownProps, stateProps, dispatchProps)
+}
+
+
+function loadData(props) {
+  const { formInfo: { id } } = props
+  // Load up information about the login form.
+  props.loadForm(id)
+}
+
 class MixerForm extends Component {
   static propTypes = {
-    groupId: PropTypes.string.isRequired,
-    typeId: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    formFields: PropTypes.array.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    initialValues: PropTypes.object,
+    entity: PropTypes.object.isRequired,
+    formInfo: PropTypes.object.isRequired,
   }
-  // This static method is called on the component before it is mounted.
-  // Or so I'm told.
-  static fetchDataDeferred(getState, dispatch) {
-    const state = getState()
-    // Check to see if we have data for this form already.
-    const { loaded, ...info } = formInfo(state)
-    if (!loaded) {
-      return dispatch(loadFormValues(info))
+
+  componentWillMount() {
+    loadData(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.formInfo.id !== this.props.formInfo.id) {
+      loadData(nextProps)
     }
   }
+
   render() {
-    const {
-      description, formFields, groupId,
-      typeId, title, initialValues,
-      onSubmit,
-      ...rest,
-      } = this.props
-    const id = groupId + '/' + typeId
-    const formOptions = {
-      form: id,
-      fields: pluck(formFields, 'id'),
-      validate: validate(formFields),
+    const { formInfo } = this.props
+    if (formInfo.loading) {
+      const msgTxt = `Loading the ${formInfo.id} form...`
+      return <Loading message={msgTxt} />
     }
-    function handleSubmit(data) {
-      console.log({ id, ...data })
-      onSubmit(groupId, typeId, data)
-    }
-    const FormEl = connectReduxForm(formOptions)(Form)
     // There should be a wrapper component and then the FormEl should be the child.
     return (
-      <div className="container">
-        <h1>{ title }</h1>
-        <p className="lead">{ description }</p>
-        <FormEl
-          formFields={formFields}
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          {...rest}
-        />
-      </div>
+      <Form {...this.props} />
     )
   }
 }
 
 // Component.props =
-export default connect(mapStateToProps, { onSubmit: updateMe })(MixerForm)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+  reduxForm()
+)(MixerForm)

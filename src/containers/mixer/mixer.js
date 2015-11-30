@@ -1,15 +1,18 @@
 import { connect } from 'react-redux'
 import Component from '../../components/Mixer/Mixer'
+import { loadForm } from '../../redux/actions'
 
 // Redux connections.
-function contentTypeInfo({ groupId, typeId, title }) {
-  return { groupId, typeId, title }
-}
-
 function mapStateToProps({ entities }) {
+  const { session } = entities
+  const contentTypes = session.me.user.contentTypes
   return {
-    contentTypes: [],
+    contentTypes,
   }
 }
 
-export default connect(mapStateToProps)(Component)
+const mapDispatchToProps = {
+  loadForm,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Component)

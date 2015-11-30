@@ -1,8 +1,22 @@
 import React, { PropTypes } from 'react'
+import get from 'lodash/object/get'
 
 import Input from './Input'
 import ReduxFormProps from './ReduxFormProps'
 import SubmitButtons from './SubmitButtons'
+
+function getField(fieldsInfoObj, fieldId) {
+  const id = fieldId.split('.')
+  if (id.length === 1) {
+    return fieldsInfoObj[id[0]]
+  }
+  else if (id.length === 2) {
+    return fieldsInfoObj[id[0]].field[id[1]]
+  }
+  else {
+    throw new Error('invalid fieldId')
+  }
+}
 
 function Form(props) {
   const {
@@ -25,12 +39,12 @@ function Form(props) {
       <form className="form-horizontal" onSubmit={handleSubmit}>
         {
           formInfo.fields.map( fieldId => {
-            const { id, hasAsyncValidate, ...other } = formInfo.field[fieldId]
+            const { hasAsyncValidate, ...other } = getField(formInfo.field, fieldId)
             return (
               <Input
                 key={fieldId}
                 asyncValidating={hasAsyncValidate && asyncValidating}
-                field={fields[fieldId]}
+                field={get(fields, fieldId)}
                 styles={styles}
                 showFlags={showFlags}
                 {...other}
