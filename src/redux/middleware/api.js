@@ -58,8 +58,10 @@ function callApi({ endpoint, schema, api, method, body, entityInfo }) {
     } else {
       const { id, entityId } = entityInfo
       return {
-        [id]: {
-          [entityId]: json,
+        entities: {
+          [id]: {
+            [entityId]: json,
+          },
         },
       }
     }

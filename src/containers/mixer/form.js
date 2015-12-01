@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { updatePath } from 'redux-simple-router'
 import { createValidator } from '../../utils/formValidation'
-import { loadForm, saveContent } from '../../redux/actions'
+import { loadContent, loadForm, saveContent } from '../../redux/actions'
 import Loading from '../../components/Loading'
 import Form from '../../components/Form/Form'
 
@@ -27,7 +27,7 @@ function mapStateToProps(state, { params }) {
   form.entityId = entityId
   // Grab the values for the form.
   const entities = state.entities[contentType] || {}
-  const initialValues = entities[entityId] || {}
+  const initialValues = entities[entityId] || { loading: true }
   // console.log(id)
   // state.db.contentTypes.find()
   return {
@@ -41,6 +41,7 @@ function mapStateToProps(state, { params }) {
 // Which action creators does it want to receive by props?
 // This gets merged into props too.
 const mapDispatchToProps = {
+  loadContent,
   loadForm,
   saveContent,
   updatePath,
@@ -67,15 +68,17 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
 
 
 function loadData(props) {
-  const { formInfo: { id } } = props
+  const { formInfo } = props
   // Load up information about the login form.
-  props.loadForm(id)
+  props.loadForm(formInfo.id)
+  props.loadContent(formInfo)
 }
 
 class MixerForm extends Component {
   static propTypes = {
     entity: PropTypes.object.isRequired,
     formInfo: PropTypes.object.isRequired,
+    values: PropTypes.object.isRequired,
   }
 
   componentWillMount() {
@@ -89,9 +92,13 @@ class MixerForm extends Component {
   }
 
   render() {
-    const { formInfo } = this.props
+    const { formInfo, values } = this.props
     if (formInfo.loading) {
       const msgTxt = `Loading the ${formInfo.id} form...`
+      return <Loading message={msgTxt} />
+    }
+    if (values.loading) {
+      const msgTxt = `Loading previously saved ${formInfo.id} data...`
       return <Loading message={msgTxt} />
     }
     // There should be a wrapper component and then the FormEl should be the child.
