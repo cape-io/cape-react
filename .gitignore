@@ -4,3 +4,4 @@ dist
 npm-debug.log
 webpack-stats.json
 webpack-assets.json
+src/components/Login-old.js
