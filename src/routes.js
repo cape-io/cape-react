@@ -1,11 +1,10 @@
 import React from 'react'
-import { IndexRoute, Route } from 'react-router'
+import { IndexRoute, Route, IndexRedirect } from 'react-router'
 import { isAuthenticated, isLoaded as isAuthLoaded } from './redux/modules/auth'
 import { fetchSession } from './redux/actions'
 
 import {
     App,
-    List,
     LoginForm,
     Mixer,
     MixerForm,
@@ -39,7 +38,7 @@ export default function createRoutes(store) {
 
   return (
     <Route path="/" component={App}>
-      <IndexRoute component={List} />
+      <IndexRedirect to="/user" />
       <Route path="user" component={User}>
         <IndexRoute component={LoginForm} />
         <Route
