@@ -12,7 +12,7 @@ function fetchUser(login) {
   return {
     [CALL_API]: {
       types: [ USER_REQUEST, USER_SUCCESS, USER_FAILURE ],
-      api: 'cape',
+      api: 'api',
       endpoint: `user/email/${login}`,
       schema: Schemas.USER,
     },
