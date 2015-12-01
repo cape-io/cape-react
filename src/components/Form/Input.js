@@ -6,7 +6,7 @@ import InputSelect from './InputSelect'
 import InputDate from './InputDate'
 import InputTextarea from './InputTextarea'
 
-function Input({ field, label, type, showFlags, option, options, required, asyncValidating, styles, ...other }) {
+function Input({ field, label, type, showFlags, showErrors, option, options, required, asyncValidating, styles, ...other }) {
   const { active, dirty, error, name, touched, visited, ...inputProps } = field
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
@@ -44,7 +44,7 @@ function Input({ field, label, type, showFlags, option, options, required, async
   }
 
   return (
-    <div className={'form-group' + (error ? ' has-error' : '')}>
+    <div className={'form-group' + (showErrors && error ? ' has-error' : '')}>
       <label htmlFor={name} className="col-sm-2">
         { label }
         { required && '*' }
@@ -52,7 +52,7 @@ function Input({ field, label, type, showFlags, option, options, required, async
       <div className={'col-sm-6 ' + inputGroupStyle}>
         { asyncValidating && <i className={'fa fa-cog fa-spin ' + styles.cog}/> }
         { InputEl }
-        { error && <div className="text-danger">{error}</div> }
+        { showErrors && error && <div className="text-danger">{error}</div> }
         { showFlags && type !== 'datetime' && <InputFlags {...{ dirty, active, visited, touched, styles }} /> }
       </div>
     </div>
@@ -63,10 +63,12 @@ Input.propTypes = {
   field: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
   asyncValidating: PropTypes.bool.isRequired,
+  showErrors: PropTypes.bool.isRequired,
   styles: PropTypes.object.isRequired,
 }
 Input.defaultProps = {
   asyncValidating: false,
+  showErrors: false,
   type: 'text',
 }
 export default Input

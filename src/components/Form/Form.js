@@ -28,14 +28,16 @@ function Form(props) {
         {
           formInfo.fields.map( fieldId => {
             const { hasAsyncValidate, ...other } = getField(formInfo.field, fieldId)
+            const field = get(fields, fieldId)
             return (
               <Input
                 key={fieldId}
                 asyncValidating={hasAsyncValidate && asyncValidating}
-                field={get(fields, fieldId)}
+                field={field}
                 styles={styles}
                 showFlags={showFlags}
                 {...other}
+                showErrors={dirty && (field.value || !active)}
               />
             )
           })
@@ -48,7 +50,9 @@ function Form(props) {
         />
       </form>
 
-      <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
+      { showFlags &&
+        <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
+      }
     </div>
   )
 }
