@@ -67,7 +67,7 @@ export function createValidator({ field, fields }) {
         set(fieldErrors, fieldId, validationErr)
       }
     })
-    console.log(fieldErrors)
+    // console.log(fieldErrors)
     return fieldErrors
   }
 }

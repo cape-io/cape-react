@@ -6,7 +6,7 @@ import InputSelect from './InputSelect'
 import InputDate from './InputDate'
 import InputTextarea from './InputTextarea'
 
-function Input({ field, label, type, showFlags, options, required, asyncValidating, styles, ...other }) {
+function Input({ field, label, type, showFlags, option, options, required, asyncValidating, styles, ...other }) {
   const { active, dirty, error, name, touched, visited, ...inputProps } = field
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
@@ -26,7 +26,7 @@ function Input({ field, label, type, showFlags, options, required, asyncValidati
         />)
       break
     case 'select':
-      InputEl = <InputSelect options={options} {...field} />
+      InputEl = <InputSelect option={option} options={options} {...field} />
       break
     case 'datetime':
       InputEl = <InputDate field={field} {...other} />

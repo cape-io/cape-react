@@ -144,7 +144,7 @@ function fetchForm(formId) {
   return {
     [CALL_API]: {
       types: [ FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE ],
-      api: 'cape',
+      api: 'api',
       endpoint: `content/type/${formId}`,
       schema: Schemas.FORM,
     },
