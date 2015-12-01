@@ -67,6 +67,8 @@ export function createValidator({ field, fields }) {
         set(fieldErrors, fieldId, validationErr)
       }
     })
+
+    // fieldErrors._error = 'Missing required fields.'
     // console.log(fieldErrors)
     return fieldErrors
   }

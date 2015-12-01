@@ -44,6 +44,7 @@ function Form(props) {
           {...formInfo.submit}
           handleSubmit={handleSubmit}
           resetForm={resetForm}
+          invalid={invalid}
         />
       </form>
 
