@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { updatePath } from 'redux-simple-router'
 import { createValidator } from '../../utils/formValidation'
-import { loadForm } from '../../redux/actions'
+import { loadForm, saveContent } from '../../redux/actions'
 import Loading from '../../components/Loading'
 import Form from '../../components/Form/Form'
 
@@ -24,6 +24,7 @@ function mapStateToProps(state, { params }) {
     loading: true,
   }
   const form = forms[contentType] || defaultForm
+  form.entityId = entityId
   // Grab the values for the form.
   const entities = state.entities[contentType] || {}
   const initialValues = entities[entityId] || {}
@@ -41,14 +42,17 @@ function mapStateToProps(state, { params }) {
 // This gets merged into props too.
 const mapDispatchToProps = {
   loadForm,
+  saveContent,
   updatePath,
 }
 
-function handleSubmit(data) {
-  console.log(data)
-}
-
 function mergeProps(stateProps, dispatchProps, ownProps) {
+  function handleSubmit(data) {
+    // id is the content type id.
+    const { id, entityId } = stateProps.formInfo
+    console.log(id, entityId, data)
+    dispatchProps.saveContent({ id, entityId, body: data })
+  }
   // if (stateProps.session.isAuthenticated) {
   //   dispatchProps.updatePath('mixer')
   // }

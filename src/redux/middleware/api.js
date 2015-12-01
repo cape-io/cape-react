@@ -25,12 +25,18 @@ const APIS = {
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-function callApi({ endpoint, schema, api }) {
+function callApi({ endpoint, schema, api, method, body, entityInfo }) {
   const apiRoot = APIS[api] || ''
   const fullUrl = apiRoot + endpoint
 
   return fetch(fullUrl, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': body ? 'application/json' : undefined,
+    },
     credentials: 'same-origin',
+    method: method || 'get',
+    body: body ? JSON.stringify(body) : undefined,
   })
   .then( response =>
     response.json()
@@ -40,14 +46,23 @@ function callApi({ endpoint, schema, api }) {
     if (!response.ok) {
       return Promise.reject(json)
     }
-    // Make sure the response is in camelCase.
-    const camelizedJson = camelizeKeys(json)
-    const nextPageUrl = getNextPageUrl(response) || undefined
-    // console.log(camelizedJson)
-    return Object.assign({},
-      normalize(camelizedJson, schema),
-      { nextPageUrl }
-    )
+    if (schema) {
+      // Make sure the response is in camelCase.
+      const camelizedJson = camelizeKeys(json)
+      const nextPageUrl = getNextPageUrl(response) || undefined
+      // console.log(camelizedJson)
+      return Object.assign({},
+        normalize(camelizedJson, schema),
+        { nextPageUrl }
+      )
+    } else {
+      const { id, entityId } = entityInfo
+      return {
+        [id]: {
+          [entityId]: json,
+        },
+      }
+    }
   })
 }
 
@@ -88,20 +103,19 @@ export default store => next => action => {
   }
 
   let { endpoint } = callAPI
-  const { schema, types, api } = callAPI
+  const { schema, types, api, method, body, entityInfo } = callAPI
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState())
   }
-
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.')
   }
   if (typeof api !== 'string') {
     throw new Error('Specify a string api.')
   }
-  if (!schema) {
-    throw new Error('Specify one of the exported Schemas.')
+  if (!schema && !entityInfo) {
+    throw new Error('Specify one of the exported Schemas or provide entityInfo.')
   }
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error('Expected an array of three action types.')
@@ -109,7 +123,13 @@ export default store => next => action => {
   if (!types.every(type => typeof type === 'string')) {
     throw new Error('Expected action types to be strings.')
   }
-
+  if (method && typeof method !== 'string') {
+    throw new Error('Specify a string method. (get/post/put)')
+  }
+  if (!!body && typeof body !== 'object') {
+    throw new Error('Body must be an object.')
+  }
+  // What's this thing do?
   function actionWith(data) {
     const finalAction = Object.assign({}, action, data)
     delete finalAction[CALL_API]
@@ -119,7 +139,7 @@ export default store => next => action => {
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
 
-  return callApi({ endpoint, schema, api })
+  return callApi({ endpoint, schema, api, method, body, entityInfo })
   .then(
     response => next(actionWith({
       response,

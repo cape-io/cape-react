@@ -63,7 +63,7 @@ export function updateMe(groupId, typeId, data) {
     function handleResponse(resp) {
       return dispatch(handleUpdateMe({record, groupId, typeId, resp}));
     }
-    fetch(`/content/me/${groupId}/${typeId}`, options)
+    fetch(`/content/${groupId}/${typeId}`, options)
       .then((response) => response.json())
       .then(handleResponse)
       .catch(handleResponse);
@@ -79,7 +79,7 @@ export function formInfo({auth: {user}, mixer, router: { params } }) {
     groupId,
     typeId,
     userId: user.name,
-  };
+  }
 }
 
 export function load({groupId, typeId, userId}) {

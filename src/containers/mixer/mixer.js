@@ -5,9 +5,10 @@ import { loadForm } from '../../redux/actions'
 // Redux connections.
 function mapStateToProps({ entities }) {
   const { session } = entities
-  const contentTypes = session.me.user.contentTypes
+  const { contentType, contentTypes } = session.me.user
+  const types = contentTypes.map( id => contentType[id] )
   return {
-    contentTypes,
+    contentTypes: types.filter( info => info.entityId ),
   }
 }
 

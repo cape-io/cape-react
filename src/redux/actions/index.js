@@ -1,5 +1,7 @@
 import { CALL_API, Schemas } from '../middleware/api'
 
+export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
+
 export const USER_REQUEST = 'USER_REQUEST'
 export const USER_SUCCESS = 'USER_SUCCESS'
 export const USER_FAILURE = 'USER_FAILURE'
@@ -132,8 +134,6 @@ export function loadStargazers(fullName, nextPage) {
   }
 }
 
-export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
-
 export const FORM_REQUEST = 'FORM_REQUEST'
 export const FORM_SUCCESS = 'FORM_SUCCESS'
 export const FORM_FAILURE = 'FORM_FAILURE'
@@ -190,6 +190,46 @@ export function loadSession() {
   }
 }
 
+export const CONTENT_SAVE = 'CONTENT_SAVE'
+export const CONTENT_SAVED = 'CONTENT_SAVED'
+export const CONTENT_SAVE_ERR = 'CONTENT_SAVE_ERR'
+
+// Fetches a single user from Github API.
+// Relies on the custom API middleware defined in ../middleware/api.js.
+export function saveContent(entityInfo) {
+  const { id, entityId, body } = entityInfo
+  const endpoint = `content/${id}/${entityId}`
+  return {
+    [CALL_API]: {
+      types: [ CONTENT_SAVE, CONTENT_SAVED, CONTENT_SAVE_ERR ],
+      api: 'api',
+      body,
+      endpoint,
+      entityInfo,
+      method: 'put',
+    },
+  }
+}
+
+export const CONTENT_REQUEST = 'CONTENT_REQUEST'
+export const CONTENT_SUCCESS = 'CONTENT_SUCCESS'
+export const CONTENT_FAILURE = 'CONTENT_FAILURE'
+
+// Fetches a single user from Github API.
+// Relies on the custom API middleware defined in ../middleware/api.js.
+export function loadContent(entityInfo) {
+  // id is the content type id.
+  const { id, entityId } = entityInfo
+  const endpoint = `content/${id}/${entityId}`
+  return {
+    [CALL_API]: {
+      types: [ CONTENT_SAVE, CONTENT_SAVED, CONTENT_SAVE_ERR ],
+      api: 'api',
+      endpoint,
+      entityInfo,
+    },
+  }
+}
 
 // Resets the currently visible error message.
 export function resetErrorMessage() {
