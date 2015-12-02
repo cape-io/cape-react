@@ -24,6 +24,7 @@ function Form(props) {
 
   return (
     <div>
+      <h2>{ formInfo.title }</h2>
       <form className="form-horizontal" onSubmit={handleSubmit}>
         {
           formInfo.fields.map( fieldId => {
