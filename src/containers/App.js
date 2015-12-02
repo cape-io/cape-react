@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updatePath } from 'redux-simple-router'
 import { loadSession, resetErrorMessage } from '../redux/actions'
+import Footer from './Footer'
 
 // This is called from within the container component class.
 function loadData(props) {
@@ -47,6 +48,7 @@ class App extends Component {
       <div className="container">
         { this.renderErrorMessage() }
         { children }
+        <Footer />
       </div>
     )
   }
