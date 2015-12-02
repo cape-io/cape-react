@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react'
 
-function Anonymous({leadMsg, handleSubmit}) {
+function Anonymous({ leadMsg, handleSubmit }) {
   return (
     <div>
       <form className="login-form" onSubmit={handleSubmit}>
@@ -10,10 +10,10 @@ function Anonymous({leadMsg, handleSubmit}) {
       </form>
       <p>{ leadMsg }</p>
     </div>
-  );
+  )
 }
 Anonymous.propTypes = {
   leadMsg: PropTypes.string.isRequired,
-};
+}
 
-export default Anonymous;
+export default Anonymous
