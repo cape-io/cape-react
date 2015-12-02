@@ -1,0 +1,11 @@
+#root {
+  margin-top: 1.5em;
+  margin-bottom: 5em;
+}
+
+.footer .feedback {
+  position: fixed;
+  right: 1em;
+  top: 1em;
+  width: 120px;
+}
