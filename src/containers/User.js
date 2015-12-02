@@ -32,6 +32,9 @@ class UserPage extends Component {
       loadData(nextProps)
     }
     if (nextProps.isAuthenticated) {
+      if (this.props.location.query && this.props.location.query.destination) {
+        return this.props.updatePath(this.props.location.query.destination)
+      }
       this.props.updatePath('/mixer')
     }
   }
@@ -51,6 +54,7 @@ UserPage.propTypes = {
   user: PropTypes.object,
   loadForm: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
+  location: PropTypes.object,
   login: PropTypes.string,
   updatePath: PropTypes.func.isRequired,
 }
