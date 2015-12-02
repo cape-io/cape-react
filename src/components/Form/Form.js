@@ -21,6 +21,7 @@ function Form(props) {
     valid,
     } = props
   const styles = {}
+  const { uploadInfo, submit } = formInfo
 
   return (
     <div>
@@ -39,12 +40,13 @@ function Form(props) {
                 showFlags={showFlags}
                 {...other}
                 showErrors={dirty && (field.value || !active)}
+                uploadInfo={uploadInfo}
               />
             )
           })
         }
         <SubmitButtons
-          {...formInfo.submit}
+          {...submit}
           handleSubmit={handleSubmit}
           resetForm={resetForm}
           invalid={invalid}

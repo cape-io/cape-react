@@ -5,8 +5,18 @@ import InputRadios from './InputRadios'
 import InputSelect from './InputSelect'
 import InputDate from './InputDate'
 import InputTextarea from './InputTextarea'
+import Photo from '../imageUpload/imageUpload'
 
-function Input({ field, label, type, showFlags, showErrors, option, options, required, asyncValidating, styles, ...other }) {
+function Input(props) {
+  const {
+    asyncValidating,
+    field, label, option, options,
+    required,
+    showFlags, showErrors,
+    styles, type,
+    uploadInfo,
+    ...other,
+    } = props
   const { active, dirty, error, name, touched, visited, ...inputProps } = field
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
@@ -33,6 +43,9 @@ function Input({ field, label, type, showFlags, showErrors, option, options, req
       break
     case 'textarea':
       InputEl = <InputTextarea {...field} {...other} />
+      break
+    case 'file':
+      InputEl = <Photo {...field} uploadInfo={uploadInfo} />
       break
     default:
       InputEl = (
