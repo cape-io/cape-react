@@ -1,12 +1,21 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updatePath } from 'redux-simple-router'
-import { resetErrorMessage } from '../redux/actions'
+import { loadSession, resetErrorMessage } from '../redux/actions'
+
+// This is called from within the container component class.
+function loadData(props) {
+  // Load info about the user session.
+  props.loadSession()
+}
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.handleDismissClick = this.handleDismissClick.bind(this)
+  }
+  componentWillMount() {
+    loadData(this.props)
   }
 
   handleDismissClick(err) {
@@ -59,6 +68,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+  loadSession,
   resetErrorMessage,
   updatePath,
 })(App)
