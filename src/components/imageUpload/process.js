@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-import 'isomorphic-fetch'
+import { callApi } from '../../utils/callApi'
 
 export function humanFileSize(bytes) {
   const units = [ 'B', 'KB', 'MB', 'GB' ]
@@ -12,6 +12,39 @@ export function humanFileSize(bytes) {
   }
 }
 
+export function updateApi(uploadInfo, metadata, fileInfo) {
+  const { container, prefix } = uploadInfo
+  const { bytes, file, type, humanSize, width, height } = fileInfo
+  const { contentType, entityId, fieldId, ...rest } = metadata
+  const fieldValue = {
+    container,
+    dimensions: {
+      width: width,
+      height: height,
+    },
+    entity: {
+      contentType,
+      entityId,
+      fieldId,
+    },
+    uploadPath: prefix + file.name,
+    name: file.name,
+    size: { ...humanSize, bytes },
+    type,
+    prefix,
+    ...rest,
+  }
+  callApi({
+    api: 'api',
+    endpoint: 'content/file',
+    method: 'post',
+    body: fieldValue,
+  }).then(
+    response => console.log(response),
+    error => console.error(error)
+  )
+  console.log('Uploaded img to cloud.', fieldValue)
+}
 
 export function processImgFile(fileInfo, validImgTypes, cb) {
   const { file, md5 } = fileInfo
@@ -85,19 +118,8 @@ export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess
     if (xhr.status !== 201) {
       return console.error('Error uploading file.', xhr.status, event)
     }
-    const { bytes, file, type, humanSize, width, height } = fileInfo
-    const fieldValue = {
-      bytes,
-      fileId: prefix + file.name,
-      size: humanSize.value + ' ' + humanSize.unit,
-      metadata: metadata,
-      dimensions: {
-        type: type,
-        width: width,
-        height: height,
-      },
-    }
-    console.log('Uploaded img to cloud.', fieldValue)
+    // @TODO This should be moved to a different function.
+    updateApi(uploadInfo, metadata, fileInfo)
 
     // fetch.post('/api/file').send({
     // }).accept('json').end(function (err, res) {
@@ -113,7 +135,7 @@ export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess
     //   }
     // })
     onProgress(101)
-    const imgSrc = '//' + cdnDomain + prefix + encodeURIComponent(file.name) + imgixQuery
+    const imgSrc = '//' + cdnDomain + prefix + encodeURIComponent(fileInfo.file.name) + imgixQuery
     const itemImg = new Image()
     itemImg.onload = function () {
       console.log('Resized img.')
@@ -134,7 +156,7 @@ export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess
   formData.append('max_file_count', maxFileCount)
   formData.append('expires', expires)
   formData.append('signature', signature)
-  formData.append('file1', file)
+  formData.append('file1', fileInfo.file)
   xhr.open('POST', url, true)
   return xhr.send(formData)
 }

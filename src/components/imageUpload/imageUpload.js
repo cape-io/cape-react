@@ -24,7 +24,7 @@ class ImageUpload extends Component {
     this.setState({ progress })
   }
   handleUploaded(imgInfo) {
-    console.log('handleUploaded', imgInfo)
+    // console.log('handleUploaded', imgInfo)
     if (imgInfo.id && imgInfo.previewUrl) {
       console.log('imgResized')
       this.props.onChange(pick(imgInfo, 'id', 'path', 'previewUrl'))

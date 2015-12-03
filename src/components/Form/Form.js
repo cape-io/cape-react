@@ -71,7 +71,7 @@ Form.propTypes = {
   resetForm: PropTypes.func.isRequired,
   invalid: PropTypes.bool.isRequired,
   pristine: PropTypes.bool.isRequired,
-  showFlags: PropTypes.bool.isRequired,
+  showFlags: PropTypes.bool,
   valid: PropTypes.bool.isRequired,
   formInfo: PropTypes.object.isRequired,
 }
