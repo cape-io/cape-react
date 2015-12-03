@@ -17,23 +17,33 @@ class ImageUpload extends Component {
     this.handleFileSelect = this.handleFileSelect.bind(this)
     this.handleFileHover = this.handleFileHover.bind(this)
     this.handleProgress = this.handleProgress.bind(this)
+    this.handleUploaded = this.handleUploaded.bind(this)
   }
 
   handleProgress(progress) {
     console.log('progress', progress)
     this.setState({ progress })
   }
-  handleUploaded(imgInfo) {
+
+  // File has been uploaded to cloud storage.
+  handleUploaded(fileInfo) {
     // console.log('handleUploaded', imgInfo)
-    if (imgInfo.id && imgInfo.previewUrl) {
-      console.log('imgResized')
-      this.props.onChange(pick(imgInfo, 'id', 'path', 'previewUrl'))
-      return this.setState({
-        fileUploading: null,
-        errorMsg: null,
-        warningMsg: null,
-      })
+    const { cdnUrl, id, md5, entity: { display } } = fileInfo
+    // What values do we save into the entity, field?
+    const fieldValue = {
+      cdnUrl,
+      id,
+      md5,
+      display,
     }
+    this.setState({
+      fileUploading: null,
+      errorMsg: null,
+      warningMsg: null,
+    })
+    this.props.onChange(fieldValue)
+    console.log('onChange', fieldValue)
+    return
   }
   // This is just to (un)set the hover class.
   handleFileHover(event) {
@@ -60,9 +70,14 @@ class ImageUpload extends Component {
     return
   }
   handleFileSelect(event) {
-    const { accept, contentType, entityId, fieldId, maxFiles, uploadInfo } = this.props
+    const {
+      accept, contentType, display,
+      entityId, fieldId, maxFiles, uploadInfo,
+    } = this.props
+
     const metadata = {
       contentType,
+      display,
       entityId,
       fieldId,
       userId: uploadInfo.userId,
@@ -93,7 +108,7 @@ class ImageUpload extends Component {
       })
   }
   render() {
-    const { accept, ...rest } = this.props
+    const { accept, ...rest, value, defaultValue } = this.props
     return (
       <Photo
         {...rest}
@@ -101,6 +116,7 @@ class ImageUpload extends Component {
         accept={accept.join(', ')}
         handleFileSelect={this.handleFileSelect}
         handleFileHover={this.handleFileHover}
+        value={value || defaultValue}
       />
     )
   }
@@ -108,11 +124,14 @@ class ImageUpload extends Component {
 ImageUpload.propTypes = {
   accept: PropTypes.array.isRequired,
   contentType: PropTypes.string.isRequired,
+  defaultValue: PropTypes.object,
+  display: PropTypes.object,
   entityId: PropTypes.string.isRequired,
   fieldId: PropTypes.string.isRequired,
   maxFiles: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   uploadInfo: PropTypes.object.isRequired,
+  value: PropTypes.object,
 }
 ImageUpload.defaultProps = {
   accept: [ 'image/jpg', 'image/jpeg' ],

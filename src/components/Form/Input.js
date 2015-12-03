@@ -11,6 +11,7 @@ function Input(props) {
   const {
     asyncValidating,
     contentType,
+    display,
     entityId,
     field, fieldId,
     label, option, options,
@@ -52,6 +53,7 @@ function Input(props) {
         <Photo
           {...field}
           contentType={contentType}
+          display={display}
           entityId={entityId}
           fieldId={fieldId}
           uploadInfo={uploadInfo}

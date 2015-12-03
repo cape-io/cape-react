@@ -8,7 +8,8 @@ function Photo(props) {
     errorMsg,
     fileHover, fileUploading,
     handleFileHover, handleFileSelect,
-    imgInfo, progress,
+    progress,
+    value,
     warningMsg,
   } = props
 
@@ -25,10 +26,10 @@ function Photo(props) {
       </div>
     )
   }
-  else if (imgInfo && imgInfo.previewUrl) {
+  else if (value && value.display && value.display.preview) {
     currentImg = (
       <div className="dz-image">
-        <img src={imgInfo.previewUrl} alt="image" />
+        <img src={value.display.preview.url} alt={value.id} />
       </div>
     )
   }

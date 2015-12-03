@@ -41,7 +41,7 @@ function Form(props) {
                 styles={styles}
                 showFlags={showFlags}
                 {...other}
-                showErrors={dirty && (field.value || !active)}
+                showErrors={dirty && (!!field.value || !active)}
                 uploadInfo={uploadInfo}
                 contentType={id}
               />
