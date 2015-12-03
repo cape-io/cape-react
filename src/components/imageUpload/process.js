@@ -59,12 +59,9 @@ export function processImgFile(fileInfo, validImgTypes, cb) {
 }
 
 export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess) {
-  // const { file, type, humanSize, width, height } = fileInfo
-  const { file } = fileInfo
   const { cdn, imgix, maxFileSize, maxFileCount,
     expires, signature, prefix, url } = uploadInfo
 
-  const fieldValue = {}
   const cdnDomain = cdn || 'cape-io.imgix.net'
   const imgixQuery = imgix || '?w=300&h=300&fit=crop&crop=faces'
   const xhr = new XMLHttpRequest()
@@ -88,16 +85,21 @@ export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess
     if (xhr.status !== 201) {
       return console.error('Error uploading file.', xhr.status, event)
     }
-    console.log('Uploaded img to service.')
+    const { bytes, file, type, humanSize, width, height } = fileInfo
+    const fieldValue = {
+      bytes,
+      fileId: prefix + file.name,
+      size: humanSize.value + ' ' + humanSize.unit,
+      metadata: metadata,
+      dimensions: {
+        type: type,
+        width: width,
+        height: height,
+      },
+    }
+    console.log('Uploaded img to cloud.', fieldValue)
+
     // fetch.post('/api/file').send({
-    //   fileId: prefix + file.name,
-    //   size: humanSize.value + ' ' + humanSize.unit,
-    //   metadata: metadata,
-    //   dimensions: {
-    //     type: type,
-    //     width: width,
-    //     height: height,
-    //   },
     // }).accept('json').end(function (err, res) {
     //   if (err) {
     //     console.error(err)

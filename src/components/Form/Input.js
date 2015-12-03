@@ -10,7 +10,10 @@ import Photo from '../imageUpload/imageUpload'
 function Input(props) {
   const {
     asyncValidating,
-    field, label, option, options,
+    contentType,
+    entityId,
+    field, fieldId,
+    label, option, options,
     required,
     showFlags, showErrors,
     styles, type,
@@ -45,7 +48,15 @@ function Input(props) {
       InputEl = <InputTextarea {...field} {...other} />
       break
     case 'file':
-      InputEl = <Photo {...field} uploadInfo={uploadInfo} />
+      InputEl = (
+        <Photo
+          {...field}
+          contentType={contentType}
+          entityId={entityId}
+          fieldId={fieldId}
+          uploadInfo={uploadInfo}
+        />
+      )
       break
     default:
       InputEl = (
@@ -53,7 +64,8 @@ function Input(props) {
           type={type}
           className={isTypeText && 'form-control'}
           id={name} {...inputProps}
-        />)
+        />
+      )
   }
 
   return (
@@ -73,7 +85,10 @@ function Input(props) {
 }
 
 Input.propTypes = {
+  contentType: PropTypes.string.isRequired,
+  entityId: PropTypes.string.isRequired,
   field: PropTypes.object.isRequired,
+  fieldId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   asyncValidating: PropTypes.bool.isRequired,
   showErrors: PropTypes.bool.isRequired,

@@ -21,7 +21,7 @@ function Form(props) {
     valid,
     } = props
   const styles = {}
-  const { uploadInfo, submit } = formInfo
+  const { entityId, uploadInfo, submit, id } = formInfo
 
   return (
     <div>
@@ -35,12 +35,15 @@ function Form(props) {
               <Input
                 key={fieldId}
                 asyncValidating={hasAsyncValidate && asyncValidating}
+                entityId={entityId}
                 field={field}
+                fieldId={fieldId}
                 styles={styles}
                 showFlags={showFlags}
                 {...other}
                 showErrors={dirty && (field.value || !active)}
                 uploadInfo={uploadInfo}
+                contentType={id}
               />
             )
           })

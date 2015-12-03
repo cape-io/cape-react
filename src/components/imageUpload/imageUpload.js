@@ -24,7 +24,7 @@ class ImageUpload extends Component {
     this.setState({ progress })
   }
   handleUploaded(imgInfo) {
-    console.log('handleUploaded')
+    console.log('handleUploaded', imgInfo)
     if (imgInfo.id && imgInfo.previewUrl) {
       console.log('imgResized')
       this.props.onChange(pick(imgInfo, 'id', 'path', 'previewUrl'))
@@ -60,7 +60,13 @@ class ImageUpload extends Component {
     return
   }
   handleFileSelect(event) {
-    const { accept, metadata, maxFiles, uploadInfo } = this.props
+    const { accept, contentType, entityId, fieldId, maxFiles, uploadInfo } = this.props
+    const metadata = {
+      contentType,
+      entityId,
+      fieldId,
+      userId: uploadInfo.userId,
+    }
     console.log('handleFileSelect')
     // # Disable defaults. Toggle off 'hover' class.
     this.handleFileHover(event)
@@ -79,7 +85,6 @@ class ImageUpload extends Component {
         if (err) {
           return this.setState({ errorMsg: err, warningMsg })
         }
-        console.log(fileInfo)
         this.setState({
           fileUploading: fileInfo,
           warningMsg,
@@ -102,8 +107,10 @@ class ImageUpload extends Component {
 }
 ImageUpload.propTypes = {
   accept: PropTypes.array.isRequired,
+  contentType: PropTypes.string.isRequired,
+  entityId: PropTypes.string.isRequired,
+  fieldId: PropTypes.string.isRequired,
   maxFiles: PropTypes.number.isRequired,
-  metadata: PropTypes.object,
   onChange: PropTypes.func.isRequired,
   uploadInfo: PropTypes.object.isRequired,
 }

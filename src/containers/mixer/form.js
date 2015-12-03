@@ -31,7 +31,6 @@ function mapStateToProps(state, { params }) {
   // console.log(id)
   // state.db.contentTypes.find()
   return {
-    entity: params,
     fields: form.fields,
     form: form.id,
     formInfo: form,
@@ -76,7 +75,6 @@ function loadData(props) {
 
 class MixerForm extends Component {
   static propTypes = {
-    entity: PropTypes.object.isRequired,
     formInfo: PropTypes.object.isRequired,
     values: PropTypes.object.isRequired,
   }
