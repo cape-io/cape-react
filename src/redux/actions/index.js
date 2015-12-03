@@ -223,7 +223,7 @@ export function loadContent(entityInfo) {
   const endpoint = `content/${id}/${entityId}`
   return {
     [CALL_API]: {
-      types: [ CONTENT_SAVE, CONTENT_SAVED, CONTENT_SAVE_ERR ],
+      types: [ CONTENT_REQUEST, CONTENT_SUCCESS, CONTENT_FAILURE ],
       api: 'api',
       endpoint,
       entityInfo,
