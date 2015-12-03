@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import pick from 'lodash/object/pick'
+// import pick from 'lodash/object/pick'
 
 import { processImgFile, uploadFile } from './process'
 import Photo from './Photo'
@@ -47,6 +47,7 @@ class ImageUpload extends Component {
   }
   // This is just to (un)set the hover class.
   handleFileHover(event) {
+    const { active, onFocus } = this.props
     if (event.preventDefault) {
       event.preventDefault()
     }
@@ -66,7 +67,9 @@ class ImageUpload extends Component {
         fileHover: false,
       })
     }
-
+    if (!active) {
+      onFocus()
+    }
     return
   }
   handleFileSelect(event) {
@@ -122,6 +125,7 @@ class ImageUpload extends Component {
   }
 }
 ImageUpload.propTypes = {
+  active: PropTypes.bool.isRequired,
   accept: PropTypes.array.isRequired,
   contentType: PropTypes.string.isRequired,
   defaultValue: PropTypes.object,
@@ -130,6 +134,7 @@ ImageUpload.propTypes = {
   fieldId: PropTypes.string.isRequired,
   maxFiles: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired,
   uploadInfo: PropTypes.object.isRequired,
   value: PropTypes.object,
 }

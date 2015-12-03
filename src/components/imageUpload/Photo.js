@@ -4,10 +4,12 @@ import ImageUploading from './ImageUploading'
 
 function Photo(props) {
   const {
+    active,
     accept,
     errorMsg,
     fileHover, fileUploading,
     handleFileHover, handleFileSelect,
+    onFocus,
     progress,
     value,
     warningMsg,
@@ -48,6 +50,10 @@ function Photo(props) {
   function activateFileSelect() {
     // this.refs.fileselect.click()
     document.getElementById('fileselect').click()
+    console.log('activateFileSelect')
+    // if (!active) {
+    //   onFocus()
+    // }
   }
 
   return (
@@ -64,9 +70,11 @@ function Photo(props) {
 }
 
 Photo.propTypes = {
+  active: PropTypes.bool.isRequired,
   accept: PropTypes.string.isRequired,
   handleFileSelect: PropTypes.func.isRequired,
   imgInfo: PropTypes.object,
+  onFocus: PropTypes.func.isRequired,
 }
 
 export default Photo
