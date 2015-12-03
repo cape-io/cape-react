@@ -12,21 +12,33 @@ export function humanFileSize(bytes) {
   }
 }
 
-export function updateApi(uploadInfo, metadata, fileInfo) {
-  const { container, prefix } = uploadInfo
+// Rename remote cloud file and save information to database.
+export function updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess, onError) {
+  const { container, prefix, cdnDomain } = uploadInfo
   const { bytes, file, type, humanSize, width, height } = fileInfo
-  const { contentType, entityId, fieldId, ...rest } = metadata
+  const { contentType, entityId, fieldId, display,...rest } = metadata
+  // This is what we are going to send/save to the database.
+  // Id field is created on the server, along with md5.
+  // @TODO Compute most of these values on the server.
   const fieldValue = {
     container,
+    // The CDN isn't going to change for this file.
+    cdnDomain,
+    // dimensions is useful clientside.
     dimensions: {
       width: width,
       height: height,
     },
+    // The file might be used in many content types or fields.
+    // This should probably be a set instead of a single obj.
     entity: {
       contentType,
       entityId,
       fieldId,
+      // Display settings are specific to this field.
+      display,
     },
+    // uploadPath, name, size, type is useful clientside.
     uploadPath: prefix + file.name,
     name: file.name,
     size: { ...humanSize, bytes },
@@ -40,10 +52,42 @@ export function updateApi(uploadInfo, metadata, fileInfo) {
     method: 'post',
     body: fieldValue,
   }).then(
-    response => console.log(response),
-    error => console.error(error)
+    response => {
+      console.log('updateApi', response)
+      function _onSuccess() {
+        onSuccess(response)
+      }
+      if (response.entity.display && response.entity.display.preview) {
+        return loadImage(response.entity.display.preview.url, _onSuccess, onError)
+      }
+      _onSuccess()
+    },
+    error => {
+      console.error(error)
+      onError('Failure trying to process file via CAPE API.')
+    }
   )
-  console.log('Uploaded img to cloud.', fieldValue)
+  console.log('Uploaded img to cloud.')
+}
+
+export function loadImage(imgSrc, onSuccess, onError) {
+  const itemImg = new Image()
+  itemImg.onload = function () {
+    console.log('Resized img.')
+    if (onSuccess) {
+      return onSuccess()
+    }
+  }
+  itemImg.onerror = function (err) {
+    // How do we know what kind of error it is?
+    console.error(err)
+    if (onError) {
+      onError(err)
+    }
+    return alert('There was an error processing your image. The image needs to be a JPEG, PNG or GIF.')
+    // Should we remove the file from the server?
+  }
+  return itemImg.src = imgSrc
 }
 
 export function processImgFile(fileInfo, validImgTypes, cb) {
@@ -91,12 +135,10 @@ export function processImgFile(fileInfo, validImgTypes, cb) {
   return reader.readAsDataURL(fileInfo.file)
 }
 
-export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess) {
-  const { cdn, imgix, maxFileSize, maxFileCount,
-    expires, signature, prefix, url } = uploadInfo
+export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess, onFail) {
+  const { maxFileSize, maxFileCount,
+    expires, signature, url } = uploadInfo
 
-  const cdnDomain = cdn || 'cape-io.imgix.net'
-  const imgixQuery = imgix || '?w=300&h=300&fit=crop&crop=faces'
   const xhr = new XMLHttpRequest()
   function handleProgress(event) {
     const progress = parseInt(event.loaded / event.total * 100)
@@ -106,49 +148,24 @@ export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess
   }
   xhr.upload.addEventListener('progress', handleProgress, false)
   xhr.onreadystatechange = (event) => {
+    // 0: request not initialized
+    if (xhr.readyState === 0) {
+      console.error('Unable to initialize connection to cloud files.')
+      onFail()
+    }
+    // Just ignore these middle steps. We use handleProgress above.
     if (xhr.readyState !== 4) {
-      // 0: request not initialized
       // 1: server connection established
       // 2: request received
       // 3: processing request
-      // console.log('xhr.onreadystatechange', xhr.readyState, event)
       return undefined
     }
     // Request finished and response is ready.
     if (xhr.status !== 201) {
+      onFail()
       return console.error('Error uploading file.', xhr.status, event)
     }
-    // @TODO This should be moved to a different function.
-    updateApi(uploadInfo, metadata, fileInfo)
-
-    // fetch.post('/api/file').send({
-    // }).accept('json').end(function (err, res) {
-    //   if (err) {
-    //     console.error(err)
-    //   }
-    //   if (res.body) {
-    //     _.merge(fieldValue, res.body)
-    //     if (onSuccess) {
-    //       onSuccess(fieldValue)
-    //     }
-    //     return console.log(fieldValue)
-    //   }
-    // })
-    onProgress(101)
-    const imgSrc = '//' + cdnDomain + prefix + encodeURIComponent(fileInfo.file.name) + imgixQuery
-    const itemImg = new Image()
-    itemImg.onload = function () {
-      console.log('Resized img.')
-      fieldValue.previewUrl = itemImg.src
-      if (onSuccess) {
-        return onSuccess(fieldValue)
-      }
-    }
-    itemImg.onerror = function (err) {
-      console.error(err)
-      return alert('There was an error processing your image. The image needs to be a JPG or GIF. You could refresh the page and see if it shows up in your list. If it shows a broken image delete the file and upload with correct file type.')
-    }
-    return itemImg.src = imgSrc
+    updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess)
   }
 
   const formData = new FormData()
