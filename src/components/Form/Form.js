@@ -5,7 +5,7 @@ import Input from './Input'
 import ReduxFormProps from './ReduxFormProps'
 import SubmitButtons from './SubmitButtons'
 import Submitting from './Submitting'
-import { getField } from '../../utils/forms'
+import FieldGroup from './FieldGroup'
 
 function Form(props) {
   const {
@@ -23,7 +23,10 @@ function Form(props) {
     valid,
     } = props
   const styles = {}
-  const { description, entityId, uploadInfo, submit, title, id } = formInfo
+  const {
+    description, entityId, formElements,
+    uploadInfo, submit, title, id,
+  } = formInfo
 
   return (
     <div>
@@ -31,23 +34,37 @@ function Form(props) {
       { description && <p className="lead">{ description }</p> }
       <form className="form-horizontal" onSubmit={handleSubmit}>
         {
-          formInfo.fields.map( fieldId => {
-            const { hasAsyncValidate, ...other } = getField(formInfo.field, fieldId)
-            const field = get(fields, fieldId)
+          formElements.map( elementGroup => {
+            // Extract the fields we want access to from the element group.
+            const groupInputs = elementGroup.type !== 'collection' &&
+            elementGroup.fields.map( ({ infoKey, dataKey }) =>{
+              // Grab the cape-form field stuff.
+              const { hasAsyncValidate, ...other } = get(formInfo.field, infoKey)
+              // Grab the redux-form stuff.
+              const field = get(fields, dataKey)
+              if (!field) {
+                console.error(dataKey)
+              }
+              return (
+                <Input
+                  key={other.id}
+                  asyncValidating={hasAsyncValidate && asyncValidating}
+                  entityId={entityId}
+                  field={field}
+                  fieldId={dataKey}
+                  styles={styles}
+                  showFlags={showFlags}
+                  {...other}
+                  showErrors={dirty && (!!field.value || !active)}
+                  uploadInfo={uploadInfo}
+                  contentType={id}
+                />
+              )
+            })
             return (
-              <Input
-                key={fieldId}
-                asyncValidating={hasAsyncValidate && asyncValidating}
-                entityId={entityId}
-                field={field}
-                fieldId={fieldId}
-                styles={styles}
-                showFlags={showFlags}
-                {...other}
-                showErrors={dirty && (!!field.value || !active)}
-                uploadInfo={uploadInfo}
-                contentType={id}
-              />
+              <FieldGroup {...elementGroup} key={elementGroup.id}>
+                { groupInputs }
+              </FieldGroup>
             )
           })
         }

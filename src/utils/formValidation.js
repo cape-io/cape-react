@@ -7,7 +7,6 @@ import isString from 'lodash/lang/isString'
 // import memoize from 'lodash/function/memoize'
 
 import * as validationFuncs from './validation'
-import { getField } from './forms'
 
 const validators = validationFuncs
 
@@ -51,22 +50,31 @@ function fieldValidation(value, validators) {
 }
 
 // Take the field info object and create a validation function.
-export function createValidator({ field, fields }) {
+export function createValidator({ field, formElements }) {
   // Create a function that accepts the form data object.
   return (data = {}) => {
     const fieldErrors = {}
     // Loop through every field in the form.
     // Returns an object of errors.
-    forEach(fields, (fieldId) => {
-      const fieldInfo = getField(field, fieldId)
-      const { validators } = fieldInfo
-      const value = get(data, fieldId)
-      // Validate the field value.
-      const validationErr = fieldValidation(value, validators)
-      if (validationErr) {
-        set(fieldErrors, fieldId, validationErr)
+    forEach(formElements, ({ fields, type }) => {
+      if (type === 'collection') {
+        return
       }
+      forEach(fields, ({ infoKey, dataKey }) => {
+        const fieldInfo = get(field, infoKey)
+        if (!fieldInfo) {
+          console.error(infoKey, fields)
+        }
+        const { validators } = fieldInfo
+        const value = get(data, dataKey)
+        // Validate the field value.
+        const validationErr = fieldValidation(value, validators)
+        if (validationErr) {
+          set(fieldErrors, dataKey, validationErr)
+        }
+      })
     })
+
 
     // fieldErrors._error = 'Missing required fields.'
     // console.log(fieldErrors)

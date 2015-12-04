@@ -11,7 +11,7 @@ function Mixer({ contentTypes }) {
         contentTypes.map( ({ groupId, typeId, entityId, title }) => (
           <li key={groupId + '-' + typeId}>
             <Link
-              to={`mixer/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
+              to={`/mixer/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
               { title }
             </Link>
           </li>
