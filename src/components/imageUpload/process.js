@@ -125,7 +125,7 @@ export function processImgFile(fileInfo, validImgTypes, cb) {
       fileInfo.width = img.width
       fileInfo.height = img.height
       // Include fileData base64 thing.
-      if (3000000 > fileInfo.bytes) {
+      if (4000000 > fileInfo.bytes) {
         fileInfo.fileData = event.target.result
       }
       return cb(null, fileInfo)
