@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { updatePath } from 'redux-simple-router'
 
 import { loadForm, loadSession, loadUser } from '../redux/actions'
-import JoinLogin from '../components/JoinLogin'
+import Page from '../components/Page'
 import Loading from '../components/Loading'
 
 // Move into a constants file or something.
@@ -39,17 +39,19 @@ class UserPage extends Component {
     }
   }
   render() {
-    const { form, login, user, ...rest } = this.props
+    const { form, login, user, children, ...rest } = this.props
     if (!form) {
       return <Loading message="Loading the login form..." />
     }
     if (login && !user) {
       return <Loading message={`Loading information for ${login}...`} />
     }
-    return <JoinLogin form={form} {...rest} />
+    const title = 'User'
+    return <Page children={children} title={title} />
   }
 }
 UserPage.propTypes = {
+  children: PropTypes.node,
   form: PropTypes.object,
   user: PropTypes.object,
   loadForm: PropTypes.func.isRequired,
