@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 import Icon from '../Icon'
 
-function SubmitButtons({ invalid, showReset, icon, text, resetForm, handleSubmit }) {
+function SubmitButtons({ invalid, showReset, icon, text, resetForm, handleSubmit, pristine }) {
   const resetText = 'Reset'
   return (
     <div className="form-group">
@@ -14,7 +14,7 @@ function SubmitButtons({ invalid, showReset, icon, text, resetForm, handleSubmit
         </button>
         {
           showReset && resetForm &&
-          <button className="btn btn-warning" onClick={resetForm} style={{ marginLeft: 15 }}>
+          <button className="btn btn-warning" onClick={resetForm} style={{ marginLeft: 15 }} disabled={pristine}>
             <Icon symbol="remove" hidden />
             { ' ' }
             { resetText }
@@ -29,6 +29,7 @@ function SubmitButtons({ invalid, showReset, icon, text, resetForm, handleSubmit
 SubmitButtons.propTypes = {
   icon: PropTypes.string,
   text: PropTypes.string,
+  pristine: PropTypes.bool.isRequired,
   showReset: PropTypes.bool.isRequired,
   resetForm: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,

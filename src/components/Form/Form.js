@@ -4,6 +4,7 @@ import get from 'lodash/object/get'
 import Input from './Input'
 import ReduxFormProps from './ReduxFormProps'
 import SubmitButtons from './SubmitButtons'
+import Submitting from './Submitting'
 import { getField } from '../../utils/forms'
 
 function Form(props) {
@@ -18,14 +19,16 @@ function Form(props) {
     resetForm,
     pristine,
     showFlags,
+    submitting,
     valid,
     } = props
   const styles = {}
-  const { entityId, uploadInfo, submit, id } = formInfo
+  const { description, entityId, uploadInfo, submit, title, id } = formInfo
 
   return (
     <div>
-      <h2>{ formInfo.title }</h2>
+      { title && <h2>{ title }</h2> }
+      { description && <p className="lead">{ description }</p> }
       <form className="form-horizontal" onSubmit={handleSubmit}>
         {
           formInfo.fields.map( fieldId => {
@@ -48,12 +51,18 @@ function Form(props) {
             )
           })
         }
-        <SubmitButtons
-          {...submit}
-          handleSubmit={handleSubmit}
-          resetForm={resetForm}
-          invalid={invalid}
-        />
+        {
+          submitting ?
+          <Submitting />
+          :
+          <SubmitButtons
+            {...submit}
+            handleSubmit={handleSubmit}
+            resetForm={resetForm}
+            invalid={invalid}
+            pristine={pristine}
+          />
+        }
       </form>
 
       { showFlags &&

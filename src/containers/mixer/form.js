@@ -51,7 +51,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     // id is the content type id.
     const { id, entityId } = stateProps.formInfo
     console.log(id, entityId, data)
-    dispatchProps.saveContent({ id, entityId, body: data })
+    return dispatchProps.saveContent({ id, entityId, body: data })
   }
   // if (stateProps.session.isAuthenticated) {
   //   dispatchProps.updatePath('mixer')
@@ -76,6 +76,9 @@ function loadData(props) {
 class MixerForm extends Component {
   static propTypes = {
     formInfo: PropTypes.object.isRequired,
+    submitFailed: PropTypes.bool.isRequired,
+    submitting: PropTypes.bool.isRequired,
+    updatePath: PropTypes.func.isRequired,
     values: PropTypes.object.isRequired,
   }
 
@@ -86,6 +89,10 @@ class MixerForm extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.formInfo.id !== this.props.formInfo.id) {
       loadData(nextProps)
+    }
+    // Redirect after submitted.
+    if (this.props.submitting && !nextProps.submitting && !nextProps.submitFailed) {
+      this.props.updatePath('/mixer')
     }
   }
 
