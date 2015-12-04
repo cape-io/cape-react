@@ -27,7 +27,32 @@ function Form(props) {
     description, entityId, formElements,
     uploadInfo, submit, title, id,
   } = formInfo
-
+  function createGroupElements(groupFields, reduxFields) {
+    return groupFields.map( ({ infoKey, dataKey }) =>{
+      // Grab the cape-form field stuff.
+      const { hasAsyncValidate, ...other } = get(formInfo.field, infoKey)
+      // Grab the redux-form stuff.
+      const field = get(reduxFields, dataKey)
+      if (!field) {
+        console.error(dataKey)
+      }
+      return (
+        <Input
+          key={other.id}
+          asyncValidating={hasAsyncValidate && asyncValidating}
+          entityId={entityId}
+          field={field}
+          fieldId={dataKey}
+          styles={styles}
+          showFlags={showFlags}
+          {...other}
+          showErrors={dirty && (!!field.value || !active)}
+          uploadInfo={uploadInfo}
+          contentType={id}
+        />
+      )
+    })
+  }
   return (
     <div>
       { title && <h2>{ title }</h2> }
@@ -35,34 +60,36 @@ function Form(props) {
       <form className="form-horizontal" onSubmit={handleSubmit}>
         {
           formElements.map( elementGroup => {
+            const isCollection = elementGroup.type === 'collection'
+            const groupData = isCollection && get(fields, elementGroup.id) || {}
             // Extract the fields we want access to from the element group.
-            const groupInputs = elementGroup.type !== 'collection' &&
-            elementGroup.fields.map( ({ infoKey, dataKey }) =>{
-              // Grab the cape-form field stuff.
-              const { hasAsyncValidate, ...other } = get(formInfo.field, infoKey)
-              // Grab the redux-form stuff.
-              const field = get(fields, dataKey)
-              if (!field) {
-                console.error(dataKey)
+            let groupInputs = null
+            if (isCollection) {
+              if (groupData.length) {
+                groupInputs = (
+                  <ul className="list-group">
+                    {
+                      groupData.map((item, index) => {
+                        return (
+                          <li key={index} className="list-group-item">
+                            { createGroupElements(elementGroup.fields, item) }
+                          </li>
+                        )
+                      })
+                    }
+                  </ul>
+                )
               }
-              return (
-                <Input
-                  key={other.id}
-                  asyncValidating={hasAsyncValidate && asyncValidating}
-                  entityId={entityId}
-                  field={field}
-                  fieldId={dataKey}
-                  styles={styles}
-                  showFlags={showFlags}
-                  {...other}
-                  showErrors={dirty && (!!field.value || !active)}
-                  uploadInfo={uploadInfo}
-                  contentType={id}
-                />
-              )
-            })
+            } else {
+              groupInputs = createGroupElements(elementGroup.fields, fields)
+            }
+
             return (
-              <FieldGroup {...elementGroup} key={elementGroup.id}>
+              <FieldGroup
+                {...elementGroup}
+                key={elementGroup.id}
+                groupData={groupData}
+              >
                 { groupInputs }
               </FieldGroup>
             )
