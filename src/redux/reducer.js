@@ -11,6 +11,7 @@ import db from './modules/db'
 // Updates an entity cache in response to any action with response.entities.
 // Define our default entities collection database.
 const defaultEntityState = {
+  files: {},
   forms: {},
   repos: {},
   users: {},

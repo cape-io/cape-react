@@ -63,7 +63,7 @@ function Form(props) {
         {
           formElements.map( elementGroup => {
             const isCollection = elementGroup.type === 'collection'
-            const groupData = isCollection && get(fields, elementGroup.id) || {}
+            const groupData = isCollection && get(fields, elementGroup.id) || []
             // Extract the fields we want access to from the element group.
             let groupInputs = null
             if (isCollection) {
@@ -72,8 +72,19 @@ function Form(props) {
                   <ul className="list-group">
                     {
                       groupData.map((item, index) => {
+                        function removeItem(event) {
+                          event.preventDefault()
+                          console.log('removeField', index)
+                          groupData.removeField(index)
+                        }
                         return (
                           <li key={index} className="list-group-item">
+                            <button
+                              className="button btn btn-danger"
+                              onClick={removeItem}
+                            >
+                              {'Remove'}
+                            </button>
                             { createGroupElements(elementGroup.fields, item, index) }
                           </li>
                         )
@@ -114,6 +125,11 @@ function Form(props) {
       { showFlags &&
         <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
       }
+      <pre className="code-block">
+        <code ref="code">
+          {JSON.stringify(props.values, null, 2)}
+        </code>
+      </pre>
     </div>
   )
 }

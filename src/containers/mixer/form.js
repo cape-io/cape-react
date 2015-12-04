@@ -27,6 +27,7 @@ function mapStateToProps(state, { params }) {
   form.entityId = entityId
   // Grab the values for the form.
   const entities = state.entities[contentType] || {}
+  // Need to stringify object values...
   const initialValues = entities[entityId] || { loading: true }
   // console.log(id)
   // state.db.contentTypes.find()

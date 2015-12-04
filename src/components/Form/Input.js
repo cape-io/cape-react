@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import classnames from 'classnames'
 
 import InputFlags from './InputFlags'
 import InputRadios from './InputRadios'
@@ -71,9 +72,16 @@ function Input(props) {
         />
       )
   }
-
+  const className = classnames(
+    'form-group',
+    'field-type-' + type,
+    'filed-name-' + fieldId.split('-').pop(),
+    {
+      'has-error': showErrors && !!error,
+    }
+  )
   return (
-    <div className={'form-group' + (showErrors && error ? ' has-error' : '')}>
+    <div className={className}>
       <label htmlFor={fieldId} className="col-sm-2">
         { label }
         { required && '*' }
