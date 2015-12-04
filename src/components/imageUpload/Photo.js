@@ -47,10 +47,10 @@ function Photo(props) {
     txtClassName = 'warning'
     imgTxt = warningMsg
   }
-
+  const inputId = 'fileselect-' + fieldId
   function activateFileSelect() {
     // this.refs.fileselect.click()
-    document.getElementById(fieldId).click()
+    document.getElementById(inputId).click()
     console.log('activateFileSelect', fieldId)
     // if (!active) {
     //   onFocus()
@@ -63,7 +63,7 @@ function Photo(props) {
       onClick={ activateFileSelect } id="filedrag">
       {currentImg}
       <p className={txtClassName}>{ imgTxt }</p>
-      <input type="file" id={fieldId} name="fileselect"
+      <input type="file" id={inputId} name="fileselect"
         accept={accept} onChange={handleFileSelect}
         style={{ display: 'none' }} />
     </div>

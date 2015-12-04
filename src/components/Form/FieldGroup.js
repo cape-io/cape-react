@@ -8,7 +8,7 @@ function FieldGroup(props) {
     groupData.addField()
   }
   return (
-    <div id={id} className={'panel panel-default form-' + type}>
+    <div id={type + '-container-' + id} className={'panel panel-default form-' + type}>
       { label && <div className="panel-heading"><h4>{ label }</h4></div> }
       <div className="panel-body">
       { help && <p className="help">{ help }</p> }
