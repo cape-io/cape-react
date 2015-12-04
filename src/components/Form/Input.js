@@ -22,6 +22,7 @@ function Input(props) {
     ...other,
     } = props
   const { active, dirty, error, name, touched, visited, ...inputProps } = field
+  // `name` is like 'foo[0].bar'. Use `fieldId` for css things instead.
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
   // onBlur, onChange, onDrag, onDrop, onFocus, onUpdate
@@ -56,6 +57,7 @@ function Input(props) {
           display={display}
           entityId={entityId}
           fieldId={fieldId}
+          name={name}
           uploadInfo={uploadInfo}
         />
       )
@@ -65,14 +67,14 @@ function Input(props) {
         <input
           type={type}
           className={isTypeText && 'form-control'}
-          id={name} {...inputProps}
+          id={fieldId} {...inputProps}
         />
       )
   }
 
   return (
     <div className={'form-group' + (showErrors && error ? ' has-error' : '')}>
-      <label htmlFor={name} className="col-sm-2">
+      <label htmlFor={fieldId} className="col-sm-2">
         { label }
         { required && '*' }
       </label>

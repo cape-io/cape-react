@@ -27,12 +27,14 @@ function Form(props) {
     description, entityId, formElements,
     uploadInfo, submit, title, id,
   } = formInfo
-  function createGroupElements(groupFields, reduxFields) {
-    return groupFields.map( ({ infoKey, dataKey }) =>{
+  function createGroupElements(groupFields, reduxFields, index) {
+    return groupFields.map( ({ infoKey, dataKey, key }) =>{
       // Grab the cape-form field stuff.
       const { hasAsyncValidate, ...other } = get(formInfo.field, infoKey)
       // Grab the redux-form stuff.
       const field = get(reduxFields, dataKey)
+      // Create a unique fieldId.
+      const fieldId = key ? key.replace('-', `-${index}-`) : dataKey
       if (!field) {
         console.error(dataKey)
       }
@@ -42,7 +44,7 @@ function Form(props) {
           asyncValidating={hasAsyncValidate && asyncValidating}
           entityId={entityId}
           field={field}
-          fieldId={dataKey}
+          fieldId={fieldId}
           styles={styles}
           showFlags={showFlags}
           {...other}
@@ -72,7 +74,7 @@ function Form(props) {
                       groupData.map((item, index) => {
                         return (
                           <li key={index} className="list-group-item">
-                            { createGroupElements(elementGroup.fields, item) }
+                            { createGroupElements(elementGroup.fields, item, index) }
                           </li>
                         )
                       })
