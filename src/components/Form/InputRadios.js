@@ -1,13 +1,13 @@
-import React, { PropTypes } from 'react';
-import RadioOption from './RadioOption';
+import React, { PropTypes } from 'react'
+import RadioOption from './RadioOption'
 
 // Print RadioOption for each options.
-function InputRadios({options, field, ...rest}) {
+function InputRadios({ options, field, ...rest }) {
   return (
     <div>
       {
-        options.map( ({value, label}) => {
-          const id = `{$field.name}-${value}`;
+        options.map( ({ value, label }) => {
+          const id = `{$field.name}-${value}`
           return (
             <RadioOption
               id={id}
@@ -17,14 +17,14 @@ function InputRadios({options, field, ...rest}) {
               label={label}
               {...rest}
             />
-          );
+          )
         })
       }
     </div>
-  );
+  )
 }
 InputRadios.propTypes = {
   options: PropTypes.array.isRequired,
-};
+}
 
-export default InputRadios;
+export default InputRadios
