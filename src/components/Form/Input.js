@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react'
 import classnames from 'classnames'
 
+import InputDate from './InputDate'
+import InputEmbed from './InputEmbed'
 import InputFlags from './InputFlags'
 import InputRadios from './InputRadios'
 import InputSelect from './InputSelect'
-import InputDate from './InputDate'
 import InputTextarea from './InputTextarea'
 import Photo from '../imageUpload/imageUpload'
 import Dimensions from './Dimensions'
@@ -49,7 +50,10 @@ function Input(props) {
       InputEl = <InputDate field={field} {...other} />
       break
     case 'dimensions':
-      InputEl = <Dimensions {...field} {...other} fieldId={fieldId} />
+      InputEl = <Dimensions {...inputProps} {...other} fieldId={fieldId} />
+      break
+    case 'embed':
+      InputEl = <InputEmbed {...field} {...other} fieldId={fieldId} />
       break
     case 'textarea':
       InputEl = <InputTextarea {...field} {...other} />
@@ -70,9 +74,11 @@ function Input(props) {
     default:
       InputEl = (
         <input
+          {...other}
           type={type}
           className={isTypeText && 'form-control'}
-          id={fieldId} {...inputProps}
+          id={fieldId}
+          {...inputProps}
         />
       )
   }
