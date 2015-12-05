@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import isString from 'lodash/lang/isString'
 
-import { encodeSize, options, parseSize } from '../../helpers/dimensions'
+import { display, encodeSize, options, parseSize, selectedOption } from '../../helpers/dimensions'
 
 function getInputId(fieldId, className) {
   return fieldId + '-' + className
@@ -102,16 +102,19 @@ class Dimensions extends Component {
     // Send this.state.size as a default value.
     const size = parseSize(value || initialValue, this.state.size)
     const sizeFields = ( this.showSizeFields() &&
-      <div className="dimensions form-inline">
-        { this.buildInput('height', 'H', size.h) }
-        <div className="plain bythis col-sm-1">
-          {'x'}
+      <div className="dimensions">
+        <div className="form-inline">
+          { this.buildInput('height', 'H', size.h) }
+          <div className="plain bythis col-sm-1">
+            {'x'}
+          </div>
+          { this.buildInput('width', 'W', size.w) }
+          <div className="plain bythis col-sm-1">
+            {'x'}
+          </div>
+          { this.buildInput('depth', 'D', size.d) }
         </div>
-        { this.buildInput('width', 'W', size.w) }
-        <div className="plain bythis col-sm-1">
-          {'x'}
-        </div>
-        { this.buildInput('depth', 'D', size.d) }
+        <span className="help-block"><small>{ display(size) }</small></span>
       </div>
     )
 
@@ -123,6 +126,7 @@ class Dimensions extends Component {
           onChange={this.handleSelectChange}
           onBlur={this.handleSelectBlur}
           onFocus={onFocus}
+          value={selectedOption(value || initialValue)}
         >
           {
             options.map( ({ name, value }) => (
