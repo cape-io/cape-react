@@ -95,8 +95,8 @@ class MixerForm extends Component {
     }
     // Redirect after submitted.
     if (this.props.submitting && !nextProps.submitting && !nextProps.submitFailed) {
-      this.nextProps.updatePath('/mixer')
-      this.nextProps.destroyForm()
+      nextProps.destroyForm()
+      nextProps.updatePath('/mixer')
     }
   }
 
