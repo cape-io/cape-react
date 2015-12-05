@@ -17,6 +17,7 @@ function Input(props) {
     display,
     entityId,
     field, fieldId,
+    help,
     label, option, options,
     required,
     showFlags, showErrors,
@@ -29,7 +30,7 @@ function Input(props) {
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
   // onBlur, onChange, onDrag, onDrop, onFocus, onUpdate
-  const isTypeText = type === 'text'
+  const isTypeText = type === 'text' || type === 'url'
   const inputGroupStyle = isTypeText ? styles.inputGroup : ''
 
   let InputEl = false
@@ -102,6 +103,7 @@ function Input(props) {
         { showErrors && error && <div className="text-danger">{error}</div> }
         { showFlags && type !== 'datetime' && <InputFlags {...{ dirty, active, visited, touched, styles }} /> }
       </div>
+      { help && <span className="help-block">{ help }</span> }
     </div>
   )
 }
