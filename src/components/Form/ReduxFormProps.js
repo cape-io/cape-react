@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 
-function ReduxFormProps({active, dirty, pristine, valid, invalid}) {
+function ReduxFormProps({active, dirty, pristine, valid, invalid, submitting}) {
   return (
     <div>
       <h4>Props from redux-form!</h4>
@@ -26,6 +26,10 @@ function ReduxFormProps({active, dirty, pristine, valid, invalid}) {
         <tr>
           <th>Invalid</th>
           <td className={invalid ? 'success' : 'danger'}>{invalid ? 'true' : 'false'}</td>
+        </tr>
+        <tr>
+          <th>Submitting</th>
+          <td className={submitting ? 'success' : 'default'}>{submitting ? 'true' : 'false'}</td>
         </tr>
         </tbody>
       </table>

@@ -125,7 +125,7 @@ function Form(props) {
 
       { showFlags &&
         <div>
-          <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
+          <ReduxFormProps {...{ active, dirty, pristine, valid, invalid, submitting }} />
           <Inspector data={props.values} />
         </div>
       }
