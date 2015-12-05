@@ -1,5 +1,5 @@
 import includes from 'lodash/collection/includes'
-import { validate } from 'email-validator'
+import { isEmail } from 'validator'
 
 // Sync result of email validation.
 export default function emailValidate(value) {
@@ -35,7 +35,7 @@ export default function emailValidate(value) {
   if (!(tld.length > 1)) {
     return makeStatus('warning', 'The email domain tld is too short.')
   }
-  if (!validate(value)) {
+  if (!isEmail(value)) {
     return makeStatus('error', 'Failed RFC checks.')
   }
   return makeStatus('success', null, false)

@@ -1,6 +1,6 @@
+import { isURL } from 'validator'
 import isEmpty from 'lodash/lang/isEmpty'
 import emailValidate from './emailValidate'
-
 // Functions should return error message string.
 
 export function isEmail(value) {
@@ -23,6 +23,21 @@ export function isRequired(value) {
   if (isEmpty(value)) {
     return 'Required'
   }
+}
+
+const urlOptions = {
+  protocols: [ 'http','https' ],
+  require_tld: true,
+  require_protocol: true,
+  require_valid_protocol: true,
+  allow_underscores: false,
+  host_whitelist: false,
+  host_blacklist: false,
+  allow_trailing_dot: false,
+  allow_protocol_relative_urls: false,
+}
+export function isUrl(value) {
+  return isURL(value, urlOptions)
 }
 
 // returns function.
