@@ -7,6 +7,7 @@ import InputSelect from './InputSelect'
 import InputDate from './InputDate'
 import InputTextarea from './InputTextarea'
 import Photo from '../imageUpload/imageUpload'
+import Dimensions from './Dimensions'
 
 function Input(props) {
   const {
@@ -46,6 +47,9 @@ function Input(props) {
       break
     case 'datetime':
       InputEl = <InputDate field={field} {...other} />
+      break
+    case 'dimensions':
+      InputEl = <Dimensions {...field} {...other} fieldId={fieldId} />
       break
     case 'textarea':
       InputEl = <InputTextarea {...field} {...other} />
