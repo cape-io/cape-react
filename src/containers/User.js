@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updatePath } from 'redux-simple-router'
 
-import { loadForm, loadSession, loadUser } from '../redux/actions'
+import { loadForm, loadUser } from '../redux/actions'
+import { isAuthenticated } from '../redux/modules/auth'
 import Page from '../components/Page'
 import Loading from '../components/Loading'
 
@@ -14,8 +15,6 @@ function loadData(props) {
   const { login } = props
   // Load up information about the login form.
   props.loadForm(FORM_ID)
-  // Load info about the user session.
-  props.loadSession()
   // Also load information about the user/email.
   if (login) {
     // Load information about the login value.
@@ -25,17 +24,24 @@ function loadData(props) {
 
 class UserPage extends Component {
   componentWillMount() {
-    loadData(this.props)
-  }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.login !== this.props.login) {
-      loadData(nextProps)
-    }
-    if (nextProps.isAuthenticated) {
+    if (this.props.isAuthenticated) {
       if (this.props.location.query && this.props.location.query.destination) {
         return this.props.updatePath(this.props.location.query.destination)
       }
       this.props.updatePath('/mixer')
+    }
+  }
+  componentDidMount() {
+    // Redirect takes too fucking long in componentWillMount?!?
+    // Only need to load things if we are anonymous.
+    if (!this.props.isAuthenticated) {
+      console.log('User loadData')
+      loadData(this.props)
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.login !== this.props.login) {
+      loadData(nextProps)
     }
   }
   render() {
@@ -54,6 +60,7 @@ UserPage.propTypes = {
   children: PropTypes.node,
   form: PropTypes.object,
   user: PropTypes.object,
+  isAuthenticated: PropTypes.bool,
   loadForm: PropTypes.func.isRequired,
   loadUser: PropTypes.func.isRequired,
   location: PropTypes.object,
@@ -66,7 +73,7 @@ UserPage.propTypes = {
 function mapStateToProps(state, ownProps) {
   const { login } = ownProps.params
   const {
-    entities: { forms, users, session },
+    entities: { forms, users },
   } = state
   // Decide what headerMsg and leadMsg to have based on the route.
   // Is it better to have different templates or different data?
@@ -76,7 +83,8 @@ function mapStateToProps(state, ownProps) {
     form: forms[FORM_ID],
     login,
     user: users[login],
-    isAuthenticated: session.me && session.me.isAuthenticated,
+    // @TODO Use redux/modules/auth for this
+    isAuthenticated: isAuthenticated(state),
   }
 }
 
@@ -84,7 +92,6 @@ function mapStateToProps(state, ownProps) {
 // This gets merged into props too.
 const mapDispatchToProps = {
   loadForm,
-  loadSession,
   loadUser,
   updatePath,
 }

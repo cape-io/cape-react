@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { updatePath } from 'redux-simple-router'
 import { loadSession, resetErrorMessage } from '../redux/actions'
+import { isLoaded } from '../redux/modules/auth'
 import Footer from './Footer'
+import Loading from '../components/Loading'
 
 // This is called from within the container component class.
 function loadData(props) {
@@ -43,11 +45,12 @@ class App extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, isLoaded } = this.props
+    const loadingEl = !isLoaded && <Loading message="Loading your session info..." />
     return (
       <div className="container">
         { this.renderErrorMessage() }
-        { children }
+        { loadingEl || children }
         <Footer />
       </div>
     )
@@ -57,6 +60,7 @@ class App extends Component {
 App.propTypes = {
   // Injected by React Redux
   errorMessage: PropTypes.string,
+  isLoaded: PropTypes.bool.isRequired,
   resetErrorMessage: PropTypes.func.isRequired,
   updatePath: PropTypes.func.isRequired,
   // Injected by React Router
@@ -64,8 +68,12 @@ App.propTypes = {
 }
 
 function mapStateToProps(state) {
+  const {
+    errorMessage,
+  } = state
   return {
-    errorMessage: state.errorMessage,
+    errorMessage: errorMessage,
+    isLoaded: isLoaded(state),
   }
 }
 

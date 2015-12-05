@@ -15,7 +15,9 @@ const defaultEntityState = {
   forms: {},
   repos: {},
   users: {},
-  session: {},
+  session: {
+    me: { isAuthenticated: null },
+  },
 }
 function entities(state = defaultEntityState, action) {
   if (action.response && action.response.entities) {
