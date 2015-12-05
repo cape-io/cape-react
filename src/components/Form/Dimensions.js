@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import isString from 'lodash/lang/isString'
-import isObject from 'lodash/lang/isObject'
 
 import { encodeSize, options, parseSize } from '../../helpers/dimensions'
 
@@ -10,7 +9,7 @@ function getInputId(fieldId, className) {
 // Grab the input value and clobber anything but numbers.
 function getInputValue(fieldId, className) {
   const val = document.getElementById(getInputId(fieldId, className)).value
-  if (isString(val)) {
+  if (val && isString(val)) {
     // Being double sure it's nothing but a number.
     return val.replace(/[^0-9.]/g, '')
   }
@@ -21,31 +20,44 @@ class Dimensions extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      size: parseSize(props.value || props.initialValue),
+      // Default size {} object.
+      size: parseSize(props.value || props.initialValue || 'fixed'),
     }
     this.buildInput = this.buildInput.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.handleSizeChange = this.handleSizeChange.bind(this)
+    this.handleSelectChange = this.handleSelectChange.bind(this)
+    this.handleSelectBlur = this.handleSelectBlur.bind(this)
   }
-  handleSelect(event) {
+  // Used on select change and blur.
+  handleSelect(event, updateFunc) {
     const option = event.target.value
     if (option === 'fixed') {
       // Fetch the value from state and use that.
-      this.props.onChange(encodeSize(this.state.size))
+      updateFunc(encodeSize(this.state.size))
     }
     else {
       // exchange 'x' for null before save.
-      this.props.onChange(parseSize(option))
+      updateFunc(parseSize(option))
     }
   }
+  handleSelectChange(event) {
+    this.handleSelect(event, this.props.onChange)
+  }
+  handleSelectBlur(event) {
+    this.handleSelect(event, this.props.onBlur)
+  }
+  // When any of the size input fields change.
   handleSizeChange() {
     const { fieldId, onChange } = this.props
+    // Grab values from each input field.
     const size = {
       h: getInputValue(fieldId, 'height'),
       w: getInputValue(fieldId, 'width'),
       d: getInputValue(fieldId, 'depth'),
     }
     onChange(encodeSize(size))
+    // Save a copy to state.
     this.setState({ size })
     // console.log(size)
   }
@@ -77,7 +89,7 @@ class Dimensions extends Component {
     const { value } = this.props
     // const { size } = this.state
     let showFields = false
-    if (value === 'fixed' || value.startsWith('size-')) {
+    if (value === 'fixed' || value && value.startsWith('size-')) {
       showFields = true
     }
     // if (isObject(size)) {
@@ -86,7 +98,8 @@ class Dimensions extends Component {
     return showFields
   }
   render() {
-    const { onBlur, onFocus, value, initialValue } = this.props
+    const { onFocus, value, initialValue } = this.props
+    // Send this.state.size as a default value.
     const size = parseSize(value || initialValue, this.state.size)
     const sizeFields = ( this.showSizeFields() &&
       <div className="dimensions form-inline">
@@ -107,8 +120,8 @@ class Dimensions extends Component {
         <select
           className="form-control"
           name="dimension-type"
-          onChange={this.handleSelect}
-          onBlur={onBlur}
+          onChange={this.handleSelectChange}
+          onBlur={this.handleSelectBlur}
           onFocus={onFocus}
         >
           {

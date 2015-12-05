@@ -35,6 +35,9 @@ export function parseSize(str, defaultSize) {
     if (isObject(defaultSize)) return defaultSize
     return _size()
   }
+  if (isObject(str)) {
+    return str
+  }
   const size = str.replace('size-', '').split('x')
   return _size(...size)
 }
@@ -44,5 +47,8 @@ export function encodeSize(arg) {
     return arg
   }
   const { h, w, d } = arg
-  return 'size-' + h + 'x' + w + 'x' + d
+  if (!h && !w && !d) {
+    return 'fixed'
+  }
+  return `size-${h || ''}x${w || ''}x${d || ''}`
 }
