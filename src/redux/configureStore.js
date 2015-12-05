@@ -4,7 +4,7 @@ import { applyMiddleware, createStore, compose } from 'redux'
 // Allow function action creators.
 import thunk from 'redux-thunk'
 // Log state changes to console.
-import createLogger from 'redux-logger'
+// import createLogger from 'redux-logger'
 // Custom api.
 import api from './middleware/api'
 // Redux Reducers.
@@ -23,7 +23,7 @@ const middleware = [
 const finalCreateStore = compose(
   applyMiddleware(...middleware),
   // Logger must be last middleware in chain(#20).
-  applyMiddleware(createLogger()),
+  // applyMiddleware(createLogger()),
   DevTools.instrument()
 )(createStore)
 
