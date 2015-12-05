@@ -51,6 +51,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   // More props that we need for reduxForm().
   const otherProps = {
     destroyOnUnmount: true,
+    showFlags: true,
     onSubmit: handleSubmit,
     validate: createValidator(stateProps.formInfo),
   }

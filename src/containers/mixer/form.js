@@ -61,6 +61,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   const otherProps = {
     destroyOnUnmount: false,
     onSubmit: handleSubmit,
+    showFlags: true,
     validate: createValidator(stateProps.formInfo),
   }
   return Object.assign(otherProps, ownProps, stateProps, dispatchProps)
