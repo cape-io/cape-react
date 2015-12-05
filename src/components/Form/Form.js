@@ -6,6 +6,7 @@ import ReduxFormProps from './ReduxFormProps'
 import SubmitButtons from './SubmitButtons'
 import Submitting from './Submitting'
 import FieldGroup from './FieldGroup'
+import Inspector from 'react-json-inspector'
 
 function Form(props) {
   const {
@@ -123,13 +124,11 @@ function Form(props) {
       </form>
 
       { showFlags &&
-        <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
+        <div>
+          <ReduxFormProps {...{ active, dirty, pristine, valid, invalid }} />
+          <Inspector data={props.values} />
+        </div>
       }
-      <pre className="code-block">
-        <code ref="code">
-          {JSON.stringify(props.values, null, 2)}
-        </code>
-      </pre>
     </div>
   )
 }
