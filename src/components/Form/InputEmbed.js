@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react'
 
 // Print RadioOption for each options.
-function InputEmbed({ }) {
+function InputEmbed({ fieldId, ...rest }) {
   return (
     <div>
-      {'embed'}
+      <input className="form-control" {...rest} id={fieldId} type="url" />
     </div>
   )
 }
