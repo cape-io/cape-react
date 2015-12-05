@@ -17,7 +17,7 @@ function FieldGroup(props) {
           { addItemTxt }
         </button>
       }
-      { !!groupData.length && `${groupData.length} Items` }
+      { groupData && !!groupData.length && `${groupData.length} Items` }
       { children ? children : <p>No Items</p>}
       </div>
     </div>
@@ -26,7 +26,7 @@ function FieldGroup(props) {
 
 FieldGroup.propTypes = {
   children: PropTypes.node,
-  groupData: PropTypes.object,
+  groupData: PropTypes.array,
   type: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   label: PropTypes.string,

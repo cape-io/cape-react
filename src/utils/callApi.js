@@ -1,5 +1,7 @@
 import { normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
+import merge from 'lodash/object/merge'
+import omit from 'lodash/object/omit'
 import 'isomorphic-fetch'
 
 // Extracts the next page URL from Github API response.
@@ -57,12 +59,13 @@ export function callApi({ endpoint, schema, api, method, body, entityInfo }) {
       )
     } else if (entityInfo) {
       const { id, entityId } = entityInfo
+      const entities = json._refs || {}
+      if (!entities[id]) {
+        entities[id] = {}
+      }
+      entities[id][entityId] = omit(json, '_refs')
       return {
-        entities: {
-          [id]: {
-            [entityId]: json,
-          },
-        },
+        entities,
       }
     } else {
       return json

@@ -231,6 +231,13 @@ export function loadContent(entityInfo) {
   }
 }
 
+export function addContent(entities) {
+  return {
+    type: CONTENT_SUCCESS,
+    response: { entities },
+  }
+}
+
 // Resets the currently visible error message.
 export function resetErrorMessage() {
   return {

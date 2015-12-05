@@ -98,7 +98,7 @@ function Input(props) {
 
 Input.propTypes = {
   contentType: PropTypes.string.isRequired,
-  entityId: PropTypes.string.isRequired,
+  entityId: PropTypes.string,
   field: PropTypes.object.isRequired,
   fieldId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

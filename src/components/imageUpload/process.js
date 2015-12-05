@@ -165,6 +165,7 @@ export function uploadFile(fileInfo, uploadInfo, metadata, onProgress, onSuccess
       onFail()
       return console.error('Error uploading file.', xhr.status, event)
     }
+    onProgress(101)
     updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess)
   }
 

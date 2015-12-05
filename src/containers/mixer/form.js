@@ -76,6 +76,7 @@ function loadData(props) {
 
 class MixerForm extends Component {
   static propTypes = {
+    destroyForm: PropTypes.func.isRequired,
     formInfo: PropTypes.object.isRequired,
     submitFailed: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
@@ -93,7 +94,8 @@ class MixerForm extends Component {
     }
     // Redirect after submitted.
     if (this.props.submitting && !nextProps.submitting && !nextProps.submitFailed) {
-      this.props.updatePath('/mixer')
+      this.nextProps.updatePath('/mixer')
+      this.nextProps.destroyForm()
     }
   }
 

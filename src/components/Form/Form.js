@@ -63,7 +63,7 @@ function Form(props) {
         {
           formElements.map( elementGroup => {
             const isCollection = elementGroup.type === 'collection'
-            const groupData = isCollection && get(fields, elementGroup.id) || []
+            const groupData = isCollection && get(fields, elementGroup.id) || undefined
             // Extract the fields we want access to from the element group.
             let groupInputs = null
             if (isCollection) {
