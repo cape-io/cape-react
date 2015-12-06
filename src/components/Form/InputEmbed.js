@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react'
 
 // Print RadioOption for each options.
-function InputEmbed({ fieldId, ...rest }) {
+function InputEmbed({ fieldId, loadEmbed, ...rest }) {
+  const { value, valid } = rest
+  // Fetch embed info when valid value is found.
+  if (valid && value) {
+    loadEmbed(value)
+  }
   return (
     <div>
       <input className="form-control" {...rest} id={fieldId} type="url" />
@@ -9,6 +14,7 @@ function InputEmbed({ fieldId, ...rest }) {
   )
 }
 InputEmbed.propTypes = {
+  loadEmbed: PropTypes.func.isRequired,
 }
 
 export default InputEmbed

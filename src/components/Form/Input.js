@@ -18,7 +18,9 @@ function Input(props) {
     entityId,
     field, fieldId,
     help,
-    label, option, options,
+    label,
+    loadEmbed,
+    option, options,
     required,
     showFlags, showErrors,
     styles, type,
@@ -54,7 +56,14 @@ function Input(props) {
       InputEl = <Dimensions {...inputProps} {...other} fieldId={fieldId} />
       break
     case 'embed':
-      InputEl = <InputEmbed {...field} {...other} fieldId={fieldId} />
+      InputEl = (
+        <InputEmbed
+          {...field}
+          {...other}
+          fieldId={fieldId}
+          loadEmbed={loadEmbed}
+        />
+      )
       break
     case 'textarea':
       InputEl = <InputTextarea {...field} {...other} />
@@ -114,6 +123,7 @@ Input.propTypes = {
   field: PropTypes.object.isRequired,
   fieldId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  loadEmbed: PropTypes.func,
   asyncValidating: PropTypes.bool.isRequired,
   showErrors: PropTypes.bool.isRequired,
   styles: PropTypes.object.isRequired,

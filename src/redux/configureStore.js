@@ -7,8 +7,6 @@ import thunk from 'redux-thunk'
 // import createLogger from 'redux-logger'
 // Custom api.
 import api from './middleware/api'
-// Auto fetch embed info when added to a form.
-import embed from './middleware/embed'
 // Redux Reducers.
 // Our reducer index.
 import rootReducer from './reducer'
@@ -19,7 +17,6 @@ import DevTools from '../containers/DevTools'
 // Define the middeware we want to apply to the store.
 const middleware = [
   api,
-  embed,
   thunk,
 ]
 

@@ -14,10 +14,14 @@ const userSchema = new Schema('users', {
 const sessionSchema = new Schema('session', {
   idAttribute: () => 'me',
 })
+const embedSchema = Schema('embed', {
+  idAttribute: 'url',
+})
 const formSchema = new Schema('forms')
 
 // Schemas for Github API responses.
 export const Schemas = {
+  EMBED: embedSchema,
   USER: userSchema,
   USER_ARRAY: arrayOf(userSchema),
   FORM: formSchema,

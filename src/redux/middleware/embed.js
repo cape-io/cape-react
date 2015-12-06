@@ -1,6 +1,6 @@
+import { isURL } from 'validator'
 import { actionTypes } from 'redux-form'
 const { BLUR, CHANGE } = actionTypes
-
 
 // Auto fetch embed info when added to a form.
 export default store => next => action => {
@@ -9,8 +9,8 @@ export default store => next => action => {
     case CHANGE:
       const { value, field } = action
       // Check to see if it's an embed.
-      if (field.split('.').pop() === 'embed') {
-        // console.log(value)
+      if (field.split('.').pop() === 'embed' && isURL(value)) {
+        console.log(value)
       }
       break
     default:

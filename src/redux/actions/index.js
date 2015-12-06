@@ -1,3 +1,4 @@
+import { isURL } from 'validator'
 import { CALL_API, Schemas } from '../middleware/api'
 
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
@@ -131,6 +132,37 @@ export function loadStargazers(fullName, nextPage) {
     }
 
     return dispatch(fetchStargazers(fullName, nextPageUrl))
+  }
+}
+export const EMBED_REQUEST = 'EMBED_REQUEST'
+export const EMBED_SUCCESS = 'EMBED_SUCCESS'
+export const EMBED_FAILURE = 'EMBED_FAILURE'
+
+// Fetches a single user from Github API.
+// Relies on the custom API middleware defined in ../middleware/api.js.
+function fetchEmbed(url) {
+  return {
+    [CALL_API]: {
+      types: [ EMBED_REQUEST, EMBED_SUCCESS, EMBED_FAILURE ],
+      api: 'api',
+      endpoint: `oembed?url=${encodeURIComponent(url)}`,
+      schema: Schemas.EMBED,
+    },
+  }
+}
+
+// Fetches a single embed from CAPE API unless it is cached.
+// Relies on Redux Thunk middleware.
+export function loadEmbed(url) {
+  return (dispatch, getState) => {
+    if (!isURL(url)) {
+      return null
+    }
+    const item = getState().entities.embed[url]
+    if (item) {
+      return null
+    }
+    return dispatch(fetchEmbed(url))
   }
 }
 
