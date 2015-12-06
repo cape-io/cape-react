@@ -15,14 +15,22 @@ const mapDispatchToProps = {
   loadEmbed,
 }
 
+// This is called from within the container component class.
+function loadData(props) {
+  const { defaultValue, value, valid } = props
+  // Fetch embed info when valid value is found.
+  if (valid && value || defaultValue) {
+    props.loadEmbed(value || defaultValue)
+  }
+}
+
 // Print RadioOption for each options.
 class InputEmbed extends Component {
+  componentWillMount() {
+    loadData(this.props)
+  }
   componentWillReceiveProps(nextProps) {
-    const { value, valid } = nextProps
-    // Fetch embed info when valid value is found.
-    if (valid && value) {
-      loadEmbed(value)
-    }
+    loadData(nextProps)
   }
   render() {
     const { fieldId, loadEmbed, info, ...rest } = this.props
