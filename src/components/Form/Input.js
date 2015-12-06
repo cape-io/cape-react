@@ -19,7 +19,6 @@ function Input(props) {
     field, fieldId,
     help,
     label,
-    loadEmbed,
     option, options,
     required,
     showFlags, showErrors,
@@ -33,7 +32,7 @@ function Input(props) {
   // handleBlur, handleChange, handleFocus
   // onBlur, onChange, onDrag, onDrop, onFocus, onUpdate
   const isTypeText = type === 'text' || type === 'url'
-  const inputGroupStyle = isTypeText ? styles.inputGroup : ''
+  const inputGroupStyle = ''
 
   let InputEl = false
   switch (type) {
@@ -61,7 +60,6 @@ function Input(props) {
           {...field}
           {...other}
           fieldId={fieldId}
-          loadEmbed={loadEmbed}
         />
       )
       break
@@ -123,7 +121,6 @@ Input.propTypes = {
   field: PropTypes.object.isRequired,
   fieldId: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  loadEmbed: PropTypes.func,
   asyncValidating: PropTypes.bool.isRequired,
   showErrors: PropTypes.bool.isRequired,
   styles: PropTypes.object.isRequired,

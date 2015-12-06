@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { updatePath } from 'redux-simple-router'
 import { createValidator } from '../../utils/formValidation'
-import { loadContent, loadForm, saveContent, loadEmbed } from '../../redux/actions'
+import { loadContent, loadForm, saveContent } from '../../redux/actions'
 import Loading from '../../components/Loading'
 import Form from '../../components/Form/Form'
 
@@ -42,7 +42,6 @@ function mapStateToProps(state, { params }) {
 // This gets merged into props too.
 const mapDispatchToProps = {
   loadContent,
-  loadEmbed,
   loadForm,
   saveContent,
   updatePath,

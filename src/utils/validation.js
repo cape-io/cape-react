@@ -37,6 +37,9 @@ const urlOptions = {
   allow_protocol_relative_urls: false,
 }
 export function isUrl(value) {
+  if (!value) {
+    return undefined
+  }
   if(!isURL(value, urlOptions)) {
     return 'Invalid URL. Please check the formatting.'
   }
