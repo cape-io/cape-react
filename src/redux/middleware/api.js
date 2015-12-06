@@ -14,7 +14,7 @@ const userSchema = new Schema('users', {
 const sessionSchema = new Schema('session', {
   idAttribute: () => 'me',
 })
-const embedSchema = Schema('embed', {
+const embedSchema = new Schema('embed', {
   idAttribute: 'url',
 })
 const formSchema = new Schema('forms')

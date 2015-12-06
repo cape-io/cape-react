@@ -17,6 +17,7 @@ function Form(props) {
     handleSubmit,
     formInfo,
     invalid,
+    loadEmbed,
     resetForm,
     pristine,
     showFlags,
@@ -46,6 +47,7 @@ function Form(props) {
           entityId={entityId}
           field={field}
           fieldId={fieldId}
+          loadEmbed={loadEmbed}
           styles={styles}
           showFlags={showFlags}
           {...other}

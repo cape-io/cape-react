@@ -28,7 +28,6 @@ export function loadUser(login) {
     if (user) {
       return null
     }
-
     return dispatch(fetchUser(login))
   }
 }
@@ -153,11 +152,16 @@ function fetchEmbed(url) {
 
 // Fetches a single embed from CAPE API unless it is cached.
 // Relies on Redux Thunk middleware.
+const embedLoading = {}
 export function loadEmbed(url) {
   return (dispatch, getState) => {
     if (!isURL(url)) {
       return null
     }
+    if (embedLoading[url]) {
+      return null
+    }
+    embedLoading[url] = true
     const item = getState().entities.embed[url]
     if (item) {
       return null
