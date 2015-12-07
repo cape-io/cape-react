@@ -13,11 +13,14 @@ function FieldGroup(props) {
       <div className="panel-body">
       { help && <p className="help">{ help }</p> }
       { addItemTxt &&
-        <button onClick={addCollectionItem}>
+        <button className="btn btn-success" onClick={addCollectionItem}>
           { addItemTxt }
         </button>
       }
-      { groupData && !!groupData.length && `${groupData.length} Items` }
+      { groupData && !!groupData.length &&
+        <span style={{ paddingLeft: '20px' }}><small>
+          {`${groupData.length} Items`}
+        </small></span> }
       { children ? children : <p>No Items</p>}
       </div>
     </div>
