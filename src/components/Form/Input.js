@@ -31,7 +31,7 @@ function Input(props) {
   // checked, defaultChecked, defaultValue, invalid, pristine, valid, value
   // handleBlur, handleChange, handleFocus
   // onBlur, onChange, onDrag, onDrop, onFocus, onUpdate
-  const isTypeText = type === 'text' || type === 'url'
+  const isTypeText = type === 'text' || type === 'url' || type === 'email'
   const inputGroupStyle = ''
 
   let InputEl = false

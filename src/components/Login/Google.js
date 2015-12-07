@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 
-function LoginGoogle({ login }) {
+function Google({ login }) {
   const linkText = `Sign in using your ${login} Google Apps account.`
   return (
     <a href="/api/user/login/google">
@@ -13,9 +13,9 @@ function LoginGoogle({ login }) {
   )
 }
 
-LoginGoogle.propTypes = {
+Google.propTypes = {
   login: PropTypes.string.isRequired,
 }
-LoginGoogle.defaultProps = {
+Google.defaultProps = {
 }
-export default LoginGoogle
+export default Google

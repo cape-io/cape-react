@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { updatePath } from 'redux-simple-router'
 
-import Login from '../components/Login'
+import Login from '../components/Login/Login'
 // import * as actions from '../../redux/modules/email'
 import { createValidator } from '../utils/formValidation'
 
@@ -18,7 +18,7 @@ function mapStateToProps(state, ownProps) {
     entities: { forms, users, session },
   } = state
   const form = forms[FORM_ID]
-  const user = users[login]
+  const user = users[login && login.toLowerCase()]
   return {
     // A unique name for this form.
     form: form.id,
@@ -51,7 +51,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   // More props that we need for reduxForm().
   const otherProps = {
     destroyOnUnmount: true,
-    showFlags: true,
+    showFlags: false,
     onSubmit: handleSubmit,
     validate: createValidator(stateProps.formInfo),
   }

@@ -77,12 +77,13 @@ function mapStateToProps(state, ownProps) {
   } = state
   // Decide what headerMsg and leadMsg to have based on the route.
   // Is it better to have different templates or different data?
+  const user = users[login && login.toLowerCase()]
   return {
     // The details needed to build the form dynamically.
     // See object here: http://v5.api.cape.io/api/content/type/cape/login
     form: forms[FORM_ID],
     login,
-    user: users[login],
+    user,
     // @TODO Use redux/modules/auth for this
     isAuthenticated: isAuthenticated(state),
   }

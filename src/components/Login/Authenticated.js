@@ -5,7 +5,9 @@ function Authenticated({ name, logout }) {
     <div>
       <p>You are currently logged in as {name}.</p>
       <div>
-        <button className="btn btn-danger" onClick={logout}><i className="fa fa-sign-out"/>{' '}Log Out</button>
+        <button className="btn btn-danger" onClick={logout}>
+          <i className="fa fa-sign-out"/>{' Log Out'}
+        </button>
       </div>
     </div>
   )
