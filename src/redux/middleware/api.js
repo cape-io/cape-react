@@ -14,14 +14,12 @@ const userSchema = new Schema('users', {
 const sessionSchema = new Schema('session', {
   idAttribute: () => 'me',
 })
-const embedSchema = new Schema('embed', {
-  idAttribute: 'url',
-})
 const formSchema = new Schema('forms')
+const urlSchema = new Schema('url')
 
 // Schemas for Github API responses.
 export const Schemas = {
-  EMBED: embedSchema,
+  URL: urlSchema,
   USER: userSchema,
   USER_ARRAY: arrayOf(userSchema),
   FORM: formSchema,
@@ -67,7 +65,7 @@ export default store => next => action => {
   if (!!body && typeof body !== 'object') {
     throw new Error('Body must be an object.')
   }
-  // What's this thing do?
+  // What's this thing do? Makes it easier on the reducer to understand?
   function actionWith(data) {
     const finalAction = Object.assign({}, action, data)
     delete finalAction[CALL_API]

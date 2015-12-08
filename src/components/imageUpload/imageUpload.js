@@ -5,11 +5,11 @@ import { addContent } from '../../redux/actions'
 
 function mapStateToProps(state, { defaultValue, value }) {
   const {
-    entities: { file },
+    entities: { url },
   } = state
   const fileId = value || defaultValue
   return {
-    fileInfo: file[fileId] && file[fileId].entity || undefined,
+    fileInfo: url[fileId] && url[fileId].entity || undefined,
   }
 }
 const mapDispatchToProps = {

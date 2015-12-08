@@ -1,5 +1,6 @@
 import { normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
+import forEach from 'lodash/collection/forEach'
 import merge from 'lodash/object/merge'
 import omit from 'lodash/object/omit'
 import 'isomorphic-fetch'
@@ -53,9 +54,15 @@ export function callApi({ endpoint, schema, api, method, body, entityInfo }) {
       const camelizedJson = camelizeKeys(json)
       const nextPageUrl = getNextPageUrl(response) || undefined
       // console.log(camelizedJson)
+      const urlIndex = camelizedJson.urls && camelizedJson.urls.length ? {} : undefined
+      if (camelizedJson.id && urlIndex) {
+        forEach(camelizedJson.urls, (url) => {
+          urlIndex[url] = camelizedJson.id
+        })
+      }
       return Object.assign({},
         normalize(camelizedJson, schema),
-        { nextPageUrl }
+        { nextPageUrl, urlIndex }
       )
     } else if (entityInfo) {
       const { id, entityId } = entityInfo

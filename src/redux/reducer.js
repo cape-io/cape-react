@@ -1,5 +1,6 @@
 import * as ActionTypes from './actions'
 import merge from 'lodash/object/merge'
+import pick from 'lodash/object/pick'
 // Handle saving url to state.
 import { routeReducer } from 'redux-simple-router'
 import { combineReducers } from 'redux'
@@ -11,18 +12,22 @@ import db from './modules/db'
 // Updates an entity cache in response to any action with response.entities.
 // Define our default entities collection database.
 const defaultEntityState = {
-  embed: {},
-  file: {},
   forms: {},
   repos: {},
   users: {},
   session: {
     me: { isAuthenticated: null },
   },
+  url: {},
+  urlIndex: {},
 }
 function entities(state = defaultEntityState, action) {
   if (action.response && action.response.entities) {
-    return merge({}, state, action.response.entities)
+    const entityData = action.response.entities
+    if (action.response.urlIndex) {
+      entityData.urlIndex = action.response.urlIndex
+    }
+    return merge({}, state, entityData)
   }
   return state
 }

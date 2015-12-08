@@ -133,40 +133,40 @@ export function loadStargazers(fullName, nextPage) {
     return dispatch(fetchStargazers(fullName, nextPageUrl))
   }
 }
-export const EMBED_REQUEST = 'EMBED_REQUEST'
-export const EMBED_SUCCESS = 'EMBED_SUCCESS'
-export const EMBED_FAILURE = 'EMBED_FAILURE'
+export const URL_REQUEST = 'URL_REQUEST'
+export const URL_SUCCESS = 'URL_SUCCESS'
+export const URL_FAILURE = 'URL_FAILURE'
 
 // Fetches a single user from Github API.
 // Relies on the custom API middleware defined in ../middleware/api.js.
-function fetchEmbed(url) {
+function fetchUrl(url) {
   return {
     [CALL_API]: {
-      types: [ EMBED_REQUEST, EMBED_SUCCESS, EMBED_FAILURE ],
+      types: [ URL_REQUEST, URL_SUCCESS, URL_FAILURE ],
       api: 'api',
-      endpoint: `oembed?url=${encodeURIComponent(url)}`,
-      schema: Schemas.EMBED,
+      endpoint: `content/url?subject=thing&url=${encodeURIComponent(url)}`,
+      schema: Schemas.URL,
     },
   }
 }
 
 // Fetches a single embed from CAPE API unless it is cached.
 // Relies on Redux Thunk middleware.
-const embedLoading = {}
-export function loadEmbed(url) {
+const urlLoading = {}
+export function loadUrl(url) {
   return (dispatch, getState) => {
     if (!isURL(url)) {
       return null
     }
-    if (embedLoading[url]) {
+    if (urlLoading[url]) {
       return null
     }
-    embedLoading[url] = true
-    const item = getState().entities.embed[url]
+    urlLoading[url] = true
+    const item = getState().entities.url[url]
     if (item) {
       return null
     }
-    return dispatch(fetchEmbed(url))
+    return dispatch(fetchUrl(url))
   }
 }
 

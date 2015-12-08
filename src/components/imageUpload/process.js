@@ -24,6 +24,7 @@ export function updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess,
     container,
     // The CDN isn't going to change for this file.
     cdnDomain,
+    contentType: type,
     // dimensions is useful clientside.
     dimensions: {
       width: width,
@@ -42,7 +43,7 @@ export function updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess,
     uploadPath: prefix + file.name,
     name: file.name,
     size: { ...humanSize, bytes },
-    type,
+    type: 'image',
     prefix,
     ...rest,
   }
