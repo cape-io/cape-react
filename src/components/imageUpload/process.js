@@ -58,8 +58,8 @@ export function updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess,
       function _onSuccess() {
         onSuccess(response)
       }
-      if (response.entity.display && response.entity.display.preview) {
-        return loadImage(response.entity.display.preview.url, _onSuccess, onError)
+      if (response.preview && response.preview.image) {
+        return loadImage(response.preview.image.url, _onSuccess, onError)
       }
       _onSuccess()
     },

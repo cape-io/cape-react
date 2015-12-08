@@ -57,7 +57,7 @@ class ImageUpload extends Component {
       warningMsg: null,
     })
     // Save to redux state.
-    this.props.addContent({ file: { [id]: fileInfo } })
+    this.props.addContent({ url: { [id]: fileInfo } })
     this.props.onBlur(fieldValue)
     // console.log('onChange', fieldValue)
     return

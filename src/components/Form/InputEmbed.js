@@ -10,6 +10,7 @@ function mapStateToProps(state, { defaultValue, value }) {
   const id = urlIndex[val] ? urlIndex[val] : val
   return {
     info: url[id] && url[id] || undefined,
+    // value: val !== id ? id : undefined,
   }
 }
 const mapDispatchToProps = {
@@ -35,7 +36,6 @@ class InputEmbed extends Component {
   }
   render() {
     const { fieldId, loadUrl, info, ...rest } = this.props
-
     return (
       <div>
         <input className="form-control" {...rest} id={fieldId} type="url" />
