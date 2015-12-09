@@ -32,7 +32,7 @@ function Photo(props) {
   }
   else if (value && value.preview && value.preview.image) {
     currentImg = (
-      <div className="dz-image">
+      <div className="dz-image thumbnail">
         <img src={value.preview.image.url} alt={value.id} />
       </div>
     )
@@ -57,9 +57,6 @@ function Photo(props) {
     //   onFocus()
     // }
   }
-  // { info && info.preview && info.preview.image &&
-  //   <img className={'col-sm-10'} src={info.preview.image.url} alt={info.title} />
-  // }
 
   return (
     <div className={className} onDragOver={handleFileHover}

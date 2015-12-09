@@ -60,9 +60,10 @@ class InputEmbed extends Component {
         { !upload && info && info.preview && info.preview.image &&
           <div className="col-md-6">
             <img
-              className={'col-sm-10'}
+              className="thumbnail"
               src={info.preview.image.url}
               alt={info.title}
+              style={{ maxWidth: 300 }}
             />
           </div>
         }
@@ -72,6 +73,7 @@ class InputEmbed extends Component {
             <input
               className="form-control"
               {...rest}
+              disabled={upload && info && info.provider && info.provider.id === 'cape'}
               id={fieldId}
               type="url"
               placeholder="https://"
