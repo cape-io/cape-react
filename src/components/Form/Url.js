@@ -57,16 +57,18 @@ class InputEmbed extends Component {
             />
           </div>
         }
+        { !upload && info && info.preview && info.preview.image &&
+          <div className="col-md-6">
+            <img
+              className={'col-sm-10'}
+              src={info.preview.image.url}
+              alt={info.title}
+            />
+          </div>
+        }
         {
           url &&
           <div className="col-md-6">
-            { info &&
-              <ul>
-                <li>{info.id}</li>
-                { info.title && <li>{info.title}</li> }
-                { info.description && <li>{info.description}</li> }
-              </ul>
-            }
             <input
               className="form-control"
               {...rest}
@@ -76,6 +78,13 @@ class InputEmbed extends Component {
               value={inputValue}
             />
             <span className="help-block">{ url.help }</span>
+            { info &&
+              <ul className="list-group">
+                <li className="list-group-item"><strong>Catalog ID: </strong>{info.id}</li>
+                { info.data && info.data.title && <li className="list-group-item"><strong>Title: </strong>{info.data.title}</li> }
+                { info.data && info.data.description && <li className="list-group-item"><strong>Description: </strong>{info.data.description}</li> }
+              </ul>
+            }
           </div>
         }
       </div>
