@@ -1,20 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-// import pick from 'lodash/object/pick'
-import { connect } from 'react-redux'
-import { addContent } from '../../redux/actions'
-
-function mapStateToProps(state, { defaultValue, value }) {
-  const {
-    entities: { url },
-  } = state
-  const fileId = value || defaultValue
-  return {
-    fileInfo: url[fileId] && url[fileId].entity || undefined,
-  }
-}
-const mapDispatchToProps = {
-  addContent,
-}
 
 import { processImgFile, uploadFile } from './process'
 import Photo from './Photo'
@@ -133,7 +117,7 @@ class ImageUpload extends Component {
   }
   render() {
     // Need to exchange the value string for file entity.
-    const { accept, ...rest, fileInfo } = this.props
+    const { accept, ...rest, info } = this.props
     return (
       <Photo
         {...rest}
@@ -141,7 +125,7 @@ class ImageUpload extends Component {
         accept={accept.join(', ')}
         handleFileSelect={this.handleFileSelect}
         handleFileHover={this.handleFileHover}
-        value={fileInfo}
+        value={info}
       />
     )
   }
@@ -155,7 +139,7 @@ ImageUpload.propTypes = {
   display: PropTypes.object,
   entityId: PropTypes.string.isRequired,
   fieldId: PropTypes.string.isRequired,
-  fileInfo: PropTypes.object,
+  info: PropTypes.object,
   maxFiles: PropTypes.number.isRequired,
   onBlur: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -168,4 +152,4 @@ ImageUpload.defaultProps = {
   maxFiles: 1,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageUpload)
+export default ImageUpload

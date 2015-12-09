@@ -2,20 +2,17 @@ import React, { PropTypes } from 'react'
 import classnames from 'classnames'
 
 import InputDate from './InputDate'
-import InputEmbed from './InputEmbed'
+import Url from './Url'
 import InputFlags from './InputFlags'
 import InputRadios from './InputRadios'
 import InputSelect from './InputSelect'
 import InputTextarea from './InputTextarea'
-import Photo from '../imageUpload/imageUpload'
+// import Photo from '../imageUpload/imageUpload'
 import Dimensions from './Dimensions'
 
 function Input(props) {
   const {
     asyncValidating,
-    contentType,
-    display,
-    entityId,
     field, fieldId,
     help,
     label,
@@ -54,31 +51,20 @@ function Input(props) {
     case 'dimensions':
       InputEl = <Dimensions {...inputProps} {...other} fieldId={fieldId} />
       break
-    case 'embed':
+    case 'url':
       InputEl = (
-        <InputEmbed
+        <Url
           {...field}
           {...other}
           fieldId={fieldId}
+          uploadInfo={uploadInfo}
         />
       )
       break
     case 'textarea':
       InputEl = <InputTextarea {...field} {...other} />
       break
-    case 'file':
-      InputEl = (
-        <Photo
-          {...field}
-          contentType={contentType}
-          display={display}
-          entityId={entityId}
-          fieldId={fieldId}
-          name={name}
-          uploadInfo={uploadInfo}
-        />
-      )
-      break
+
     default:
       InputEl = (
         <input
@@ -104,7 +90,7 @@ function Input(props) {
         { label }
         { required && '*' }
       </label>
-      <div className={'col-sm-6 ' + inputGroupStyle}>
+      <div className={type === 'url' ? 'col-sm-10' : 'col-sm-6 ' + inputGroupStyle}>
         { asyncValidating && <i className={'fa fa-cog fa-spin ' + styles.cog}/> }
         { InputEl }
         { showErrors && error && <div className="text-danger">{error}</div> }

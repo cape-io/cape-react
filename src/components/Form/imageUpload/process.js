@@ -1,6 +1,6 @@
 const _ = require('lodash')
 
-import { callApi } from '../../utils/callApi'
+import { callApi } from '../../../utils/callApi'
 
 export function humanFileSize(bytes) {
   const units = [ 'B', 'KB', 'MB', 'GB' ]
@@ -16,7 +16,7 @@ export function humanFileSize(bytes) {
 export function updateApi(uploadInfo, metadata, fileInfo, onProgress, onSuccess, onError) {
   const { container, prefix, cdnDomain } = uploadInfo
   const { bytes, file, type, humanSize, width, height } = fileInfo
-  const { contentType, entityId, fieldId, display,...rest } = metadata
+  const { contentType, entityId, fieldId, display, ...rest } = metadata
   // This is what we are going to send/save to the database.
   // Id field is created on the server, along with md5.
   // @TODO Compute most of these values on the server.

@@ -4,13 +4,13 @@ import ImageUploading from './ImageUploading'
 
 function Photo(props) {
   const {
-    active,
+    // active,
     accept,
     errorMsg,
     fieldId,
     fileHover, fileUploading,
     handleFileHover, handleFileSelect,
-    onFocus,
+    // onFocus,
     progress,
     value,
     warningMsg,
@@ -18,6 +18,7 @@ function Photo(props) {
 
   const className = classNames({
     dropzone: true,
+    jumbotron: true,
     ['alert-info hover']: !!fileHover,
   })
 
@@ -29,10 +30,10 @@ function Photo(props) {
       </div>
     )
   }
-  else if (value && value.display && value.display.preview) {
+  else if (value && value.preview && value.preview.image) {
     currentImg = (
       <div className="dz-image">
-        <img src={value.display.preview.url} alt={value.id} />
+        <img src={value.preview.image.url} alt={value.id} />
       </div>
     )
   }
@@ -56,12 +57,15 @@ function Photo(props) {
     //   onFocus()
     // }
   }
+  // { info && info.preview && info.preview.image &&
+  //   <img className={'col-sm-10'} src={info.preview.image.url} alt={info.title} />
+  // }
 
   return (
     <div className={className} onDragOver={handleFileHover}
       onDragLeave={handleFileHover} onDrop={handleFileSelect}
       onClick={ activateFileSelect } id="filedrag">
-      {currentImg}
+      { currentImg }
       <p className={txtClassName}>{ imgTxt }</p>
       <input type="file" id={inputId} name="fileselect"
         accept={accept} onChange={handleFileSelect}
@@ -76,6 +80,7 @@ Photo.propTypes = {
   handleFileSelect: PropTypes.func.isRequired,
   imgInfo: PropTypes.object,
   onFocus: PropTypes.func.isRequired,
+  value: PropTypes.object,
 }
 
 export default Photo
