@@ -25,7 +25,7 @@ function Photo(props) {
   let currentImg = null
   if (fileUploading) {
     currentImg = (
-      <div className="dz-images row">
+      <div className="dz-images thumbnail row">
         <ImageUploading progress={progress} fileInfo={fileUploading} width="300" />
       </div>
     )

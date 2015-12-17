@@ -14,6 +14,11 @@ function Mixer({ contentTypes }) {
               to={`/mixer/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
               { title }
             </Link>
+            {' - '}
+            <Link
+              to={`/mixer/sort/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
+              { 'Sort' + title }
+            </Link>
           </li>
         ))
       }

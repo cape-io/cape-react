@@ -1,92 +1,121 @@
-const LOAD = 'mixer/LOAD';
-const LOAD_FAIL = 'mixer/LOAD_FAIL';
-const UPDATE = 'mixer/UPDATE';
+import mapValues from 'lodash/object/mapValues'
+import update from 'react/lib/update'
 
-const initialState = {
-  loading: false,
-};
+export function getContentInfo(state, props) {
+  const { params } = props
+  const { entities } = state
+  const { groupId, typeId, entityId } = params
+  const contentType = `${groupId}/${typeId}`
+  const defaultForm = {
+    fields: [],
+    id: contentType,
+    loading: true,
+  }
+  const form = entities.forms[contentType] || defaultForm
+  form.entityId = entityId
+  // Grab the values for the form.
+  const contentEntities = entities[contentType] || {}
+  // Need to stringify object values...
+  const initialValues = contentEntities[entityId] || { loading: true }
+  // console.log(id)
+  // state.db.contentTypes.find()
+  return {
+    form,
+    initialValues,
+  }
+}
+
+// Calling everything a field is kinda crazy.
+function getValue(entities, field, value) {
+  if (field.type === 'url' && entities.url[value]) {
+    return entities[value]
+  }
+  if (field.type === 'collection') {
+    return value.map( val =>
+      assembleFieldInfo(entities, field.field, val)
+    )
+  }
+  return value
+}
+
+// @field object describing content type
+// @value object of the form value
+export function assembleFieldInfo(entities, field, value) {
+  mapValues(value, (val, id) => {
+    const fieldInfo = field[id]
+    return {
+      ...fieldInfo,
+      value: getValue(entities, fieldInfo, val),
+    }
+  })
+}
+
+export const COLLECTION_SORT = 'COLLECTION_SORT'
+export function moveCard(dragIndex, hoverIndex) {
+  return {
+    type: COLLECTION_SORT,
+    payload: {
+      dragIndex,
+      hoverIndex,
+    },
+  }
+}
+
+export const COLLECTION_SAVE = 'COLLECTION_SAVE'
+export function saveCards() {
+  console.log('save')
+  return {
+    type: COLLECTION_SAVE,
+  }
+}
+
+const cards = [
+  {
+    id: 10,
+    text: 'Write a cool JS library',
+  },
+  {
+    id: 2,
+    text: 'Make it generic enough',
+  }, {
+    id: 3,
+    text: 'Write README',
+  }, {
+    id: 4,
+    text: 'Create some examples',
+  }, {
+    id: 5,
+    text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
+  }, {
+    id: 6,
+    text: '???',
+  }, {
+    id: 7,
+    text: 'PROFIT',
+  },
+]
+const initialState = { cards }
+
+function handleSort(state, payload) {
+  const { cards } = state
+  const { dragIndex, hoverIndex } = payload
+  const dragCard = cards[dragIndex]
+  // console.log({dragIndex, hoverIndex, dragCard})
+  return update(state, {
+    cards: {
+      $splice: [
+        [ dragIndex, 1 ],
+        [ hoverIndex, 0, dragCard ],
+      ],
+    },
+  })
+}
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case LOAD:
-      return {
-        ...state,
-        loading: true,
-      };
-    case LOAD_FAIL:
-      return {
-        ...state,
-        loading: false,
-        loaded: false,
-        error: action.error,
-      };
-    case UPDATE:
-      let groupState = state[action.meta.groupId] || {};
-      groupState = {
-        ...groupState,
-        [action.meta.typeId]: action.payload || action.result,
-      };
-      return {
-        ...state,
-        [action.meta.groupId]: groupState,
-      };
+    case COLLECTION_SORT:
+      return handleSort(state, action.payload)
     default:
-      return state;
+      return state
   }
-}
-
-function handleUpdateMe({data, groupId, typeId}) {
-  return {
-    type: UPDATE,
-    payload: data,
-    meta: {groupId, typeId},
-  };
-}
-
-export function updateMe(groupId, typeId, data) {
-  return (dispatch, getState) => {
-    // Dispatch route update?
-    // dispatch({type: SEND_TOKEN});
-    const record = {
-      ...data,
-      userId: getState().auth.user.name,
-    };
-    // Run async call.
-    const options = {
-      method: 'put',
-      body: JSON.stringify(record),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    };
-    function handleResponse(resp) {
-      return dispatch(handleUpdateMe({record, groupId, typeId, resp}));
-    }
-    fetch(`/content/${groupId}/${typeId}`, options)
-      .then((response) => response.json())
-      .then(handleResponse)
-      .catch(handleResponse);
-  };
-}
-
-export function formInfo({auth: {user}, mixer, router: { params } }) {
-  // Pull group and type from router params.
-  const { groupId, typeId } = params;
-  // Check to see if we have data for this form already.
-  return {
-    loaded: mixer && mixer[groupId] && mixer[groupId][typeId],
-    groupId,
-    typeId,
-    userId: user.name,
-  }
-}
-
-export function load({groupId, typeId, userId}) {
-  const url = `/content/me/${groupId}/${typeId}/${userId}`;
-  return {
-    types: [LOAD, UPDATE, LOAD_FAIL],
-    promise: (client) => client.get(url),
-    meta: {groupId, typeId},
-  };
 }

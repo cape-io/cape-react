@@ -8,6 +8,7 @@ import {
     LoginForm,
     Mixer,
     MixerForm,
+    MixerSort,
     User,
   } from './containers'
 
@@ -40,6 +41,7 @@ export default function createRoutes(store) {
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
         <Route path="mixer" component={Mixer} />
+        <Route path="mixer/sort/:groupId/:typeId/:entityId" component={MixerSort} />
         <Route path="mixer/:groupId/:typeId/:entityId" component={MixerForm} />
       </Route>
 

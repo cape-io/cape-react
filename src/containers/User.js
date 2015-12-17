@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { updatePath } from 'redux-simple-router'
+import { pushPath } from 'redux-simple-router'
 
 import { loadForm, loadUser } from '../redux/actions'
 import { isAuthenticated } from '../redux/modules/auth'
@@ -26,9 +26,9 @@ class UserPage extends Component {
   componentWillMount() {
     if (this.props.isAuthenticated) {
       if (this.props.location.query && this.props.location.query.destination) {
-        return this.props.updatePath(this.props.location.query.destination)
+        return this.props.pushPath(this.props.location.query.destination)
       }
-      this.props.updatePath('/mixer')
+      this.props.pushPath('/mixer')
     }
   }
   componentDidMount() {
@@ -65,7 +65,7 @@ UserPage.propTypes = {
   loadUser: PropTypes.func.isRequired,
   location: PropTypes.object,
   login: PropTypes.string,
-  updatePath: PropTypes.func.isRequired,
+  pushPath: PropTypes.func.isRequired,
 }
 
 // This is where we define computed fields (reselect module) or make other changes.
@@ -94,7 +94,7 @@ function mapStateToProps(state, ownProps) {
 const mapDispatchToProps = {
   loadForm,
   loadUser,
-  updatePath,
+  pushPath,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage)

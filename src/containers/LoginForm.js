@@ -1,7 +1,7 @@
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { updatePath } from 'redux-simple-router'
+import { pushPath } from 'redux-simple-router'
 
 import Login from '../components/Login/Login'
 // import * as actions from '../../redux/modules/email'
@@ -38,15 +38,15 @@ function mapStateToProps(state, ownProps) {
 // Which action creators does it want to receive by props?
 // This gets merged into props too.
 const mapDispatchToProps = {
-  updatePath,
+  pushPath,
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
   function handleSubmit({ email }) {
-    dispatchProps.updatePath(`/user/${email}`)
+    dispatchProps.pushPath(`/user/${email}`)
   }
   // if (stateProps.session.isAuthenticated) {
-  //   dispatchProps.updatePath('mixer')
+  //   dispatchProps.pushPath('mixer')
   // }
   // More props that we need for reduxForm().
   const otherProps = {

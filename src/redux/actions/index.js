@@ -225,6 +225,39 @@ export function loadSession() {
     return dispatch(fetchSession(session))
   }
 }
+export const SCHEMA_REQUEST = 'SCHEMA_REQUEST'
+export const SCHEMA_SUCCESS = 'SESS_SUCCESS'
+export const SCHEMA_FAILURE = 'SESS_FAILURE'
+
+// Fetches a single user from Github API.
+// Relies on the custom API middleware defined in ../middleware/api.js.
+export function fetchSchema(id) {
+  let endpoint = 'schema'
+  if (id) {
+    endpoint += '/' + id
+  }
+  return {
+    [CALL_API]: {
+      types: [ SCHEMA_REQUEST, SCHEMA_SUCCESS, SCHEMA_FAILURE ],
+      api: 'api',
+      endpoint,
+      schema: Schemas.SCHEMA,
+    },
+  }
+}
+
+export function loadSchema(id) {
+  return (dispatch, getState) => {
+    const schema = getState().entities.schema || {}
+    if (id && schema[id] && schema[id].property) {
+      return null
+    }
+    if (!id && schema.Thing) {
+      return null
+    }
+    return dispatch(fetchSchema(id))
+  }
+}
 
 export const CONTENT_SAVE = 'CONTENT_SAVE'
 export const CONTENT_SAVED = 'CONTENT_SAVED'

@@ -1,6 +1,8 @@
 {
   "name": "cape-editor",
+  "version": "1.2.1",
   "description": "CAPE Editor",
+  "homepage": "https://edit.cape.io",
   "author": "Kai Curry <kai@cape.io> (http://github.com/webmasterkai)",
   "contributors": [
     {
@@ -19,6 +21,7 @@
     "start": "node server.js",
     "lint": "eslint src"
   },
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/cape-io/cape-editor"
@@ -26,7 +29,6 @@
   "bugs": {
     "url": "https://github.com/cape-io/cape-editor/issues"
   },
-  "homepage": "https://edit.cape.io",
   "keywords": [
     "cape",
     "react",
@@ -41,7 +43,7 @@
     "babel",
     "react-transform"
   ],
-  "main": "devServer.js",
+  "license": "CC0-1.0",
   "engines": {
     "node": ">=5.0.0"
   },
@@ -56,15 +58,17 @@
     "moment": "^2.10.6",
     "normalizr": "^1.4.0",
     "react": "0.14.x",
+    "react-dnd": "^2.0.2",
+    "react-dnd-html5-backend": "^2.0.0",
     "react-dom": "0.14.x",
     "react-json-inspector": "Lapple/react-json-inspector",
     "react-redux": "4.x",
-    "react-router": "^1.0.0",
-    "react-select": "1.0.0-beta6",
+    "react-router": "1.0.x",
+    "react-select": "1.0.0-beta7",
     "react-textarea-autosize": "^3.1.0",
-    "react-widgets": "^3.1.0",
+    "react-widgets": "3.1.x",
     "redux": "3.x",
-    "redux-form": "3.1.x",
+    "redux-form": "4.x",
     "redux-localstorage": "^1.0.0-rc4",
     "redux-simple-router": "^0.0.10",
     "redux-thunk": "^1.0.0",

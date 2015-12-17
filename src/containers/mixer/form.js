@@ -2,9 +2,10 @@ import React, { PropTypes, Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
-import { updatePath } from 'redux-simple-router'
+import { pushPath } from 'redux-simple-router'
 import { createValidator } from '../../utils/formValidation'
 import { loadContent, loadForm, saveContent } from '../../redux/actions'
+import { getContentInfo } from '../../redux/modules/mixer'
 import Loading from '../../components/Loading'
 import Form from '../../components/Form/Form'
 
@@ -12,25 +13,8 @@ import Form from '../../components/Form/Form'
 
 // Redux connections.
 
-function mapStateToProps(state, { params }) {
-  const {
-    entities: { forms },
-  } = state
-  const { groupId, typeId, entityId } = params
-  const contentType = `${groupId}/${typeId}`
-  const defaultForm = {
-    fields: [],
-    id: contentType,
-    loading: true,
-  }
-  const form = forms[contentType] || defaultForm
-  form.entityId = entityId
-  // Grab the values for the form.
-  const entities = state.entities[contentType] || {}
-  // Need to stringify object values...
-  const initialValues = entities[entityId] || { loading: true }
-  // console.log(id)
-  // state.db.contentTypes.find()
+function mapStateToProps(state, props) {
+  const { form, initialValues } = getContentInfo(state, props)
   return {
     fields: form.fields,
     form: form.id,
@@ -44,7 +28,7 @@ const mapDispatchToProps = {
   loadContent,
   loadForm,
   saveContent,
-  updatePath,
+  pushPath,
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -55,7 +39,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     return dispatchProps.saveContent({ id, entityId, body: data })
   }
   // if (stateProps.session.isAuthenticated) {
-  //   dispatchProps.updatePath('mixer')
+  //   dispatchProps.pushPath('mixer')
   // }
   // More props that we need for reduxForm().
   const otherProps = {
@@ -81,7 +65,7 @@ class MixerForm extends Component {
     formInfo: PropTypes.object.isRequired,
     submitFailed: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
-    updatePath: PropTypes.func.isRequired,
+    pushPath: PropTypes.func.isRequired,
     values: PropTypes.object.isRequired,
   }
 
@@ -96,7 +80,7 @@ class MixerForm extends Component {
     // Redirect after submitted.
     if (this.props.submitting && !nextProps.submitting && !nextProps.submitFailed) {
       nextProps.destroyForm()
-      nextProps.updatePath('/mixer')
+      nextProps.pushPath('/mixer')
     }
   }
 

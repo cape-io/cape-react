@@ -1,11 +1,11 @@
 import * as ActionTypes from './actions'
 import merge from 'lodash/object/merge'
-import pick from 'lodash/object/pick'
+// import pick from 'lodash/object/pick'
 // Handle saving url to state.
 import { routeReducer } from 'redux-simple-router'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
-
+import mixer from './modules/mixer'
 import paginate from './reducers/paginate'
 import db from './modules/db'
 
@@ -70,6 +70,7 @@ const rootReducer = combineReducers({
   entities,
   errorMessage,
   form: formReducer,
+  mixer,
   pagination,
   // Special place to save url. { changeId, path }
   routing: routeReducer,

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { updatePath } from 'redux-simple-router'
-import { loadSession, resetErrorMessage } from '../redux/actions'
+import { pushPath } from 'redux-simple-router'
+import { loadSchema, loadSession, resetErrorMessage } from '../redux/actions'
 import { isLoaded } from '../redux/modules/auth'
 import Footer from './Footer'
 import Loading from '../components/Loading'
@@ -10,6 +10,7 @@ import Loading from '../components/Loading'
 function loadData(props) {
   // Load info about the user session.
   props.loadSession()
+  props.loadSchema()
 }
 
 class App extends Component {
@@ -62,7 +63,7 @@ App.propTypes = {
   errorMessage: PropTypes.string,
   isLoaded: PropTypes.bool.isRequired,
   resetErrorMessage: PropTypes.func.isRequired,
-  updatePath: PropTypes.func.isRequired,
+  pushPath: PropTypes.func.isRequired,
   // Injected by React Router
   children: PropTypes.node,
 }
@@ -80,5 +81,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   loadSession,
   resetErrorMessage,
-  updatePath,
+  pushPath,
 })(App)
