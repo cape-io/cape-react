@@ -1,6 +1,12 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
+// {' - '}
+// <Link
+//   to={`/mixer/sort/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
+//   { 'Sort' + title }
+// </Link>
+
 // Display a list of content types the user can edit.
 function Mixer({ contentTypes }) {
   return (
@@ -13,11 +19,6 @@ function Mixer({ contentTypes }) {
             <Link
               to={`/mixer/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
               { title }
-            </Link>
-            {' - '}
-            <Link
-              to={`/mixer/sort/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
-              { 'Sort' + title }
             </Link>
           </li>
         ))

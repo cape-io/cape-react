@@ -79,6 +79,7 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+  loadSchema,
   loadSession,
   resetErrorMessage,
   pushPath,

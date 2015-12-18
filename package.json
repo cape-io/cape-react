@@ -70,7 +70,7 @@
     "redux": "3.x",
     "redux-form": "4.x",
     "redux-localstorage": "^1.0.0-rc4",
-    "redux-simple-router": "^0.0.10",
+    "redux-simple-router": "1.0.x",
     "redux-thunk": "^1.0.0",
     "scroll-behavior": "^0.3.0",
     "validator": "^4.4.0"

@@ -249,6 +249,9 @@ export function fetchSchema(id) {
 export function loadSchema(id) {
   return (dispatch, getState) => {
     const schema = getState().entities.schema || {}
+    if (!id) {
+      return null
+    }
     if (id && schema[id] && schema[id].property) {
       return null
     }
