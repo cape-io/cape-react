@@ -1,7 +1,6 @@
 {
   "extends": [
-    "eslint-config-airbnb",
-    "rackt",
+    "airbnb",
     "import/warnings"
   ],
   "ecmaFeatures": {
@@ -13,23 +12,26 @@
     "node": true,
     "mocha": true
   },
+  "parser": "babel-eslint",
   "rules": {
+    "array-bracket-spacing": [ 2, "always" ],
     "comma-dangle": [2, "always-multiline"],
     "id-length": [2, {
       "min": 3,
       "max": 30,
       "properties": "never",
-      "exceptions": ["cb", "r", "_", "id", "rq", "db", "io", "me"]
+      "exceptions": ["cb", "r", "_", "id", "io", "rq", "db", "md", "mx", "qs"]
     }],
     "import/no-named-as-default": 2,
-    "import/no-require": 0,
     "import/default": 0,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
     "no-console": 1,
     "no-alert": 1,
-    "no-trailing-spaces": 2
+    "no-trailing-spaces": 2,
+    "object-curly-spacing": [ 2, "always" ],
+    "semi": [ 2, "never" ]
   },
   "plugins": [
     "react", "import"
