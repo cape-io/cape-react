@@ -7,7 +7,7 @@ export const USER_REQUEST = 'USER_REQUEST'
 export const USER_SUCCESS = 'USER_SUCCESS'
 export const USER_FAILURE = 'USER_FAILURE'
 
-// Fetches a single user from Github API.
+// Fetches a single user from CAPE API.
 // Relies on the custom API middleware defined in ../middleware/api.js.
 function fetchUser(login) {
   return {

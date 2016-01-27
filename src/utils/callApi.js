@@ -1,7 +1,7 @@
 import { normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import forEach from 'lodash/collection/forEach'
-import merge from 'lodash/object/merge'
+// import merge from 'lodash/object/merge'
 import omit from 'lodash/object/omit'
 import 'isomorphic-fetch'
 
