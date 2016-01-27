@@ -26,7 +26,7 @@ export function isRequired(value) {
 }
 
 const urlOptions = {
-  protocols: [ 'http','https' ],
+  protocols: [ 'http', 'https' ],
   require_tld: true,
   require_protocol: true,
   require_valid_protocol: true,
@@ -40,7 +40,7 @@ export function isUrl(value) {
   if (!value) {
     return undefined
   }
-  if(!isURL(value, urlOptions)) {
+  if (!isURL(value, urlOptions)) {
     return 'Invalid URL. Please check the formatting.'
   }
 }
