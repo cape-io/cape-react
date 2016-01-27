@@ -63,7 +63,7 @@
     "react-json-inspector": "github:lapple/react-json-inspector",
     "react-redux": "4.x",
     "react-router": "1.0.x",
-    "react-select": "1.0.0-beta7",
+    "react-select": "1.0.0-beta8",
     "react-textarea-autosize": "^3.1.0",
     "react-widgets": "3.1.x",
     "redux": "3.x",
@@ -75,7 +75,7 @@
     "validator": "^4.4.0"
   },
   "devDependencies": {
-    "babel": "^6.3.13",
+    "babel": "^6.3.26",
     "babel-core": "^6.3.21",
     "babel-eslint": "^5.0.0-beta6",
     "babel-loader": "^6.2.0",
