@@ -19,10 +19,9 @@ module.exports = {
   module: {
     loaders: [ {
       test: /\.js$/,
-      loaders: [
-        'babel',
-      ],
+      exclude: /node_modules/,
       include: path.join(__dirname, 'src'),
+      loaders: ['babel?cacheDirectory']
     } ],
   },
 }
