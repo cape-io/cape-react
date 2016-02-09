@@ -4,12 +4,15 @@ import merge from 'lodash/merge'
 // Redux Middleware.
 // Allow function action creators.
 import thunk from 'redux-thunk'
-// Log state changes to console.
-import { syncHistoryWithStore } from '../../../redux-history-sync'
+
+import {
+  syncHistoryWithStore,
+} from 'redux-history-sync'
 
 // Socket.io linking
 import io from 'socket.io-client'
 import { middleware as createSocketMiddleware } from 'cape-redux-socket'
+
 const location = 'http://edit.l.cape.io/'
 const socket = createSocketMiddleware(io(location))
 // Redux Reducers.
@@ -24,7 +27,7 @@ import DevTools from '../containers/DevTools'
 // Define the middeware we want to apply to the store.
 const middleware = [
   api,
-  // socket,
+  socket,
   thunk,
 ]
 

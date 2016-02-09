@@ -3,7 +3,7 @@ import merge from 'lodash/merge'
 // import pick from 'lodash/object/pick'
 // Handle saving url to state.
 import socket, { idReducer as id } from 'cape-redux-socket'
-import { routerReducer } from '../../../react-router-redux'
+import { historyReducer } from 'redux-history-sync'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import mixer from './modules/mixer'
@@ -50,9 +50,9 @@ export default combineReducers({
   entities,
   errorMessage,
   form: formReducer,
+  history: historyReducer,
   id,
   mixer,
   // Special place to save url. { changeId, path }
-  routing: routerReducer,
   socket,
 })
