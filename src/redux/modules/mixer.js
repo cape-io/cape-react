@@ -1,4 +1,4 @@
-import mapValues from 'lodash/object/mapValues'
+import mapValues from 'lodash/mapValues'
 import update from 'react/lib/update'
 
 export function getContentInfo(state, props) {
@@ -31,7 +31,7 @@ function getValue(entities, field, value) {
     return entities[value]
   }
   if (field.type === 'collection') {
-    return value.map( val =>
+    return value.map(val =>
       assembleFieldInfo(entities, field.field, val)
     )
   }

@@ -1,12 +1,12 @@
 import * as ActionTypes from './actions'
-import merge from 'lodash/object/merge'
+import merge from 'lodash/merge'
 // import pick from 'lodash/object/pick'
 // Handle saving url to state.
-import { routeReducer } from 'redux-simple-router'
+import socket, { idReducer as id } from 'cape-redux-socket'
+import { routerReducer } from '../../../react-router-redux'
 import { combineReducers } from 'redux'
 import { reducer as formReducer } from 'redux-form'
 import mixer from './modules/mixer'
-import paginate from './reducers/paginate'
 import db from './modules/db'
 
 // Updates an entity cache in response to any action with response.entities.
@@ -45,35 +45,14 @@ function errorMessage(state = null, action) {
   return state
 }
 
-// Updates the pagination data for different actions.
-const pagination = combineReducers({
-  starredByUser: paginate({
-    mapActionToKey: action => action.login,
-    types: [
-      ActionTypes.STARRED_REQUEST,
-      ActionTypes.STARRED_SUCCESS,
-      ActionTypes.STARRED_FAILURE,
-    ],
-  }),
-  stargazersByRepo: paginate({
-    mapActionToKey: action => action.fullName,
-    types: [
-      ActionTypes.STARGAZERS_REQUEST,
-      ActionTypes.STARGAZERS_SUCCESS,
-      ActionTypes.STARGAZERS_FAILURE,
-    ],
-  }),
-})
-
-const rootReducer = combineReducers({
+export default combineReducers({
   db,
   entities,
   errorMessage,
   form: formReducer,
+  id,
   mixer,
-  pagination,
   // Special place to save url. { changeId, path }
-  routing: routeReducer,
+  routing: routerReducer,
+  socket,
 })
-
-export default rootReducer

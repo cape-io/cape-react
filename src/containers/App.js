@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { pushPath } from 'redux-simple-router'
 import { loadSchema, loadSession, resetErrorMessage } from '../redux/actions'
 import { isLoaded } from '../redux/modules/auth'
+import Router from './Router'
 import Footer from './Footer'
 import Loading from '../components/Loading'
 
@@ -26,7 +26,7 @@ class App extends Component {
     this.props.resetErrorMessage()
     err.preventDefault()
   }
-
+  // @TODO make this its own component!
   renderErrorMessage() {
     const { errorMessage } = this.props
     if (!errorMessage) {
@@ -37,21 +37,20 @@ class App extends Component {
       <div className="alert alert-danger" role="alert">
         <b>{errorMessage}</b>
         {' '}
-        (<a href="#"
-            onClick={this.handleDismissClick}>
-          Dismiss
-        </a>)
+        <a href="#" onClick={this.handleDismissClick}>Dismiss</a>
       </div>
     )
   }
 
   render() {
-    const { children, isLoaded } = this.props
-    const loadingEl = !isLoaded && <Loading message="Loading your session info..." />
+    const { children, loaded, props } = this.props
     return (
       <div className="container">
         { this.renderErrorMessage() }
-        { loadingEl || children }
+        {
+          loaded ? <Router {...props} /> : <Loading message="Loading your session info..." />
+        }
+        { children }
         <Footer />
       </div>
     )
@@ -61,9 +60,10 @@ class App extends Component {
 App.propTypes = {
   // Injected by React Redux
   errorMessage: PropTypes.string,
-  isLoaded: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
   resetErrorMessage: PropTypes.func.isRequired,
   pushPath: PropTypes.func.isRequired,
+  props: PropTypes.object,
   // Injected by React Router
   children: PropTypes.node,
 }
@@ -73,8 +73,8 @@ function mapStateToProps(state) {
     errorMessage,
   } = state
   return {
-    errorMessage: errorMessage,
-    isLoaded: isLoaded(state),
+    errorMessage,
+    loaded: isLoaded(state),
   }
 }
 
@@ -82,5 +82,4 @@ export default connect(mapStateToProps, {
   loadSchema,
   loadSession,
   resetErrorMessage,
-  pushPath,
 })(App)

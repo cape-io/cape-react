@@ -1,8 +1,8 @@
 import { normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
-import forEach from 'lodash/collection/forEach'
+import forEach from 'lodash/forEach'
 // import merge from 'lodash/object/merge'
-import omit from 'lodash/object/omit'
+import omit from 'lodash/omit'
 import 'isomorphic-fetch'
 
 // Extracts the next page URL from Github API response.
@@ -41,7 +41,7 @@ export function callApi({ endpoint, schema, api, method, body, entityInfo }) {
     method: method || 'get',
     body: body ? JSON.stringify(body) : undefined,
   })
-  .then( response =>
+  .then(response =>
     response.json()
     .then( json => ({ json, response }))
   )
