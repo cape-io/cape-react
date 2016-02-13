@@ -36,4 +36,14 @@ export default {
       createNavLink('logout', { authenticated: true, className: 'logout-link' }),
     ],
   },
+  entity: {
+    forms: {},
+    repos: {},
+    users: {},
+    session: {
+      me: { isAuthenticated: null },
+    },
+    url: {},
+    urlIndex: {},
+  },
 }

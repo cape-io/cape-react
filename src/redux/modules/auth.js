@@ -126,7 +126,7 @@ export function login(name) {
     types: [ LOGIN, LOGIN_SUCCESS, LOGIN_FAIL ],
     promise: (client) => client.post('/user/login', {
       data: {
-        name: name,
+        name,
       },
     }),
   }

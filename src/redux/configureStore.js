@@ -7,21 +7,27 @@ import thunk from 'redux-thunk'
 
 import {
   syncHistoryWithStore,
+  createHistoryCache,
+  historyMiddleware,
+  makeHydratable,
+  historyReducer,
+  getInitState,
 } from 'redux-history-sync'
 
 // Socket.io linking
 import io from 'socket.io-client'
 import { middleware as createSocketMiddleware } from 'cape-redux-socket'
-
 const location = 'http://edit.l.cape.io/'
 const socket = createSocketMiddleware(io(location))
+
 // Redux Reducers.
 // Our reducer index.
-import rootReducer from './reducer'
+import rootReducer, { defaultState } from './reducer'
 
 // Custom api.
 import api from './middleware/api'
 
+// The redux state sidebar thing store enhancer.
 import DevTools from '../containers/DevTools'
 
 // Define the middeware we want to apply to the store.
@@ -31,24 +37,15 @@ const middleware = [
   thunk,
 ]
 
-const history = createHistory()
-function initLocation() {
-  let locationBeforeTransitions
-  history.listen(loc => locationBeforeTransitions = loc)()
-  return locationBeforeTransitions
-}
 const calculatedState = {
   db: {
     currentYear: new Date().getFullYear(),
   },
-  routing: {
-    locationBeforeTransitions: initLocation(),
-  },
 }
 // Configure and create Redux store.
-// Allow the function to accept an initialState object.
+// Function requires an initialState object.
 export default function configureStore(initialState) {
-  const initState = merge(initialState, calculatedState)
+  const initState = merge(initialState, calculatedState, defaultState)
   const store = createStore(
     rootReducer,
     initState,
@@ -59,7 +56,6 @@ export default function configureStore(initialState) {
       DevTools.instrument()
     )
   )
-
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./reducer', () => {
@@ -67,7 +63,6 @@ export default function configureStore(initialState) {
       store.replaceReducer(nextRootReducer)
     })
   }
-  syncHistoryWithStore(history, store, { adjustUrlOnReplay: false })
-  // reduxRouterMiddleware.listenForReplays(store)
+  syncHistoryWithStore(history, store)
   return store
 }

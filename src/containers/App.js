@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loadSchema, loadSession, resetErrorMessage } from '../redux/actions'
+import { loadSchema, loadSession } from '../redux/actions'
+import { resetErrorMessage } from '../redux/modules/errorMessage'
 import { isLoaded } from '../redux/modules/auth'
 import Router from './Router'
 import Footer from './Footer'

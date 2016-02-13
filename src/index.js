@@ -15,5 +15,5 @@ const store = configureStore(initialState)
 // Define our destination where we insert our root react component.
 const destEl = document.getElementById('root')
 
-// The root component needs the Redux `store` and router history as props.
-render(<Root store={store} history={history} />, destEl)
+// The root component needs the Redux `store`.
+render(<Root store={store} />, destEl)
