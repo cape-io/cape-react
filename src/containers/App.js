@@ -1,57 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loadSchema, loadSession } from '../redux/actions'
-import { resetErrorMessage } from '../redux/modules/errorMessage'
-import { isLoaded } from '../redux/modules/auth'
+
+import getRouteInfo from '../redux/routes'
+
 import Router from './Router'
 import Footer from './Footer'
-import Loading from '../components/Loading'
-
-// This is called from within the container component class.
-function loadData(props) {
-  // Load info about the user session.
-  props.loadSession()
-  props.loadSchema()
-}
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.handleDismissClick = this.handleDismissClick.bind(this)
-  }
-  componentWillMount() {
-    loadData(this.props)
-  }
-
-  handleDismissClick(err) {
-    this.props.resetErrorMessage()
-    err.preventDefault()
-  }
-  // @TODO make this its own component!
-  renderErrorMessage() {
-    const { errorMessage } = this.props
-    if (!errorMessage) {
-      return null
-    }
-
-    return (
-      <div className="alert alert-danger" role="alert">
-        <b>{errorMessage}</b>
-        {' '}
-        <a href="#" onClick={this.handleDismissClick}>Dismiss</a>
-      </div>
-    )
-  }
-
   render() {
-    const { children, loaded, props } = this.props
+    const { route } = this.props
     return (
       <div className="container">
-        { this.renderErrorMessage() }
-        {
-          loaded ? <Router {...props} /> : <Loading message="Loading your session info..." />
-        }
-        { children }
+        <Router {...route} />
         <Footer />
       </div>
     )
@@ -59,28 +19,13 @@ class App extends Component {
 }
 
 App.propTypes = {
-  // Injected by React Redux
-  errorMessage: PropTypes.string,
-  loaded: PropTypes.bool.isRequired,
-  resetErrorMessage: PropTypes.func.isRequired,
-  pushPath: PropTypes.func.isRequired,
-  props: PropTypes.object,
-  // Injected by React Router
-  children: PropTypes.node,
+  route: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
-  const {
-    errorMessage,
-  } = state
   return {
-    errorMessage,
-    loaded: isLoaded(state),
+    route: getRouteInfo(state),
   }
 }
 
-export default connect(mapStateToProps, {
-  loadSchema,
-  loadSession,
-  resetErrorMessage,
-})(App)
+export default connect(mapStateToProps)(App)
