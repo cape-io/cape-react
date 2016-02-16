@@ -4,7 +4,7 @@ import Component from '../components/Login/Login'
 function mapStateToProps(state) {
   const { login } = state.router.params
   const {
-    entities: { users },
+    entity: { users },
   } = state
 
   const user = users[login]

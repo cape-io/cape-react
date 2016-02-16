@@ -73,7 +73,7 @@ UserPage.propTypes = {
 function mapStateToProps(state, ownProps) {
   const { login } = ownProps.params
   const {
-    entities: { forms, users },
+    entity: { forms, users },
   } = state
   // Decide what headerMsg and leadMsg to have based on the route.
   // Is it better to have different templates or different data?

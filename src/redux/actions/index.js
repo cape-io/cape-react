@@ -22,7 +22,7 @@ function fetchUser(login) {
 // Relies on Redux Thunk middleware.
 export function loadUser(login) {
   return (dispatch, getState) => {
-    const user = getState().entities.users[login]
+    const user = getState().entity.users[login]
     if (user) {
       return null
     }
@@ -51,7 +51,7 @@ function fetchRepo(fullName) {
 // Relies on Redux Thunk middleware.
 export function loadRepo(fullName, requiredFields = []) {
   return (dispatch, getState) => {
-    const repo = getState().entities.repos[fullName]
+    const repo = getState().entity.repos[fullName]
     if (repo && requiredFields.every(key => repo.hasOwnProperty(key))) {
       return null
     }
@@ -160,7 +160,7 @@ export function loadUrl(url) {
       return null
     }
     urlLoading[url] = true
-    const item = getState().entities.url[url]
+    const item = getState().entity.url[url]
     if (item) {
       return null
     }
@@ -189,7 +189,7 @@ function fetchForm(formId) {
 // Relies on Redux Thunk middleware.
 export function loadForm(formId) {
   return (dispatch, getState) => {
-    const form = getState().entities.forms[formId]
+    const form = getState().entity.forms[formId]
     if (form) {
       return null
     }
@@ -216,7 +216,7 @@ export function fetchSession() {
 
 export function loadSession() {
   return (dispatch, getState) => {
-    const session = getState().entities.session || {}
+    const session = getState().entity.session || {}
     // if (session) {
     //   return null
     // }
@@ -232,7 +232,7 @@ export const SCHEMA_FAILURE = 'SESS_FAILURE'
 export function fetchSchema(id) {
   let endpoint = 'schema'
   if (id) {
-    endpoint += '/' + id
+    endpoint += `/${id}`
   }
   return {
     [CALL_API]: {
@@ -246,7 +246,7 @@ export function fetchSchema(id) {
 
 export function loadSchema(id) {
   return (dispatch, getState) => {
-    const schema = getState().entities.schema || {}
+    const schema = getState().entity.schema || {}
     if (!id) {
       return null
     }
@@ -301,9 +301,9 @@ export function loadContent(entityInfo) {
   }
 }
 
-export function addContent(entities) {
+export function addContent(entity) {
   return {
     type: CONTENT_SUCCESS,
-    response: { entities },
+    response: { entity },
   }
 }

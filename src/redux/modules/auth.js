@@ -89,12 +89,12 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 export function isLoaded(globalState) {
-  const { session: { me } } = globalState.entities
+  const { session: { me } } = globalState.entity
   return me && me.isAuthenticated !== null
 }
 
 export function isAuthenticated(globalState) {
-  const { session: { me } } = globalState.entities
+  const { session: { me } } = globalState.entity
   return me && me.isAuthenticated === true
 }
 

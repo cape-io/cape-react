@@ -3,8 +3,8 @@ import Component from '../../components/Mixer/Mixer'
 import { loadForm } from '../../redux/actions'
 
 // Redux connections.
-function mapStateToProps({ entities }) {
-  const { session } = entities
+function mapStateToProps({ entity }) {
+  const { session } = entity
   const { contentType, contentTypes } = session.me.user
   const types = contentTypes.map( id => contentType[id] )
   return {

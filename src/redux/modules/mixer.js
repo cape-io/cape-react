@@ -3,7 +3,7 @@ import update from 'react/lib/update'
 
 export function getContentInfo(state, props) {
   const { params } = props
-  const { entities } = state
+  const { entity } = state
   const { groupId, typeId, entityId } = params
   const contentType = `${groupId}/${typeId}`
   const defaultForm = {
@@ -11,12 +11,12 @@ export function getContentInfo(state, props) {
     id: contentType,
     loading: true,
   }
-  const form = entities.forms[contentType] || defaultForm
+  const form = entity.forms[contentType] || defaultForm
   form.entityId = entityId
   // Grab the values for the form.
-  const contentEntities = entities[contentType] || {}
+  const contententity = entity[contentType] || {}
   // Need to stringify object values...
-  const initialValues = contentEntities[entityId] || { loading: true }
+  const initialValues = contententity[entityId] || { loading: true }
   // console.log(id)
   // state.db.contentTypes.find()
   return {
@@ -26,13 +26,13 @@ export function getContentInfo(state, props) {
 }
 
 // Calling everything a field is kinda crazy.
-function getValue(entities, field, value) {
-  if (field.type === 'url' && entities.url[value]) {
-    return entities[value]
+function getValue(entity, field, value) {
+  if (field.type === 'url' && entity.url[value]) {
+    return entity[value]
   }
   if (field.type === 'collection') {
     return value.map(val =>
-      assembleFieldInfo(entities, field.field, val)
+      assembleFieldInfo(entity, field.field, val)
     )
   }
   return value
@@ -40,12 +40,12 @@ function getValue(entities, field, value) {
 
 // @field object describing content type
 // @value object of the form value
-export function assembleFieldInfo(entities, field, value) {
+export function assembleFieldInfo(entity, field, value) {
   mapValues(value, (val, id) => {
     const fieldInfo = field[id]
     return {
       ...fieldInfo,
-      value: getValue(entities, fieldInfo, val),
+      value: getValue(entity, fieldInfo, val),
     }
   })
 }

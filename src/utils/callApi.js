@@ -66,13 +66,13 @@ export function callApi({ endpoint, schema, api, method, body, entityInfo }) {
       )
     } else if (entityInfo) {
       const { id, entityId } = entityInfo
-      const entities = json._refs || {}
-      if (!entities[id]) {
-        entities[id] = {}
+      const entity = json._refs || {}
+      if (!entity[id]) {
+        entity[id] = {}
       }
-      entities[id][entityId] = omit(json, '_refs')
+      entity[id][entityId] = omit(json, '_refs')
       return {
-        entities,
+        entity,
       }
     } else {
       return json

@@ -5,7 +5,7 @@ import ImageUpload from './imageUpload/imageUpload'
 
 function mapStateToProps(state, { defaultValue, value }) {
   const {
-    entities: { url, urlIndex },
+    entity: { url, urlIndex },
   } = state
   const val = value || defaultValue
   const id = urlIndex[val] ? urlIndex[val] : val

@@ -15,7 +15,7 @@ const FORM_ID = 'cape/login'
 function mapStateToProps(state, ownProps) {
   const { login } = ownProps.params || ''
   const {
-    entities: { forms, users, session },
+    entity: { forms, users, session },
   } = state
   const form = forms[FORM_ID]
   const user = users[login && login.toLowerCase()]

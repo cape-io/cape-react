@@ -1,7 +1,7 @@
 import merge from 'lodash/merge'
 
-// Updates an entity cache in response to any action with response.entities.
-// Define our default entities collection database.
+// Updates an entity cache in response to any action with response.entity.
+// Define our default entity collection database.
 const defaultEntityState = {}
 export default function reducer(state = defaultEntityState, action) {
   if (action.response && action.response.entity) {
