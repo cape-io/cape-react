@@ -10,9 +10,10 @@ import {
   createHistoryCache,
   historyMiddleware,
   makeHydratable,
-  historyReducer,
   getInitState,
 } from 'redux-history-sync'
+// Create an object with two methods. getKeyStore and saveKeyStore.
+const historyCache = createHistoryCache()
 
 // Socket.io linking
 import io from 'socket.io-client'
@@ -22,7 +23,7 @@ const socket = createSocketMiddleware(io(location))
 
 // Redux Reducers.
 // Our reducer index.
-import rootReducer, { defaultState } from './reducer'
+import reducer, { defaultState } from './reducer'
 
 // Custom api.
 import api from './middleware/api'
@@ -33,6 +34,7 @@ import DevTools from '../containers/DevTools'
 // Define the middeware we want to apply to the store.
 const middleware = [
   api,
+  historyMiddleware(window.history, historyCache),
   socket,
   thunk,
 ]
@@ -47,7 +49,7 @@ const calculatedState = {
 export default function configureStore(initialState) {
   const initState = merge(initialState, calculatedState, defaultState)
   const store = createStore(
-    rootReducer,
+    makeHydratable(reducer),
     initState,
     compose(
       applyMiddleware(...middleware),
@@ -59,7 +61,7 @@ export default function configureStore(initialState) {
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./reducer', () => {
-      const nextRootReducer = require('./reducer')
+      const nextRootReducer = makeHydratable(require('./reducer'))
       store.replaceReducer(nextRootReducer)
     })
   }
