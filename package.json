@@ -55,8 +55,8 @@
     "eslint-plugin-babel": "^3.1.0",
     "humps": "^1.0.0",
     "isomorphic-fetch": "^2.2.0",
-    "location-info": "^2.1.0",
-    "lodash": "^4.3.0",
+    "location-info": "^2.2.0",
+    "lodash": "^4.4.0",
     "lru-memoize": "^1.0.0",
     "moment": "^2.11.2",
     "normalizr": "^1.4.0",
@@ -73,14 +73,15 @@
     "react-widgets": "3.1.x",
     "redbox-react": "^1.2.2",
     "redux": "^3.2.1",
+    "redux-field": "^1.1.0",
     "redux-form": "^4.1.6",
-    "redux-history-sync": "^1.0.2",
+    "redux-history-sync": "^1.2.0",
     "redux-localstorage": "^1.0.0-rc4",
     "redux-logger": "^2.5.0",
     "redux-thunk": "^1.0.0",
+    "seamless-immutable": "^5.0.1",
     "socket.io-client": "^1.4.5",
-    "validator": "^4.7.1",
-    "webpack": "^1.12.13"
+    "validator": "^4.7.1"
   },
   "devDependencies": {
     "babel": "^6.3.26",
@@ -108,7 +109,7 @@
     "redux-devtools-log-monitor": "^1.0.4",
     "redux-logger": "^2.3.1",
     "rimraf": "^2.4.4",
-    "webpack": "^1.12.9",
+    "webpack": "^1.12.13",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.6.0"
   }

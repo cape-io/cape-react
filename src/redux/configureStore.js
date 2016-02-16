@@ -28,6 +28,7 @@ import reducer, { defaultState } from './reducer'
 // The redux state sidebar thing store enhancer.
 // Custom api.
 import api from './middleware/api'
+import { loadSchema, loadSession } from './actions'
 
 import DevTools from '../containers/DevTools'
 
@@ -67,5 +68,8 @@ export default function configureStore(initialState) {
     })
   }
   syncHistoryWithStore(store, window, historyCache)
+  console.log(store.getState())
+  store.dispatch(loadSchema())
+  store.dispatch(loadSession())
   return store
 }
