@@ -1,28 +1,19 @@
 import React, { PropTypes } from 'react'
 
-import Form from '../Form/Form'
-import ProviderLinks from './ProviderLinks'
+// import ProviderLinks from './ProviderLinks'
 
-function Login({ user, login, ...rest }) {
-  if (user && user.user) {
-    return <ProviderLinks {...user.user} login={login} />
-  }
+function Login({ description, title }) {
   return (
     <div>
-      { user &&
-        <div className="alert alert-info" role="alert">
-          <p>
-            {`No user found with the email of ${login}.`}
-          </p>
-        </div>
-      }
-      <Form {...rest} />
+      { title && <h2>{ title }</h2> }
+      { description && <p className="lead">{ description }</p> }
     </div>
   )
 }
 
 Login.propTypes = {
-  user: PropTypes.object,
+  description: PropTypes.string,
+  title: PropTypes.string,
 }
 Login.defaultProps = {
 }

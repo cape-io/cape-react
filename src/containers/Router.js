@@ -9,10 +9,11 @@ import * as routeIndex from './RouteComponents'
 
 function Router(props) {
   // Define the prop that defines what component to render.
-  const { route: { routeId } } = props
+  const { route: { id } } = props
   // Select your component from the routeIndex defined above.
+  console.log('routeId', id)
   // Provide default Component if there is no match.
-  const MainElement = routeIndex[routeId] || Home
+  const MainElement = routeIndex[id] || routeIndex['home']
   // Render that component. Send along any props this component got.
   return <MainElement {...props} />
 }
