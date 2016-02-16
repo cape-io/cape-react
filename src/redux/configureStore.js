@@ -68,7 +68,7 @@ export default function configureStore(initialState) {
     })
   }
   syncHistoryWithStore(store, window, historyCache)
-  console.log(store.getState())
+
   store.dispatch(loadSchema())
   store.dispatch(loadSession())
   return store

@@ -37,12 +37,7 @@ export default {
     ],
   },
   entity: {
-    forms: {},
-    repos: {},
-    users: {},
-    session: {
-      me: { isAuthenticated: null },
-    },
+    form: {},
     url: {},
     urlIndex: {},
   },
