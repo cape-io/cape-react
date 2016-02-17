@@ -22,7 +22,7 @@ const initialState = {
   provider: {},
 }
 function setEmail(state, { payload, meta }) {
-  if (meta[0] === 'cape/login' && meta[1] === 'email') {
+  if (meta.prefix[0] === 'cape/login' && meta.prefix[1] === 'email') {
     return {
       ...state,
       email: payload,
