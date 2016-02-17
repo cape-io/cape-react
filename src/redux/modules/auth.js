@@ -1,35 +1,54 @@
-const LOAD = 'auth/auth/LOAD'
-const LOAD_SUCCESS = 'auth/auth/LOAD_SUCCESS'
-const LOAD_FAIL = 'auth/auth/LOAD_FAIL'
-const JOIN = 'auth/auth/LOGIN'
-const JOIN_SUCCESS = 'auth/auth/LOGIN_SUCCESS'
-const JOIN_FAIL = 'auth/auth/LOGIN_FAIL'
-const LOGIN = 'auth/auth/LOGIN'
-const LOGIN_SUCCESS = 'auth/auth/LOGIN_SUCCESS'
-const LOGIN_FAIL = 'auth/auth/LOGIN_FAIL'
-const LOGOUT = 'auth/auth/LOGOUT'
-const LOGOUT_SUCCESS = 'auth/auth/LOGOUT_SUCCESS'
-const LOGOUT_FAIL = 'auth/auth/LOGOUT_FAIL'
+// const LOAD = 'auth/LOAD'
+const LOAD_SUCCESS = 'auth/LOAD_SUCCESS'
+const LOAD_FAIL = 'auth/LOAD_FAIL'
+const JOIN = 'auth/LOGIN'
+const JOIN_SUCCESS = 'auth/LOGIN_SUCCESS'
+const JOIN_FAIL = 'auth/LOGIN_FAIL'
+const LOGIN = 'auth/LOGIN'
+const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS'
+const LOGIN_FAIL = 'auth/LOGIN_FAIL'
+const LOGOUT = 'auth/LOGOUT'
+const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS'
+const LOGOUT_FAIL = 'auth/LOGOUT_FAIL'
+const PROVIDERS = 'auth/PROVIDERS'
 const USER_ID = 'auth/USER_ID'
+import { SUBMIT } from 'redux-field'
 
 const initialState = {
   key: null,
   email: null,
-  userId: null,
+  // emailVerified: false,
+  userId: undefined,
   provider: {},
 }
-
+function setEmail(state, { payload, meta }) {
+  if (meta[0] === 'cape/login' && meta[1] === 'email') {
+    return {
+      ...state,
+      email: payload,
+    }
+  }
+  return state
+}
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case USER_ID:
       return {
         ...state,
+        // emailVerified: true,
         userId: action.payload,
       }
+    case PROVIDERS:
+      return {
+        ...state,
+        provider: action.payload,
+      }
+    case SUBMIT:
+      return setEmail(state, action)
     case LOAD_SUCCESS:
       return {
         ...state,
-        ...action.result,
+        ...action.payload,
         loading: false,
         loaded: true,
       }
