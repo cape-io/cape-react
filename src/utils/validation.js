@@ -1,5 +1,5 @@
 import { isURL } from 'validator'
-import isEmpty from 'lodash/lang/isEmpty'
+import isEmpty from 'lodash/isEmpty'
 import emailValidate from './emailValidate'
 // Functions should return error message string.
 
@@ -16,6 +16,22 @@ export function isEmail(value) {
 export function isInteger(value) {
   if (!Number.isInteger(Number(value))) {
     return 'Must be an integer'
+  }
+}
+
+export function isFullName(value) {
+  const valParts = value.split(' ')
+  if (valParts.length < 2) {
+    return 'Full name must include a first and last name.'
+  }
+  if (valParts[0].length < 2) {
+    return 'First name is too short.'
+  }
+  if (valParts[valParts.length - 1].length < 2) {
+    return 'Last name is too short.'
+  }
+  if (value.length < 5) {
+    return 'Name is too short.'
   }
 }
 

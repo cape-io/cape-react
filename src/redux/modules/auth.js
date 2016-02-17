@@ -10,25 +10,21 @@ const LOGIN_FAIL = 'auth/auth/LOGIN_FAIL'
 const LOGOUT = 'auth/auth/LOGOUT'
 const LOGOUT_SUCCESS = 'auth/auth/LOGOUT_SUCCESS'
 const LOGOUT_FAIL = 'auth/auth/LOGOUT_FAIL'
+const USER_ID = 'auth/USER_ID'
 
 const initialState = {
-  isAuthenticated: false,
-  loaded: false,
-  loading: false,
-  loggingIn: false,
-  providerId: false,
-  status: 0,
-  user: {
-    userId: null, // NOTE: Can be authenticated without userId.
-  },
+  key: null,
+  email: null,
+  userId: null,
+  provider: {},
 }
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case LOAD:
+    case USER_ID:
       return {
         ...state,
-        loading: true,
+        userId: action.payload,
       }
     case LOAD_SUCCESS:
       return {

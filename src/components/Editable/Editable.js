@@ -2,25 +2,6 @@ import React, { Component, PropTypes } from 'react'
 
 import FormGroup from './FormGroup'
 
-const typeDefaults = {
-  email: {
-    errorMessage: 'Invalid email. Please check and try again.',
-    help: 'Your email address please.',
-    id: 'email',
-    label: 'Email',
-    placeholder: 'you@domain.com',
-  },
-  fullName: {
-    id: 'name',
-    label: 'Full Name',
-    errorMessage: 'Please use your full name.',
-    validators: [ 'isFullName' ],
-  },
-  dateTime: {
-    label: 'Date & Time',
-  },
-}
-
 // This is for an individual, edtiable field.
 class EditableField extends Component {
   constructor(props) {
@@ -54,14 +35,14 @@ class EditableField extends Component {
 }
 
 EditableField.propTypes = {
-  action: PropTypes.shape({
-    submit: PropTypes.func.isRequired,
-  }).isRequired,
+  // action: PropTypes.shape({
+  //   submit: PropTypes.func.isRequired,
+  // }).isRequired,
   // When not editing the children is what will show up inside the form group.
   children: PropTypes.node,
   // Information about the form field. Should not change.
   field: PropTypes.shape({
-    editable: PropTypes.bool.isRequired,
+    editable: PropTypes.bool,
     id: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
@@ -84,6 +65,7 @@ EditableField.propTypes = {
   }),
   // Prefix used to specify form state slice.
   prefix: PropTypes.array,
+  savingTxt: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
@@ -91,6 +73,7 @@ EditableField.propTypes = {
 }
 
 EditableField.defaultProps = {
+  savingTxt: 'Saving...',
 }
 
 export default EditableField

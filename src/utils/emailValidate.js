@@ -1,4 +1,4 @@
-import includes from 'lodash/collection/includes'
+import includes from 'lodash/includes'
 import { isEmail } from 'validator'
 
 // Sync result of email validation.

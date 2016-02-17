@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import Icon from '../Icon'
 import InputClear from './InputClear'
 // Simple wrapper around an input field.
 // 1. Checks for changes every 300ms. Useful for safari autocomplete.

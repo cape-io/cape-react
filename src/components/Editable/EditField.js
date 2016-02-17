@@ -12,14 +12,10 @@ import Help from './Help'
 class EditField extends Component {
 
   render() {
-    const {
-      className, errorMessage, hasError, help, id,
-      onBlur, onChange, onSubmit, onClose, suggestion, type,
-      value, ...other
-    } = this.props
-
+    const { action, className, id, form, preventClose, type, ...other } = this.props
+    const { hasError, errorMessage, help, suggestion, value } = form
     const helpTxt = hasError ? errorMessage : help
-
+    const { onBlur, onChange, onClose, onFocus, onSubmit } = action
     return (
       <div className={classNames('editable-form col-md-9', className)}>
         <div className="editable-row">
@@ -27,8 +23,9 @@ class EditField extends Component {
             {...other}
             className="form-control"
             id={id}
-            onChange={onChange}
             onBlur={onBlur}
+            onChange={onChange}
+            onFocus={onFocus}
             type={type}
             value={value}
           />
@@ -36,6 +33,7 @@ class EditField extends Component {
             disabled={hasError}
             onSubmit={onSubmit}
             onClose={onClose}
+            preventClose={preventClose}
           />
         </div>
         { (helpTxt || suggestion) &&
@@ -52,15 +50,15 @@ class EditField extends Component {
 }
 
 EditField.propTypes = {
+  action: PropTypes.object.isRequired,
   className: PropTypes.string,
   defaultValue: PropTypes.any,
-  errorMessage: PropTypes.string,
-  hasError: PropTypes.bool,
+  form: PropTypes.object.isRequired,
+  help: PropTypes.string,
   id: PropTypes.string.isRequired,
-  onBlur: PropTypes.func.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  preventClose: PropTypes.bool,
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string,
 }
 
 export default EditField

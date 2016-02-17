@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import socket, { idReducer as id } from 'cape-redux-socket'
 import { historyReducer as history } from 'redux-history-sync'
-import { reducer as form } from 'redux-form'
+import form from 'redux-field'
 
 import db from './modules/db'
 import entity from './modules/entity'

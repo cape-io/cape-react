@@ -7,6 +7,7 @@ import set from 'lodash/set'
 import values from 'lodash/values'
 
 import { filterCollection } from '../utils/filter'
+import { fieldValidation } from '../utils/formValidation'
 
 import info from './schema.js'
 
@@ -40,11 +41,27 @@ function getItemChildren(state, item, children) {
   return refs
 }
 
+function addFieldValidate(item) {
+  const fieldValidate = {}
+  each(item.fields, fieldId => {
+    if (item.field[fieldId].validators) {
+      fieldValidate[fieldId] = { validate: fieldValidation(item.field[fieldId].validators) }
+    }
+  })
+  return merge({}, { field: fieldValidate }, item)
+}
+
 function getType(state, type, id) {
-  const { children } = info[type]
+  const { children, validators } = info[type]
+  if (id) {
+    const item = getItem(state, type, id)
+    if (validators && item && item.fields) {
+      return addFieldValidate(item)
+    }
+    return item
+  }
   const collection = getCollection(state, type)
   if (!children) {
-    if (id) return collection[id]
     return values(collection)
   }
   return map(collection, item =>

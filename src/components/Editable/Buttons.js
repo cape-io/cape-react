@@ -4,7 +4,7 @@ import Icon from './Icon'
 class EditableButtons extends Component {
 
   render() {
-    const {onSubmit, onClose, disabled} = this.props
+    const { onSubmit, onClose, disabled, preventClose, closeTxt, submitTxt } = this.props
 
     return (
       <div className="editable-buttons">
@@ -17,23 +17,33 @@ class EditableButtons extends Component {
             onSubmit()
           }}
         >
-          <span>Save</span>
+          <span>{submitTxt}</span>
           <Icon symbol="check" />
         </button>
-        <button
-          className="editable-close"
-          type="button"
-          onClick={onClose}
-        >
-          <span>Cancel</span>
-          <Icon symbol="ban" />
-        </button>
+        { !preventClose &&
+          <button
+            className="editable-close"
+            type="button"
+            onClick={onClose}
+          >
+            <span>{closeTxt}</span>
+            <Icon symbol="ban" />
+          </button>
+        }
       </div>
     )
   }
 }
 EditableButtons.propTypes = {
+  closeTxt: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
+  preventClose: PropTypes.bool,
+  submitTxt: PropTypes.string.isRequired,
+}
+EditableButtons.defaultProps = {
+  closeTxt: 'Cancel',
+  submitTxt: 'Submit',
 }
 export default EditableButtons
