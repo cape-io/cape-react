@@ -3,14 +3,19 @@ import { connectField } from 'redux-field'
 import Wrapper from '../Editable/Wrapper'
 const Field = connectField()(Wrapper)
 
-// import ProviderLinks from './ProviderLinks'
+import ProviderLinks from './ProviderLinks'
 
-function Login({ description, field, id, title }) {
+function Login({ auth, emailToken, description, field, id, title }) {
   return (
     <div>
       { title && <h2>{ title }</h2> }
       { description && <p className="lead">{ description }</p> }
-      <Field field={field.email} formId={id} open />
+      { !auth &&
+        <Field field={field.email} formId={id} open />
+      }
+      { auth && !auth.emailingToken &&
+        <ProviderLinks emailToken={emailToken} {...auth} />
+      }
     </div>
   )
 }
@@ -18,6 +23,7 @@ function Login({ description, field, id, title }) {
 Login.propTypes = {
   description: PropTypes.string,
   title: PropTypes.string,
+  userId: PropTypes.string,
 }
 Login.defaultProps = {
 }

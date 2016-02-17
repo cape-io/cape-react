@@ -1,4 +1,5 @@
 // const LOAD = 'auth/LOAD'
+const EMAIL_TOKEN = 'auth/EMAIL_TOKEN'
 const LOAD_SUCCESS = 'auth/LOAD_SUCCESS'
 const LOAD_FAIL = 'auth/LOAD_FAIL'
 const JOIN = 'auth/LOGIN'
@@ -15,11 +16,14 @@ const USER_ID = 'auth/USER_ID'
 import { SUBMIT } from 'redux-field'
 
 const initialState = {
-  key: null,
+  emailingToken: false,
   email: null,
   // emailVerified: false,
+  key: null,
   userId: undefined,
-  provider: {},
+  provider: {
+    email: true,
+  },
 }
 function setEmail(state, { payload, meta }) {
   if (meta.prefix[0] === 'cape/login' && meta.prefix[1] === 'email') {
@@ -32,11 +36,10 @@ function setEmail(state, { payload, meta }) {
 }
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case USER_ID:
+    case EMAIL_TOKEN:
       return {
         ...state,
-        // emailVerified: true,
-        userId: action.payload,
+        emailingToken: action.payload,
       }
     case PROVIDERS:
       return {
@@ -45,6 +48,12 @@ export default function reducer(state = initialState, action = {}) {
       }
     case SUBMIT:
       return setEmail(state, action)
+    case USER_ID:
+      return {
+        ...state,
+        // emailVerified: true,
+        userId: action.payload,
+      }
     case LOAD_SUCCESS:
       return {
         ...state,
@@ -100,6 +109,14 @@ export default function reducer(state = initialState, action = {}) {
       }
     default:
       return state
+  }
+}
+
+export function emailToken(email) {
+  return {
+    type: EMAIL_TOKEN,
+    // Email choice if user has more than one email. Must be associated with account.
+    payload: email,
   }
 }
 
