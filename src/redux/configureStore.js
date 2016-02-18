@@ -1,7 +1,6 @@
 // Redux.
-import { applyMiddleware, createStore, compose } from 'redux'
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux'
 import merge from 'lodash/merge'
-
 // Allow function action creators.
 import thunk from 'redux-thunk'
 
@@ -23,12 +22,13 @@ const socket = createSocketMiddleware(io(location))
 
 // Redux Reducers.
 // Our reducer index.
-import reducer, { defaultState } from './reducer'
+import * as reducer from './reducer'
+import defaultState from './defaultState'
 
 // The redux state sidebar thing store enhancer.
 // Custom api.
 import api from './middleware/api'
-import { loadSchema, loadSession } from './actions'
+import { loadSchema } from './actions'
 
 import DevTools from '../containers/DevTools'
 
@@ -51,7 +51,7 @@ export default function configureStore(initialState) {
   }
   const initState = merge(initialState, calculatedState, defaultState)
   const store = createStore(
-    makeHydratable(reducer),
+    makeHydratable(combineReducers(reducer)),
     initState,
     compose(
       applyMiddleware(...middleware),
@@ -63,13 +63,12 @@ export default function configureStore(initialState) {
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers
     module.hot.accept('./reducer', () => {
-      const nextRootReducer = makeHydratable(require('./reducer'))
+      const nextRootReducer = combineReducers(require('./reducer'))
       store.replaceReducer(nextRootReducer)
     })
   }
   syncHistoryWithStore(store, window, historyCache)
 
   store.dispatch(loadSchema())
-  store.dispatch(loadSession())
   return store
 }

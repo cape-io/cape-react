@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
-import getRouteInfo from '../redux/routes'
-
 import Router from './Router'
 import Footer from './Footer'
 
@@ -11,7 +9,7 @@ class App extends Component {
     const { route } = this.props
     return (
       <div className="container">
-        <Router {...route} />
+        <Router route={route} />
         <Footer />
       </div>
     )
@@ -19,12 +17,15 @@ class App extends Component {
 }
 
 App.propTypes = {
+  history: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired,
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, { router: { match } }) {
+  const route = match()
+  // console.log(route)
   return {
-    route: getRouteInfo(state),
+    ...route,
   }
 }
 

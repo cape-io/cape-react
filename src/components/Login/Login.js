@@ -10,7 +10,7 @@ function Login({ auth, emailToken, description, field, id, title }) {
     <div>
       { title && <h2>{ title }</h2> }
       { description && <p className="lead">{ description }</p> }
-      { !auth &&
+      { !auth && field &&
         <Field field={field.email} formId={id} open />
       }
       { auth && !auth.emailingToken &&
