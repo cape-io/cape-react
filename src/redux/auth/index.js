@@ -1,5 +1,5 @@
-import router from './router'
-export default router
+import reducer from './reducer'
+export default reducer
 
 export * from './actions'
 

@@ -9,20 +9,26 @@ const FORM_ID = 'cape/login'
 
 function mapStateToProps(state, ownProps) {
   const title = 'Login'
+  const { email, tokenValid } = state.auth
   const token = get(ownProps.route, 'params.token')
-  if (token) {
-    console.log('hasToken')
+  if (token && tokenValid === null) {
     return {
-      description: 'Validating your login link. Hold tight.',
+      description: 'Preparing to validate your login link. Hold tight.',
       title,
     }
   }
-  const auth = pick(state.auth, 'emailingToken', 'email', 'provider', 'userId', 'emailedToken')
+  const auth = pick(state.auth, 'email', 'provider', 'tokenSending', 'tokenSent', 'userId')
   if (auth.userId) {
-    if (auth.emailingToken) {
+    if (auth.tokenSending) {
       return {
         auth,
-        description: `Emailing a login link to ${auth.emailingToken}.`,
+        description: `Emailing a login link to ${auth.tokenSending}.`,
+        title,
+      }
+    }
+    if (auth.tokenSent) {
+      return {
+        description: `Login link has been sent to ${auth.tokenSent}.`,
         title,
       }
     }
@@ -33,6 +39,7 @@ function mapStateToProps(state, ownProps) {
     }
   }
   return {
+    email,
     ...select(state, 'form', { id: FORM_ID }),
   }
 }

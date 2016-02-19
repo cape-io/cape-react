@@ -1,16 +1,20 @@
 import createRouter from 'location-info'
-import { selectActiveKeyDefault } from 'redux-history-sync'
 import get from 'lodash/get'
-// import { isAuthenticated } from './modules/auth'
+import { tokenValidate } from './auth'
 
-// Include status of user authentication.
-// function authState(getState) {
-//   return {
-//     // Is the user logged in?
-//     isAuthenticated: isAuthenticated(getState()),
-//   }
-// }
-export default function createRoutes({ dispatch, getState }) {
+export function handleLoginToken({ dispatch, getState }, { token }) {
+  if (!token) {
+    return undefined
+  }
+  const { id } = getState()
+  if (id) {
+    // A dispatch can only happen on the server or .
+    dispatch(tokenValidate(token))
+  }
+}
+
+export default function createRoutes(store) {
+  const { getState } = store
   const router = createRouter()
   const { addRoute, addRoutes, locationInfo } = router
   addRoute('home', '/')
@@ -21,9 +25,9 @@ export default function createRoutes({ dispatch, getState }) {
   addRoute('login', '/login/(:token)',
     {
       getState: ({ params }) => ({
-        loading: !get(getState(), 'entity.form.cape/login', false),
-        // validatingToken: params.token && ? 
+        validatingToken: handleLoginToken(store, params),
       }),
+      isLoading: () => !get(getState(), 'entity.form.cape/login', false),
     },
     {
       segmentValueCharset: 'a-zA-Z0-9-_~ %.*',
@@ -32,9 +36,7 @@ export default function createRoutes({ dispatch, getState }) {
   addRoute('mixerLegacy', '/mixer/:groupId/:typeId/:entityId')
 
   // Pass in the state object and return some info about a "route".
-  function match() {
-    const state = getState()
-    const history = selectActiveKeyDefault(state)
+  function match(history) {
     // Location object gets sent to locationInfo
     const route = locationInfo(history.location)
 

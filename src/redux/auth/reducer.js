@@ -1,45 +1,62 @@
 import { SUBMIT } from 'redux-field'
 import {
-  ERROR, LOGIN, PROVIDERS, TOKEN_SEND, TOKEN_SENT, TOKEN_VALIDATE, USER_ID,
+  LOGIN, LOGOUT, PROVIDERS, TOKEN_SEND, TOKEN_SENT, TOKEN_VALIDATE, USER_ID,
 } from './actions'
 
 const initialState = {
   authenticated: false,
-  email: null,
-  errorMsg: null,
   // emailVerified: false,
-  key: null,
-  userId: undefined,
-  provider: {
-    email: true,
-  },
+  // key: null,
   tokenSent: false,
   tokenSending: false,
+  tokenValid: null,
   tokenValidating: false,
+  user: {
+    email: null,
+    provider: {
+      email: true,
+    },
+    userId: undefined,
+  },
 }
-function setEmail(state, { payload, meta }) {
+function setEmail({ user, ...state }, { payload, meta }) {
   if (meta.prefix[0] === 'cape/login' && meta.prefix[1] === 'email') {
     return {
       ...state,
-      email: payload,
+      user: {
+        ...user,
+        email: payload,
+      },
     }
   }
   return state
 }
+function setUserId({ user, ...state }, { payload }) {
+  return {
+    ...state,
+    user: {
+      ...user,
+      userId: payload,
+    },
+  }
+}
+function setUser(state, { payload, error }) {
+  const { authenticated, tokenSending, tokenValidating } = initialState
+  return {
+    ...state,
+    authenticated: error ? authenticated : true,
+    tokenSending,
+    tokenValid: error ? false : true,
+    tokenValidating,
+    user: payload,
+  }
+}
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case ERROR:
-      return {
-        ...state,
-        errorMsg: action.payload,
-      }
     case LOGIN:
-      return {
-        ...state,
-        errorMsg: null,
-        tokenSending: false,
-        tokenValidating: false,
-      }
+      return setUser(state, action)
+    case LOGOUT:
+      return initialState
     case PROVIDERS:
       return {
         ...state,
@@ -56,7 +73,6 @@ export default function reducer(state = initialState, action = {}) {
     case TOKEN_SENT:
       return {
         ...state,
-        errorMsg: null,
         tokenSending: false,
         tokenSent: action.payload,
       }
@@ -66,11 +82,7 @@ export default function reducer(state = initialState, action = {}) {
         tokenValidating: true,
       }
     case USER_ID:
-      return {
-        ...state,
-        // emailVerified: true,
-        userId: action.payload,
-      }
+      return setUserId(state, action)
     default:
       return state
   }

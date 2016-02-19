@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 import get from 'lodash/get'
+import isFunction from 'lodash/isFunction'
 // Top level "router". Heh.
 import * as routeIndex from './RouteComponents'
 
@@ -9,8 +11,8 @@ import * as routeIndex from './RouteComponents'
 
 function Router(props) {
   // Define the prop that defines what component to render.
-  const { route: { id, state = {} } } = props
-  if (state.loading) {
+  const { loading, route: { id } } = props
+  if (loading) {
     return <routeIndex.loading />
   }
   // Select your component from the routeIndex defined above.
@@ -22,7 +24,13 @@ function Router(props) {
 }
 
 Router.propTypes = {
-  // history: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
   route: PropTypes.object.isRequired,
 }
-export default Router
+function mapStateToProps(state, ownProps) {
+  const { route: { isLoading } } = ownProps
+  return {
+    loading: isFunction(isLoading) && isLoading(),
+  }
+}
+export default connect(mapStateToProps)(Router)
