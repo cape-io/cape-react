@@ -83,7 +83,7 @@ export default function reducer(state = initialState, action = {}) {
         tokenSending: action.payload,
       }
     case TOKEN_SENT:
-      return {
+      return action.error ? state : {
         ...state,
         tokenSending: false,
         tokenSent: action.payload,

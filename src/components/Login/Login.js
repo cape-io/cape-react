@@ -5,7 +5,7 @@ const Field = connectField()(Wrapper)
 
 import ProviderLinks from './ProviderLinks'
 
-function Login({ auth, email, emailToken, description, field, id, title }) {
+function Login({ auth, email, emailToken, description, field, id, title, user }) {
   return (
     <div>
       { title && <h2>{ title }</h2> }
@@ -19,8 +19,8 @@ function Login({ auth, email, emailToken, description, field, id, title }) {
           placeholder="you@example.com"
         />
       }
-      { auth && !auth.emailingToken &&
-        <ProviderLinks emailToken={emailToken} {...auth} />
+      { auth && !auth.tokenSending &&
+        <ProviderLinks emailToken={emailToken} {...user} />
       }
     </div>
   )

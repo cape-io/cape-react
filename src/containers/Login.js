@@ -9,7 +9,7 @@ const FORM_ID = 'cape/login'
 
 function mapStateToProps(state, ownProps) {
   const title = 'Login'
-  const { email, tokenValid } = state.auth
+  const { user, tokenValid } = state.auth
   const token = get(ownProps.route, 'params.token')
   if (token && tokenValid === null) {
     return {
@@ -17,8 +17,8 @@ function mapStateToProps(state, ownProps) {
       title,
     }
   }
-  const auth = pick(state.auth, 'email', 'provider', 'tokenSending', 'tokenSent', 'userId')
-  if (auth.userId) {
+  const auth = pick(state.auth, 'tokenSending', 'tokenSent')
+  if (user.userId) {
     if (auth.tokenSending) {
       return {
         auth,
@@ -36,10 +36,11 @@ function mapStateToProps(state, ownProps) {
       auth,
       description: 'Select an option to authenticate with',
       title,
+      user,
     }
   }
   return {
-    email,
+    email: user.email,
     ...select(state, 'form', { id: FORM_ID }),
   }
 }
