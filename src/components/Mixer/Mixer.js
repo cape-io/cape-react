@@ -1,34 +1,16 @@
 import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
-
-// {' - '}
-// <Link
-//   to={`/mixer/sort/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
-//   { 'Sort' + title }
-// </Link>
+import ProfileIcon from './ProfileIcon'
 
 // Display a list of content types the user can edit.
-function Mixer({ contentTypes }) {
+function Mixer({ }) {
   return (
     <div className="container">
       <h1>Mixer</h1>
-      <ul>
-      {
-        contentTypes.map( ({ groupId, typeId, entityId, title }) => (
-          <li key={groupId + '-' + typeId}>
-            <Link
-              to={`/mixer/${groupId}/${typeId}${entityId ? '/' + entityId : ''}`}>
-              { title }
-            </Link>
-          </li>
-        ))
-      }
-      </ul>
+      <ProfileIcon />
     </div>
   )
 }
 Mixer.propTypes = {
-  contentTypes: PropTypes.array.isRequired,
 }
 
 export default Mixer

@@ -7,7 +7,8 @@ export default function errorMessage(state = null, action) {
   if (type === RESET_ERROR_MESSAGE) {
     return null
   } else if (error) {
-    return payload.message || error
+    const { message, name } = payload
+    return `[${type}] ${name || 'Error'}: ${message || 'Please try again.'}`
   }
 
   return state

@@ -1,10 +1,13 @@
 import { SUBMIT } from 'redux-field'
+import get from 'lodash/get'
 import {
   LOGIN, LOGOUT, PROVIDERS, TOKEN_SEND, TOKEN_SENT, TOKEN_VALIDATE, USER_ID,
 } from './actions'
 
 const initialState = {
+  auth: null,
   authenticated: false,
+  // groupId: null,
   // emailVerified: false,
   // key: null,
   tokenSent: false,
@@ -31,24 +34,33 @@ function setEmail({ user, ...state }, { payload, meta }) {
   }
   return state
 }
-function setUserId({ user, ...state }, { payload }) {
+function setUserId(state, { error, payload }) {
+  if (error) return state
   return {
     ...state,
     user: {
-      ...user,
+      ...state.user,
       userId: payload,
     },
   }
 }
-function setUser(state, { payload, error }) {
+function setUser(state, { error, payload: { auth, data, user } }) {
   const { authenticated, tokenSending, tokenValidating } = initialState
+  const email = error ?
+    get(data, 'email', state.user.email) :
+    get(user, 'email', state.user.email)
   return {
     ...state,
+    auth,
     authenticated: error ? authenticated : true,
     tokenSending,
     tokenValid: error ? false : true,
     tokenValidating,
-    user: payload,
+    user: {
+      ...state.user,
+      ...user,
+      email,
+    },
   }
 }
 export default function reducer(state = initialState, action = {}) {

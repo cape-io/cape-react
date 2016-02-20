@@ -4,12 +4,13 @@ import { tokenValidate } from './auth'
 
 export function handleLoginToken({ dispatch, getState }, { token }) {
   if (!token) {
-    return undefined
+    return false
   }
   const { id } = getState()
   if (id) {
     // A dispatch can only happen on the server or .
     dispatch(tokenValidate(token))
+    return true
   }
 }
 

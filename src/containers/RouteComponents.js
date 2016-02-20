@@ -3,3 +3,4 @@
 export home from './Home'
 export loading from '../components/Loading'
 export login from './Login'
+export mixer from './Mixer'
