@@ -10,13 +10,13 @@ const devEnv = process.env.NODE_ENV !== 'production'
 
 export default class Root extends Component {
   render() {
-    const { store, router } = this.props
+    const { store } = this.props
     // Provider only wants a single child.
     return (
       <Provider store={store}>
         <div>
           <ErrorMessage />
-          <App router={router} />
+          <App />
           { devEnv && <DevTools /> }
         </div>
       </Provider>
@@ -26,5 +26,4 @@ export default class Root extends Component {
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
 }

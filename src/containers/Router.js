@@ -30,7 +30,7 @@ Router.propTypes = {
 function mapStateToProps(state, ownProps) {
   const { route: { isLoading } } = ownProps
   return {
-    loading: isFunction(isLoading) && isLoading(),
+    loading: isFunction(isLoading) && isLoading(state),
   }
 }
 export default connect(mapStateToProps)(Router)

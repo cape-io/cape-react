@@ -13,7 +13,7 @@ class EditableField extends Component {
     // this.props.action.submit()
   }
   render() {
-    const { children, field, form } = this.props
+    const { children, field, form, savingTxt } = this.props
     const { editable, label, id, required } = field
     const { saving, status } = form
 
@@ -27,7 +27,7 @@ class EditableField extends Component {
           status={status}
         >
           { children }
-          { saving && <span>Saving...</span>}
+          { saving && <span>{savingTxt}</span>}
         </FormGroup>
       </div>
     )
@@ -53,6 +53,7 @@ EditableField.propTypes = {
       'email',
       'dateTime',
       'fullName',
+      'select',
       'text',
     ]).isRequired,
     validators: PropTypes.array,

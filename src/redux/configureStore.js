@@ -8,7 +8,7 @@ import {
   syncHistoryWithStore,
   createHistoryCache,
   historyMiddleware,
-  makeHydratable,
+  // makeHydratable,
   getInitState,
 } from 'redux-history-sync'
 // Create an object with two methods. getKeyStore and saveKeyStore.
@@ -51,7 +51,7 @@ export default function configureStore(initialState) {
   }
   const initState = merge(initialState, calculatedState, defaultState)
   const store = createStore(
-    makeHydratable(combineReducers(reducer)),
+    combineReducers(reducer),
     initState,
     compose(
       applyMiddleware(...middleware),
