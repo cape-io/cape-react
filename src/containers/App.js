@@ -7,7 +7,7 @@ import Footer from './Footer'
 
 class App extends Component {
   render() {
-    const { route } = this.state
+    const { route } = this.props
     return (
       <div className="container">
         <Router route={route} />
@@ -19,7 +19,7 @@ class App extends Component {
 
 App.propTypes = {
   history: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
 }
 
 export default connect(routeSelector)(App)

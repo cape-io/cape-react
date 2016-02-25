@@ -1,13 +1,14 @@
 import { connect } from 'react-redux'
-import { getFieldState } from 'redux-field'
+// import { getFieldState } from 'redux-field'
 import Component from '../components/Mixer/Edit'
 
 function mapStateToProps(state, ownProps) {
-  const formId = 'writeEntity'
+  // const formId = 'writeEntity'
   const { entity: { cape }, form } = state
   const { entityId } = ownProps.route.params
   const entity = cape[entityId]
-  const formState = form[formId]
+  // Get everything where entity is a subject.
+  // const formState = form[formId]
   const field = {
     type: {
       editable: true,

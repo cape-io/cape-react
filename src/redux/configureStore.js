@@ -25,9 +25,8 @@ const socket = createSocketMiddleware(io(location))
 import * as reducer from './reducer'
 import defaultState from './defaultState'
 
-// The redux state sidebar thing store enhancer.
 // Custom api.
-import api from './middleware/api'
+import tripleMiddleware from './triple/middleware'
 import { loadSchema } from './actions'
 
 import DevTools from '../containers/DevTools'
@@ -36,7 +35,7 @@ import DevTools from '../containers/DevTools'
 const middleware = [
   historyMiddleware(window.history, historyCache),
   socket,
-  api,
+  tripleMiddleware,
   thunk,
 ]
 

@@ -10,7 +10,7 @@ function Mixer({ field, fields, entity }) {
     <div className="container">
       <h1>{entity.type}</h1>
       <p>Select the kind of field you want to add.</p>
-      <CreateSelect field={field.type} />
+      <CreateSelect field={field.type} formId={`${entity.type}/${entity.id}`} />
       {
         fields.map(id => <Field key={id} field={field[id]} id={id} value={entity[id]} />)
       }

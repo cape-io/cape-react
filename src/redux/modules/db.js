@@ -15,7 +15,7 @@ const defaultState = {
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case UPDATE_TITLE:
-      return {...state, title: action.payload}
+      return { ...state, title: action.payload }
     default:
       return state
   }

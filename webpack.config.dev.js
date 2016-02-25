@@ -17,11 +17,14 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
   ],
   module: {
-    loaders: [ {
-      test: /\.js$/,
-      exclude: /node_modules/,
-      include: path.join(__dirname, 'src'),
-      loaders: ['babel?cacheDirectory']
-    } ],
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        include: path.join(__dirname, 'src'),
+        loaders: [ 'babel?cacheDirectory' ],
+      },
+      { test: /\.json$/, loader: 'json' },
+    ],
   },
 }

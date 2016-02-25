@@ -15,7 +15,7 @@ function EntitySelect({ items, type }) {
   )
 }
 EntitySelect.propTypes = {
-  items: PropTypes.object.isRequired,
+  items: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
 }
 EntitySelect.defaultProps = {
