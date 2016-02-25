@@ -6,8 +6,11 @@ import isUndefined from 'lodash/isUndefined'
 import isObject from 'lodash/isObject'
 import pickBy from 'lodash/pickBy'
 
-export function createAction(type) {
-  return function actionCreator(payload, arg2, arg3) {
+
+export function createAction(type, payloadCreator) {
+  const getPayload = isFunction(payloadCreator) ? payloadCreator : identity
+  return function actionCreator(arg1, arg2, arg3) {
+    const payload = getPayload(arg1)
     const hasError = arg2 === true
     const meta = isObject(arg2) ? arg2 : arg3
     const action = {

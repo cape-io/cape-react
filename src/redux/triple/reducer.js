@@ -48,10 +48,10 @@ function del(state, triple) {
   }
 }
 
-function put(state, triple, val) {
-  const [ sub, pred, obj ] = triple
+function put(state, triple) {
+  const [ sub, pred, obj ] = triple.id
   // Store the full triple obj on the spo.
-  set(state.spo, [ sub, pred, obj ], val)
+  set(state.spo, [ sub, pred, obj ], triple)
   // Everything else is just an index.
   set(state.sop, [ sub, obj, pred ], true)
   set(state.osp, [ obj, sub, pred ], true)
@@ -64,11 +64,10 @@ function put(state, triple, val) {
 }
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
-    case PUT:
-      return action.payload.id ?
-        put(state, action.payload.id, action.payload) : put(state, action.payload)
     case DEL:
       return del(state, action.payload)
+    case PUT:
+      return put(state, action.payload)
     default:
       return state
   }
