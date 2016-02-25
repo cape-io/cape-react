@@ -26,7 +26,6 @@ import * as reducer from './reducer'
 import defaultState from './defaultState'
 
 // Custom api.
-import tripleMiddleware from './triple/middleware'
 import { loadSchema } from './actions'
 
 import DevTools from '../containers/DevTools'
@@ -35,7 +34,6 @@ import DevTools from '../containers/DevTools'
 const middleware = [
   historyMiddleware(window.history, historyCache),
   socket,
-  tripleMiddleware,
   thunk,
 ]
 
