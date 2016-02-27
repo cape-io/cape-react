@@ -19,7 +19,8 @@ function mapStateToProps(state, ownProps) {
     type: {
       editable: true,
       label: 'Add new field',
-      id: 'type',
+      id: entityId,
+      formId: 'writeObject',
       options: [
         'name',
         'email',
@@ -32,17 +33,20 @@ function mapStateToProps(state, ownProps) {
       editable: false,
       id: 'dateCreated',
       label: 'Date Created',
+      type: 'text',
     },
   }
   const fields = [ 'dateCreated' ]
   forEach(kids, kid => {
     const obj = kid.object
     field[obj.id] = {
-      id: obj.id,
+      id: `${obj.id}/value`,
       editable: true,
+      formId: obj.id,
       label: obj.type,
+      type: 'text',
     }
-    entity[obj.id] = obj.value || obj.dateCreated
+    entity[obj.id] = obj.value
     fields.push(obj.id)
   })
   return {

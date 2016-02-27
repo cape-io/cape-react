@@ -48,7 +48,7 @@ PreviewTextEditable.propTypes = {
   onClick: PropTypes.func.isRequired,
   style: PropTypes.object,
   title: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 }
 
 export default radium(PreviewTextEditable)

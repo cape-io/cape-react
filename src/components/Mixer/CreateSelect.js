@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connectField } from 'redux-field'
+import isString from 'lodash/isString'
 import Editable from '../Editable/Editable'
 import EditableButtons from '../Editable/Buttons'
 import Select from '../Form/Select'
@@ -14,7 +15,7 @@ function CreateSelect({ action, ...props }) {
       <EditableButtons
         onSubmit={onSubmit}
         preventClose
-        value={value || options[0]}
+        value={isString(value) ? value : options[0]}
       />
     </Editable>
   )

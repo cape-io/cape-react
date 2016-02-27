@@ -10,9 +10,17 @@ function Mixer({ field, fields, entity }) {
     <div className="container">
       <h1>{entity.type}</h1>
       <p>Select the kind of field you want to add.</p>
-      <CreateSelect field={field.type} formId={`${entity.type}/${entity.id}`} />
+      <CreateSelect field={field.type} formId={field.type.formId} />
       {
-        fields.map(id => <Field key={id} field={field[id]} id={id} value={entity[id]} />)
+        fields.map(id =>
+          <Field
+            key={id}
+            field={field[id]}
+            formId={field[id].formId || entity.id}
+            id={id}
+            value={entity[id]}
+          />
+        )
       }
     </div>
   )
@@ -20,7 +28,6 @@ function Mixer({ field, fields, entity }) {
 Mixer.propTypes = {
   field: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
-  title: PropTypes.string.isRequired,
 }
 
 export default Mixer
