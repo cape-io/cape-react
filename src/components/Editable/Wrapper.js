@@ -5,12 +5,11 @@ import PreviewText from './PreviewText'
 import EditField from './EditField'
 
 function Wrapper(props) {
-  const { action, field, form, value } = props
-  const { onOpen } = action
+  const { fieldEvent, formEvent, field, form, value } = props
   const { editable, id, type } = field
   const { saving } = form
   function handleOpen() {
-    onOpen(form.value || value)
+    fieldEvent.onOpen(form.value || value)
   }
   const preventClose = !saving && props.open
   const open = preventClose || form.open
@@ -26,7 +25,7 @@ function Wrapper(props) {
       {
         open &&
         <EditField
-          action={action}
+          formEvent={formEvent}
           defaultValue={value}
           form={form}
           id={id}
@@ -40,9 +39,10 @@ function Wrapper(props) {
 }
 
 Wrapper.propTypes = {
-  action: PropTypes.object.isRequired,
   field: PropTypes.object.isRequired,
+  fieldEvent: PropTypes.object.isRequired,
   form: PropTypes.object.isRequired,
+  formEvent: PropTypes.object.isRequired,
   open: PropTypes.bool,
   value: PropTypes.any,
 }

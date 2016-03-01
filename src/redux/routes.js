@@ -32,6 +32,7 @@ addRoute('mixerEdit', '/mixer/:entityId', {}, { segmentValueCharset: 'a-zA-Z0-9-
 addRoute('mixerLegacy', '/mixer/:groupId/:typeId/:entityId')
 
 function routeSelector(history) {
+  if (!history) return history
   return {
     history,
     // Location object gets sent to locationInfo

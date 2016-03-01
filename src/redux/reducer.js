@@ -1,5 +1,5 @@
 export socket, { idReducer as id } from 'cape-redux-socket'
-export form from 'redux-field'
+export { fieldReducer as form } from 'redux-field'
 export { historyReducer as history } from 'redux-history-sync'
 
 export auth from './auth'

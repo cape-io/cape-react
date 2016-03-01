@@ -48,6 +48,7 @@ function mapStateToProps(state, ownProps) {
   return {
     email: user.email,
     ...select(state, 'form', { id: FORM_ID }),
+    prefix: [ FORM_ID, 'email' ],
   }
 }
 const mapDispatchToProps = {

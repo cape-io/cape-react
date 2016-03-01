@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import noop from 'lodash/noop'
 import InputClear from './InputClear'
 // Simple wrapper around an input field.
 // 1. Checks for changes every 300ms. Useful for safari autocomplete.
@@ -77,7 +78,7 @@ class Input extends Component {
     // tab 9
   }
   render() {
-    const { id, onChange, value, ...other } = this.props
+    const { id, value, ...other } = this.props
 
     return (
       // Is a blur the same as a save?
@@ -87,7 +88,8 @@ class Input extends Component {
           autoFocus
           aria-describedby={`${id}-helpBlock`}
           onKeyDown={this.handleKeyDown}
-          onChange={this.handleChange}
+          onChange={noop}
+          onInput={this.handleChange}
           id={id}
           value={value}
         />

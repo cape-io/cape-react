@@ -12,27 +12,23 @@ import Help from './Help'
 class EditField extends Component {
 
   render() {
-    const { action, className, id, form, preventClose, type, ...other } = this.props
+    const { formEvent, className, id, form, preventClose, type, ...other } = this.props
     const { hasError, errorMessage, help, suggestion, value } = form
     const helpTxt = hasError ? errorMessage : help
-    const { onBlur, onChange, onClose, onFocus, onSubmit } = action
     return (
       <div className={classNames('editable-form col-md-9', className)}>
         <div className="editable-row">
           <Input
             {...other}
+            {...formEvent}
             className="form-control"
             id={id}
-            onBlur={onBlur}
-            onChange={onChange}
-            onFocus={onFocus}
             type={type}
             value={value}
           />
           <EditableButtons
+            {...formEvent}
             disabled={hasError}
-            onSubmit={onSubmit}
-            onClose={onClose}
             preventClose={preventClose}
           />
         </div>
@@ -50,7 +46,7 @@ class EditField extends Component {
 }
 
 EditField.propTypes = {
-  action: PropTypes.object.isRequired,
+  formEvent: PropTypes.object.isRequired,
   className: PropTypes.string,
   defaultValue: PropTypes.any,
   form: PropTypes.object.isRequired,
