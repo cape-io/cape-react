@@ -1,4 +1,4 @@
-import { createAction } from '../utils'
+import createAction from '../createAction'
 
 export const LOGOUT = 'auth/LOGOUT'
 export const PROVIDERS = 'auth/PROVIDERS'

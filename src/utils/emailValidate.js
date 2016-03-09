@@ -3,13 +3,12 @@ import { isEmail } from 'validator'
 
 // Sync result of email validation.
 export default function emailValidate(value) {
-  function makeStatus(status, errorMsg, hasErrors = true) {
+  function makeStatus(status, message, hasErrors = true) {
     return {
-      errorMsg,
+      message,
       hasErrors,
       status,
       value,
-      visited: true,
     }
   }
   // Email is too short.

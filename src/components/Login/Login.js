@@ -5,23 +5,26 @@ const Field = connectField()(Wrapper)
 
 import ProviderLinks from './ProviderLinks'
 
-function Login({ auth, email, emailToken, description, prefix, field, title, user }) {
+function Login(props) {
+  const { description, field, prefix, status, title, ...rest } = props
   return (
     <div>
       { title && <h2>{ title }</h2> }
       { description && <p className="lead">{ description }</p> }
-      { !auth && field &&
+      { !status.startsWith('token') &&
         <Field
           field={field.email}
-          initialValue={email}
           open
           placeholder="you@example.com"
           prefix={prefix}
           validate={field.email.validate}
         />
       }
-      { auth && !auth.tokenSending &&
-        <ProviderLinks emailToken={emailToken} {...user} />
+      { props.gravatar &&
+        <img className="col-md-2" src={props.gravatar} alt="user image" style={{ width: 100 }} />
+      }
+      { status === 'valid' &&
+        <ProviderLinks {...rest} />
       }
     </div>
   )
@@ -29,7 +32,11 @@ function Login({ auth, email, emailToken, description, prefix, field, title, use
 
 Login.propTypes = {
   description: PropTypes.string,
+  emailToken: PropTypes.func.isRequired,
   field: PropTypes.object.isRequired,
+  gravatar: PropTypes.string,
+  prefix: PropTypes.array.isRequired,
+  status: PropTypes.string.isRequired,
   title: PropTypes.string,
   userId: PropTypes.string,
 }

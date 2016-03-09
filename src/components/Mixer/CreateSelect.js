@@ -5,9 +5,9 @@ import Editable from '../Editable/Editable'
 import EditableButtons from '../Editable/Buttons'
 import Select from '../Form/Select'
 // Display a list of content types the user can edit.
-function CreateSelect({ action, ...props }) {
+function CreateSelect({ formEvent, ...props }) {
   const { field: { options }, form: { value } } = props
-  const { onBlur, onFocus, onSelect, onSubmit } = action
+  const { onBlur, onFocus, onSelect, onSubmit } = formEvent
 
   return (
     <Editable { ...props }>

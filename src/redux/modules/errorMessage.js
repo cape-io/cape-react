@@ -9,6 +9,8 @@ export default function errorMessage(state = null, action) {
   } else if (error) {
     const { message, name } = payload
     return `[${type}] ${name || 'Error'}: ${message || 'Please try again.'}`
+  } else if (state && state.startsWith(`[${type}]`)) {
+    return null
   }
 
   return state

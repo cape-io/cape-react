@@ -15,24 +15,7 @@ const initialState = {
   tokenValid: null,
   tokenValidating: false,
   user: {
-    email: null,
-    provider: {
-      email: true,
-    },
-    userId: undefined,
   },
-}
-function setEmail({ user, ...state }, { payload, meta }) {
-  if (meta.prefix[0] === 'cape/login' && meta.prefix[1] === 'email') {
-    return {
-      ...state,
-      user: {
-        ...user,
-        email: payload,
-      },
-    }
-  }
-  return state
 }
 function setUserId(state, { error, payload }) {
   if (error) return state
@@ -40,26 +23,21 @@ function setUserId(state, { error, payload }) {
     ...state,
     user: {
       ...state.user,
-      userId: payload,
+      id: payload,
     },
   }
 }
-function setUser(state, { error, payload: { auth, data, user } }) {
+function setUser(state, { error, payload }) {
   const { authenticated, tokenSending, tokenValidating } = initialState
-  const email = error ?
-    get(data, 'email', state.user.email) :
-    get(user, 'email', state.user.email)
   return {
     ...state,
-    auth,
+    // auth,
     authenticated: error ? authenticated : true,
     tokenSending,
     tokenValid: error ? false : true,
     tokenValidating,
     user: {
-      ...state.user,
-      ...user,
-      email,
+      id: payload.id,
     },
   }
 }
@@ -74,8 +52,6 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         provider: action.payload,
       }
-    case SUBMIT:
-      return setEmail(state, action)
     case TOKEN_SEND:
       return {
         ...state,

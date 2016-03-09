@@ -7,9 +7,9 @@ export function isEmail(value) {
   if (!value) {
     return undefined
   }
-  const { errorMsg, hasErrors } = emailValidate(value)
+  const { message, hasErrors } = emailValidate(value)
   if (hasErrors) {
-    return errorMsg
+    return message
   }
 }
 
