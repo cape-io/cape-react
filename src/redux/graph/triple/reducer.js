@@ -1,34 +1,11 @@
+import forEach from 'lodash/forEach'
 import get from 'lodash/get'
+import isFunction from 'lodash/isFunction'
 import set from 'lodash/set'
-import { DEL, PUT } from './actions'
-const defaultState = {
-  spo: {},
-  sop: {},
-  osp: {},
-  ops: {},
-  pos: {},
-  pso: {},
-}
 
-// function addSPO(state, subj) {
-// Use lodash forEach here instead of for in.
-//   for (var subject in subj) {
-//     if (subj.hasOwnProperty(subject)) {
-//       var pred = subj[subject];
-//       for (var predicate in pred) {
-//         if (pred.hasOwnProperty(predicate)) {
-//           var obj = pred[predicate];
-//           for (var object in obj) {
-//             if (obj.hasOwnProperty(object)) {
-//               var val = obj[object];
-//               add(state, [subject, predicate, object, val]);
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
+import { DEL, PUT, PUT_ALL } from './actions'
+
+const defaultState = { spo: {}, sop: {}, osp: {}, ops: {}, pos: {}, pso: {} }
 
 function del(state, triple) {
   const [ sub, pred, obj ] = triple
@@ -43,9 +20,7 @@ function del(state, triple) {
     delete this.osp[obj][sub][pred]
     delete this.ops[obj][pred][sub]
   }
-  return {
-    ...state,
-  }
+  return { ...state }
 }
 
 function put(state, triple) {
@@ -58,17 +33,17 @@ function put(state, triple) {
   set(state.ops, [ obj, pred, sub ], true)
   set(state.pos, [ pred, obj, sub ], true)
   set(state.pso, [ pred, sub, obj ], true)
-  return {
-    ...state,
-  }
+  return { ...state }
 }
+
+function putAll(state, triples) {
+  forEach(triples, triple => put(state, triple))
+  return state
+}
+
+const reducers = { [DEL]: del, [PUT]: put, [PUT_ALL]: putAll }
+
 export default function reducer(state = defaultState, action) {
-  switch (action.type) {
-    case DEL:
-      return del(state, action.payload)
-    case PUT:
-      return put(state, action.payload)
-    default:
-      return state
-  }
+  if (action.error || !action.type || !isFunction(reducers[action.type])) return state
+  return reducers[action.type](state, action.payload)
 }
