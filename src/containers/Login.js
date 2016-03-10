@@ -28,11 +28,9 @@ function mapStateToProps(state, ownProps) {
   let title = formInfo.title
   let status = 'welcome'
   const token = get(ownProps.route, 'params.token')
-  const { authenticated, tokenValid, tokenSending, tokenSent } = state.auth
-  if (authenticated) {
-    return { authenticated }
-  }
-  if (token) status = 'tokenValidating'
+  const { authenticated, tokenSending, tokenSent } = state.auth
+  if (authenticated) status = 'authenticated'
+  else if (token) status = 'tokenValidating'
   else if (tokenSending) status = 'tokenSending'
   else if (tokenSent) status = 'tokenSent'
   else if (valid) {
@@ -42,6 +40,7 @@ function mapStateToProps(state, ownProps) {
   return {
     ...formInfo,
     ...valid,
+    authenticated,
     email: value,
     description: getDescription(status, { tokenSending, tokenSent }),
     prefix,
