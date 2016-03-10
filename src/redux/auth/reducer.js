@@ -1,5 +1,3 @@
-import { SUBMIT } from 'redux-field'
-import get from 'lodash/get'
 import {
   LOGIN, LOGOUT, PROVIDERS, TOKEN_SEND, TOKEN_SENT, TOKEN_VALIDATE, USER_ID,
 } from './actions'
@@ -10,6 +8,7 @@ const initialState = {
   // groupId: null,
   // emailVerified: false,
   // key: null,
+  sid: null,
   tokenSent: false,
   tokenSending: false,
   tokenValid: null,

@@ -9,6 +9,9 @@ export const PROVIDERS = 'auth/PROVIDERS'
 // User object.
 export const LOGIN = 'auth/LOGIN'
 export const login = createAction(LOGIN)
+// Set the sid cookie token.
+export const SET_SID = 'auth/SET_SID'
+export const setSid = createAction(SET_SID)
 // Email choice if user has more than one email. Must be associated with account.
 export const TOKEN_SEND = 'auth/TOKEN_SEND'
 export const tokenSend = createAction(TOKEN_SEND)
