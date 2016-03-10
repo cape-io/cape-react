@@ -5,11 +5,11 @@ import merge from 'lodash/merge'
 import thunk from 'redux-thunk'
 
 import {
-  syncHistoryWithStore,
   createHistoryCache,
-  historyMiddleware,
-  // makeHydratable,
   getInitState,
+  historyMiddleware,
+  syncHistoryWithStore,
+  // makeHydratable,
 } from 'redux-history-sync'
 // Create an object with two methods. getKeyStore and saveKeyStore.
 const historyCache = createHistoryCache()

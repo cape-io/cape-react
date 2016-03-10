@@ -1,5 +1,5 @@
 import isArray from 'lodash/isArray'
-import { createAction } from '../../utils'
+import createAction from '../../createAction'
 
 export const DEL = 'graph/triple/DEL'
 export const del = createAction(DEL)

@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import forEach from 'lodash/forEach'
 // import { getFieldState } from 'redux-field'
 import Component from '../components/Mixer/Edit'
-import { activeEntityIdSelector, selectSXXincludeObject } from '../redux/triple'
+import { activeEntityIdSelector, selectSXXincludeObject } from '../redux/graph'
 function mapStateToProps(state, ownProps) {
   // const formId = 'writeEntity'
   const { entity: { cape }, triple } = state
