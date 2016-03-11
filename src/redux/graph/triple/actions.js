@@ -14,7 +14,7 @@ export const put = createAction(PUT, value => {
   return triple
 })
 
-export const PUT_ALL = 'graph/entity/PUT_ALL'
+export const PUT_ALL = 'graph/triple/PUT_ALL'
 export const putAll = createAction(PUT_ALL, values => {
   if (!isArray(values)) {
     throw new Error('Must send putAll an array.')
