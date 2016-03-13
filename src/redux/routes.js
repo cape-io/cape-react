@@ -3,22 +3,19 @@ import get from 'lodash/get'
 import { createSelector } from 'reselect'
 import { selectActiveKeyDefault } from 'redux-history-sync'
 
-import { tokenValidate } from './auth'
+import { selectUid, tokenValidate } from './auth'
+import { selectSXXincludeObject } from './graph'
 
 // This takes a state object and returns current history slice and route information.
 
 const router = createRouter()
 const { addRoute, addRoutes, locationInfo } = router
 addRoute('home', '/')
-addRoutes([
-  'about',
-  'mixer',
-])
+addRoute('about')
 addRoute('login', '/login/(:token)',
   {
     onServerLoad({ params: { token } }, { dispatch, getState }) {
-      if (!token) return undefined
-      if (getState().id) dispatch(tokenValidate(token))
+      if (token && getState().id) dispatch(tokenValidate(token))
     },
     isLoading(state) {
       return !get(state, 'entity.form.cape/login', false)
@@ -28,6 +25,16 @@ addRoute('login', '/login/(:token)',
     segmentValueCharset: 'a-zA-Z0-9-_~ %.*',
   }
 )
+addRoute('mixer', '/mixer/',
+  {
+    isLoading(state) {
+      const fuc = selectSXXincludeObject(selectUid)(state)
+      console.log(fuc)
+      return !(selectUid(state) && fuc.length)
+    },
+  }
+)
+
 addRoute('mixerEdit', '/mixer/:entityId', {}, { segmentValueCharset: 'a-zA-Z0-9-_~.,+*()!$' })
 addRoute('mixerLegacy', '/mixer/:groupId/:typeId/:entityId')
 
