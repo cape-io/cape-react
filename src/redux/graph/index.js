@@ -14,7 +14,9 @@ export {
   putAll as triplePutAll,
 } from './triple/actions'
 
-export { activeEntityIdSelector, selectSXXincludeObject } from './select'
+export * from './select'
+export * from './entity/select'
+export * from './triple/select'
 
 export default combineReducers({
   entity,
