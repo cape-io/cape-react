@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 
 import Input from './input/Input'
@@ -9,40 +9,38 @@ import Help from './Help'
 // Manage help text.
 // Bubble hasError (and value?) up.
 
-class EditField extends Component {
-
-  render() {
-    const { formEvent, className, id, form, preventClose, type, ...other } = this.props
-    const { hasError, errorMessage, help, suggestion, value } = form
-    const helpTxt = hasError ? errorMessage : help
-    return (
-      <div className={classNames('editable-form col-md-9', className)}>
-        <div className="editable-row">
-          <Input
-            {...other}
-            {...formEvent}
-            className="form-control"
-            id={id}
-            type={type}
-            value={value}
-          />
-          <EditableButtons
-            {...formEvent}
-            disabled={hasError}
-            preventClose={preventClose}
-          />
-        </div>
-        { (helpTxt || suggestion) &&
-          <Help
-            help={helpTxt}
-            hasErrors={hasError}
-            id={id}
-            suggestion={suggestion}
-          />
-        }
+function EditField(props) {
+  const { fieldEvent, formEvent, className, id, form, preventClose, type, ...other } = props
+  const { hasError, errorMessage, help, suggestion, value } = form
+  const helpTxt = hasError ? errorMessage : help
+  return (
+    <div className={classNames('editable-form col-md-9', className)}>
+      <div className="editable-row">
+        <Input
+          {...other}
+          {...formEvent}
+          className="form-control"
+          id={id}
+          type={type}
+          value={value}
+        />
+        <EditableButtons
+          {...fieldEvent}
+          {...formEvent}
+          disabled={hasError}
+          preventClose={preventClose}
+        />
       </div>
-    )
-  }
+      { (helpTxt || suggestion) &&
+        <Help
+          help={helpTxt}
+          hasErrors={hasError}
+          id={id}
+          suggestion={suggestion}
+        />
+      }
+    </div>
+  )
 }
 
 EditField.propTypes = {

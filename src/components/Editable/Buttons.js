@@ -1,43 +1,41 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import Icon from './Icon'
 
-class EditableButtons extends Component {
-
-  render() {
-    const { closeTxt, disabled, onSubmit, onClose, preventClose, submitTxt, value } = this.props
-    function handleSubmit(event) {
-      event.preventDefault()
-      onSubmit(value)
-    }
-    return (
-      <div className="editable-buttons">
-        <button
-          className="editable-submit"
-          disabled={disabled}
-          type="submit"
-          onClick={handleSubmit}
-        >
-          <span>{submitTxt}</span>
-          <Icon symbol="check" />
-        </button>
-        { !preventClose &&
-          <button
-            className="editable-close"
-            type="button"
-            onClick={onClose}
-          >
-            <span>{closeTxt}</span>
-            <Icon symbol="ban" />
-          </button>
-        }
-      </div>
-    )
+function EditableButtons(props) {
+  const { closeTxt, disabled, onSubmit, close, preventClose, submitTxt, value } = props
+  function handleSubmit(event) {
+    event.preventDefault()
+    onSubmit(value)
   }
+  return (
+    <div className="editable-buttons">
+      <button
+        className="editable-submit"
+        disabled={disabled}
+        type="submit"
+        onClick={handleSubmit}
+      >
+        <span>{submitTxt}</span>
+        <Icon symbol="check" />
+      </button>
+      { !preventClose &&
+        <button
+          className="editable-close"
+          type="button"
+          onClick={close}
+        >
+          <span>{closeTxt}</span>
+          <Icon symbol="ban" />
+        </button>
+      }
+    </div>
+  )
 }
+
 EditableButtons.propTypes = {
+  close: PropTypes.func,
   closeTxt: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
-  onClose: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   preventClose: PropTypes.bool,
   submitTxt: PropTypes.string.isRequired,

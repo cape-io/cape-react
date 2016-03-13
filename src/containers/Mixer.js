@@ -1,33 +1,33 @@
 import { connect } from 'react-redux'
-import groupBy from 'lodash/groupBy'
-import values from 'lodash/values'
-import { getFieldState } from 'redux-field'
-import Component from '../components/Mixer/Mixer'
+// import forEach from 'lodash/forEach'
+import Component from '../components/Mixer/Edit'
+import { selectUid } from '../redux/auth'
+import { selectEntity, selectSXXincludeObject } from '../redux/graph'
 
 function mapStateToProps(state) {
-  // Pick an entity to edit or create a new one.
-  const formId = 'writeEntity'
-  const { entity: { cape }, form } = state
-  const { id } = getFieldState(form, [ formId, 'type' ])
+  const entityId = selectUid(state)
+  const subject = selectEntity(selectUid)(state)
+  // console.log(entityId, subject)
+  if (!subject) return {}
+  const objects = selectSXXincludeObject(selectUid)(state)
+  const selectField = {
+    editable: true,
+    label: 'Add new field',
+    id: entityId,
+    formId: 'writeObject',
+    options: [
+      'name',
+      'email',
+      'description',
+    ],
+    required: true,
+    type: 'select',
+  }
+
   return {
-    create: {
-      field: {
-        editable: true,
-        label: 'Entity Class',
-        id: 'type',
-        options: [
-          'Person',
-          'Organization',
-          'WebApplication',
-        ],
-        required: true,
-        type: 'select',
-      },
-      formId,
-    },
-    id,
-    title: 'Create Entity',
-    entity: groupBy(values(cape), 'type'),
+    selectField,
+    objects,
+    subject,
   }
 }
 
