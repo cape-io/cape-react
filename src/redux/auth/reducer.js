@@ -33,7 +33,7 @@ function setUser(state, { error, payload }) {
     // auth,
     authenticated: error ? authenticated : true,
     tokenSending,
-    tokenValid: error ? false : true,
+    tokenValid: !error,
     tokenValidating,
     user: {
       id: payload.id,
