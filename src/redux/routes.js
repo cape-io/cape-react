@@ -28,9 +28,8 @@ addRoute('login', '/login/(:token)',
 addRoute('mixer', '/mixer/',
   {
     isLoading(state) {
-      const fuc = selectSXXincludeObject(selectUid)(state)
-      console.log(fuc)
-      return !(selectUid(state) && fuc.length)
+      const triple = selectSXXincludeObject(selectUid)(state)
+      return !(selectUid(state) && triple.length)
     },
   }
 )
