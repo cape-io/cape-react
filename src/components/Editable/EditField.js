@@ -44,6 +44,7 @@ function EditField(props) {
 }
 
 EditField.propTypes = {
+  fieldEvent: PropTypes.object.isRequired,
   formEvent: PropTypes.object.isRequired,
   className: PropTypes.string,
   defaultValue: PropTypes.any,

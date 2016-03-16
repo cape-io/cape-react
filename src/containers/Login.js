@@ -1,7 +1,6 @@
 import { Component, createElement, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
-import pick from 'lodash/pick'
 import { createHistory } from 'redux-history-sync'
 import { getState as getFieldState } from 'redux-field'
 
@@ -43,8 +42,12 @@ function mapStateToProps(state, ownProps) {
     authenticated,
     email: value,
     description: getDescription(status, { tokenSending, tokenSent }),
+    id: 'login-email',
+    label: 'Email',
     prefix,
+    required: true,
     status,
+    type: 'email',
     title,
   }
 

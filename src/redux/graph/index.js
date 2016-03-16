@@ -5,6 +5,7 @@ export {
   del as entityDel,
   put as entityPut,
   putAll as entityPutAll,
+  update as entityUpdate,
 } from './entity/actions'
 
 import triple from './triple/reducer'

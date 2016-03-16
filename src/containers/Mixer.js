@@ -2,33 +2,17 @@ import { connect } from 'react-redux'
 // import forEach from 'lodash/forEach'
 import Component from '../components/Mixer/Edit'
 import { selectUid } from '../redux/auth'
-import { selectEntity, selectSXXincludeObject } from '../redux/graph'
+import { entityUpdate, selectEntity } from '../redux/graph'
+import { selectFields, selectNewField } from '../redux/select/mixer'
 
 function mapStateToProps(state) {
-  const entityId = selectUid(state)
-  const subject = selectEntity(selectUid)(state)
-  // console.log(entityId, subject)
-  if (!subject) return {}
-  const objects = selectSXXincludeObject(selectUid)(state)
-  const selectField = {
-    editable: true,
-    label: 'Add new field',
-    id: entityId,
-    options: [
-      'description',
-      'email',
-      'image',
-      'name',
-    ],
-    required: true,
-    type: 'select',
-  }
-
   return {
-    selectField,
-    objects,
-    subject,
+    selectField: selectNewField(selectUid)(state),
+    objects: selectFields(state),
+    subject: selectEntity(selectUid)(state),
   }
 }
-
-export default connect(mapStateToProps)(Component)
+const mapDispatchToProps = {
+  entityUpdate,
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Component)

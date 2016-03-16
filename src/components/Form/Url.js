@@ -36,7 +36,7 @@ class InputEmbed extends Component {
   componentWillReceiveProps(nextProps) {
     loadData(nextProps)
     if (nextProps.info && nextProps.value) {
-      if (nextProps.value != nextProps.info.id) {
+      if (nextProps.value !== nextProps.info.id) {
         nextProps.onChange(nextProps.info.id)
       }
     }

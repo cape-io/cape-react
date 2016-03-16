@@ -17,3 +17,6 @@ export const putAll = createAction(PUT_ALL, values => {
   }
   return isArray(values) ? keyBy(values, 'id') : values
 })
+
+export const UPDATE = 'graph/entity/UPDATE'
+export const update = (payload) => ({ ...createAction(UPDATE)(payload), sendSocket: false })

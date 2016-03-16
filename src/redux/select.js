@@ -90,3 +90,13 @@ export default function select(state, type, options = {}) {
   }
   return items
 }
+
+export function humanFileSize(bytes) {
+  const units = [ 'B', 'KB', 'MB', 'GB' ]
+  const index = Math.floor(Math.log(bytes) / Math.log(1024))
+  const size = (bytes / Math.pow(1024, index)).toFixed(2) * 1
+  return {
+    value: size,
+    unitText: units[index],
+  }
+}

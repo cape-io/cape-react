@@ -44,11 +44,13 @@ Wrapper.propTypes = {
   form: PropTypes.object.isRequired,
   formEvent: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   open: PropTypes.bool,
   type: PropTypes.string.isRequired,
   value: PropTypes.any,
 }
 Wrapper.defaultProps = {
   editable: true,
+  type: 'text',
 }
 export default Wrapper

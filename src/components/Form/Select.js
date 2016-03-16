@@ -9,6 +9,7 @@ SelectOption.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 }
+
 function Select({ options, value, ...props }) {
   return (
     <select
@@ -23,6 +24,7 @@ function Select({ options, value, ...props }) {
 Select.propTypes = {
   value: PropTypes.string,
   onBlur: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
 }
 Select.defaultProps = {
 }

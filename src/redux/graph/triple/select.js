@@ -1,3 +1,4 @@
+import immutable from 'seamless-immutable'
 import forEach from 'lodash/forEach'
 import map from 'lodash/map'
 import { createSelector } from 'reselect'
@@ -17,7 +18,7 @@ export function getSXX(state, triple) {
   const res = []
   forEach(pred, predicate => {
     forEach(predicate, value => {
-      res.push(value)
+      res.push(immutable(value))
     })
   })
   return res
@@ -27,16 +28,11 @@ export function mergeObject(triple, entity) {
   if (!entity) {
     return triple
   }
-  const tripleObjField = triple.object || {}
-  return {
-    ...triple,
-    object: {
-      ...tripleObjField,
-      ...entity,
-    },
-  }
+  return triple.set('object', triple.object.merge(entity))
 }
+
 export const selectObject = (triple) => triple.id[2]
+
 function getSXXincludeObject(tripleState, entityState, subjectId) {
   const results = getSXX(tripleState, [ subjectId ])
   return map(results, triple =>
