@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import includes from 'lodash/includes'
-import { loadImageUrl, uploadFile } from './process'
+import { loadImageUrl } from './process'
 import Photo from './Photo'
 function getInputId(id) {
   return `fileselect-${id}`
@@ -19,26 +19,8 @@ class ImageUpload extends Component {
     this.handleFileHover = this.handleFileHover.bind(this)
     this.handleUploaded = this.handleUploaded.bind(this)
   }
-  // componentWillReceiveProps(nextProps) {
-  //   const { form: { hasError, meta, valid, saved, savedProgress }, id } = nextProps
-  //   if (!hasError && meta && valid && valid[meta.sha1] && savedProgress === 0 && !saved) {
-  //     uploadFile(nextProps, getInputId(id))
-  //   } else {
-  //     console.log(nextProps.form)
-  //   }
-  // }
   // File has been uploaded to cloud storage.
   handleUploaded(fileInfo) {
-    // console.log('handleUploaded', imgInfo)
-    const { id } = fileInfo
-    // What values do we save into the entity, field?
-    // Just the id because the fileInfo is a file entity.
-    const fieldValue = id
-    this.setState({
-      fileUploading: null,
-      errorMsg: null,
-      warningMsg: null,
-    })
     // Save to redux state.
     this.props.addContent({ url: { [id]: fileInfo } })
     this.props.formEvent.onBlur(fieldValue)

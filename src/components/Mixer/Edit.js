@@ -5,6 +5,7 @@ import CreateSelect from './CreateSelect'
 import { connectField } from 'redux-field'
 
 import StaticVal from '../Editable/StaticVal'
+import Image from '../Image'
 import Wrapper from '../Editable/Wrapper'
 import ImageUpload from '../Editable/ImageUpload/ImageUpload'
 const Field = connectField()(Wrapper)
@@ -26,22 +27,28 @@ function Mixer({ entityUpdate, selectField, objects, subject }) {
         prefix={[ 'CreateObjectAction', subject.id ]}
       />
       {
-        map(objects, ({ object, predicate }) => (
-          object.schemaInfo.inputType === 'image' ?
-          <ImageField
-            entityUpdate={entityUpdate}
-            key={object.id}
-            {...object}
-            prefix={[ 'UpdateFieldAction', object.id ]}
-          /> :
-          <Field
-            key={object.id}
-            {...object}
-            label={`${predicate} (${object.id})`}
-            type={object.schemaInfo.inputType}
-            prefix={[ 'UpdateFieldAction', object.id ]}
-          />
-        ))
+        map(objects, ({ object, predicate }) => {
+          if (object.schemaInfo.inputType === 'image') {
+            if (object.url) return <Image {...object} key={object.id} />
+            return (
+              <ImageField
+                entityUpdate={entityUpdate}
+                key={object.id}
+                {...object}
+                prefix={[ 'UpdateFieldAction', object.id ]}
+              />
+            )
+          }
+          return (
+            <Field
+              key={object.id}
+              {...object}
+              label={`${predicate} (${object.id})`}
+              type={object.schemaInfo.inputType}
+              prefix={[ 'UpdateFieldAction', object.id ]}
+            />
+          )
+        })
       }
     </div>
   )

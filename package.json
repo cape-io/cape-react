@@ -66,7 +66,7 @@
     "react-json-inspector": "^6.1.2",
     "react-redux": "^4.3.0",
     "react-select": "^1.0.0-beta11",
-    "react-textarea-autosize": "^3.1.0",
+    "react-textarea-autosize": "^3.3.0",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.2",
     "react-widgets": "^3.2.0",
