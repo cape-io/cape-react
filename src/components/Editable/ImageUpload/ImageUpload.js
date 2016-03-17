@@ -19,14 +19,14 @@ class ImageUpload extends Component {
     this.handleFileHover = this.handleFileHover.bind(this)
     this.handleUploaded = this.handleUploaded.bind(this)
   }
-  componentWillReceiveProps(nextProps) {
-    const { form: { hasError, meta, valid, saved, savedProgress }, id } = nextProps
-    if (!hasError && meta && valid && valid[meta.sha1] && savedProgress === 0 && !saved) {
-      uploadFile(nextProps, getInputId(id))
-    } else {
-      console.log(nextProps.form)
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { form: { hasError, meta, valid, saved, savedProgress }, id } = nextProps
+  //   if (!hasError && meta && valid && valid[meta.sha1] && savedProgress === 0 && !saved) {
+  //     uploadFile(nextProps, getInputId(id))
+  //   } else {
+  //     console.log(nextProps.form)
+  //   }
+  // }
   // File has been uploaded to cloud storage.
   handleUploaded(fileInfo) {
     // console.log('handleUploaded', imgInfo)
