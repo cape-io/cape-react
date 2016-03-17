@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
+import Textarea from 'react-textarea-autosize'
 
 import Input from './input/Input'
 
@@ -16,14 +17,26 @@ function EditField(props) {
   return (
     <div className={classNames('editable-form col-md-9', className)}>
       <div className="editable-row">
-        <Input
-          {...other}
-          {...formEvent}
-          className="form-control"
-          id={id}
-          type={type}
-          value={value}
-        />
+        { type !== 'textarea' &&
+          <Input
+            {...other}
+            {...formEvent}
+            className="form-control"
+            id={id}
+            type={type}
+            value={value}
+          />
+        }
+        { type === 'textarea' &&
+          <Textarea
+            {...other}
+            {...formEvent}
+            className="form-control"
+            id={id}
+            type={type}
+            value={value}
+          />
+        }
         <EditableButtons
           {...fieldEvent}
           {...formEvent}

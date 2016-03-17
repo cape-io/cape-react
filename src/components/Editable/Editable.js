@@ -58,6 +58,7 @@ EditableField.propTypes = {
     'fullName',
     'select',
     'text',
+    'textarea',
   ]).isRequired,
   validators: PropTypes.array,
   value: PropTypes.oneOfType([
