@@ -21,7 +21,7 @@ function getDescription(status, props = {}) {
 }
 function mapStateToProps(state, ownProps) {
   const prefix = [ FORM_ID, 'email' ]
-  const { valid, value } = getFieldState(state, { prefix })
+  const { validValue, value } = getFieldState(state, { prefix })
   // console.log(valid)
   const formInfo = select(state, 'form', { id: FORM_ID })
   let title = formInfo.title
@@ -32,13 +32,13 @@ function mapStateToProps(state, ownProps) {
   else if (token) status = 'tokenValidating'
   else if (tokenSending) status = 'tokenSending'
   else if (tokenSent) status = 'tokenSent'
-  else if (valid) {
+  else if (validValue) {
     status = 'valid'
-    title = valid.memberOf ? 'Login' : 'Join'
+    title = validValue.memberOf ? 'Login' : 'Join'
   }
   return {
     ...formInfo,
-    ...valid,
+    ...validValue,
     authenticated,
     email: value,
     description: getDescription(status, { tokenSending, tokenSent }),
