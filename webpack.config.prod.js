@@ -33,7 +33,6 @@ module.exports = {
         loader: 'babel',
         query: {
           cacheDirectory: true,
-          presets: [ 'es2015', 'stage-0', 'react' ],
         },
       },
       { test: /\.json$/, loader: 'json' },
