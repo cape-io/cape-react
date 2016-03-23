@@ -9,7 +9,7 @@ import { selectSXXincludeObject } from './graph'
 // This takes a state object and returns current history slice and route information.
 
 const router = createRouter()
-const { addRoute, addRoutes, locationInfo } = router
+const { addRoute, locationInfo } = router
 addRoute('home', '/')
 addRoute('about')
 addRoute('login', '/login/(:token)',
@@ -44,6 +44,9 @@ function routeSelector(history) {
     // Location object gets sent to locationInfo
     route: locationInfo(history.location),
   }
+}
+export {
+  locationInfo,
 }
 // Pass in the state object and return some info about a "route".
 export default createSelector(selectActiveKeyDefault, routeSelector)
