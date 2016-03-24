@@ -15,7 +15,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        SOCKET_LOC: JSON.stringify('http://www.cape.io/'),
+        SOCKET_LOC: JSON.stringify(process.env.SOCKET_LOC || 'http://www.cape.io/'),
       },
     }),
     new webpack.HotModuleReplacementPlugin(),
