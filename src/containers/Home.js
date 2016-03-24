@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import { Link } from 'redux-history-sync'
-export default class Home extends Component {
-  render() {
-    return (
-      <div className="home">
-        <h2>Hello</h2>
-        <Link to="/mixer/">Mixer</Link>
-      </div>
-    )
-  }
-}
+import { connect } from 'react-redux'
+import { createSelector } from 'reselect'
+
+import Component from '../components/Home'
+import { isAuthenticated } from '../redux/auth'
+
+const homeSelector = createSelector(
+  isAuthenticated,
+  authenticated => ({ authenticated })
+)
+
+export default connect(homeSelector)(Component)

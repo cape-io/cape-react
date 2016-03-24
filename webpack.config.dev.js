@@ -13,6 +13,11 @@ module.exports = {
     publicPath: '/js/',
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        SOCKET_LOC: JSON.stringify('http://www.cape.io/'),
+      },
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
   ],

@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { pushPath } from 'redux-simple-router'
 
 import { loadForm, loadUser } from '../redux/actions'
-import { isAuthenticated } from '../redux/modules/auth'
+import { isAuthenticated } from '../redux/auth'
 import Page from '../components/Page'
 import Loading from '../components/Loading'
 

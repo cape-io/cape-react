@@ -29,6 +29,7 @@ addRoute('mixer', '/mixer/',
   {
     isLoading(state) {
       const triple = selectSXXincludeObject(selectUid)(state)
+      console.log(triple)
       return !(selectUid(state) && triple.length)
     },
   }
@@ -45,8 +46,6 @@ function routeSelector(history) {
     route: locationInfo(history.location),
   }
 }
-export {
-  locationInfo,
-}
+export { locationInfo }
 // Pass in the state object and return some info about a "route".
 export default createSelector(selectActiveKeyDefault, routeSelector)
