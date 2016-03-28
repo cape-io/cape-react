@@ -2,15 +2,17 @@ import React, { PropTypes } from 'react'
 
 const style = {
   base: {
+    background: 'transparent',
+    border: 0,
     color: 'grey',
   },
 }
 
 function Placeholder({ label, ...props }) {
   return (
-    <div {...props} style={style.base}>
+    <button {...props} style={style.base}>
       { label }
-    </div>
+    </button>
   )
 }
 

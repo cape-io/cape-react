@@ -17,9 +17,9 @@ addRoute('login', '/login/(:token)',
     onServerLoad({ params: { token } }, { dispatch, getState }) {
       if (token && getState().id) dispatch(tokenValidate(token))
     },
-    isLoading(state) {
-      return !get(state, 'entity.form.cape/login', false)
-    },
+    // isLoading(state) {
+    //   return !get(state, 'entity.form.cape/login', false)
+    // },
   },
   {
     segmentValueCharset: 'a-zA-Z0-9-_~ %.*',

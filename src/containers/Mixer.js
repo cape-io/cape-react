@@ -1,22 +1,41 @@
 import { connect } from 'react-redux'
-// import forEach from 'lodash/forEach'
+import { createElement } from 'react'
+import { onChange } from 'redux-field'
+// import Inspector from 'react-json-inspector'
+
 import Component from '../components/Mixer/Me'
-import { selectUid } from '../redux/auth'
+import { isAuthenticated, selectUid } from '../redux/auth'
 import { entityUpdate, selectEntity } from '../redux/graph'
 import { selectFields, selectNewField } from '../redux/select/mixer'
 import { entitySchema } from '../redux/schema'
+import Loading from '../components/Loading'
 
 const personSchemaSelector = entitySchema('Person')
 
 function mapStateToProps(state) {
-  console.log(personSchemaSelector(state))
   return {
+    authenticated: isAuthenticated(state),
+    entity: selectFields(state),
     selectField: selectNewField(selectUid)(state),
-    objects: selectFields(state),
+    schema: personSchemaSelector(state),
     subject: selectEntity(selectUid)(state),
   }
 }
+
+function createNewField(subjectId, type) {
+  const prefix = [ 'CreateObjectAction', subjectId ]
+  return onChange(prefix, type)
+}
 const mapDispatchToProps = {
+  createNewField,
   entityUpdate,
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Component)
+
+function selectComponent(props) {
+  const { authenticated, schema } = props
+  if (!authenticated) return createElement(Loading, { message: 'Not authenticated.' })
+  if (!schema) return createElement(Loading, { message: 'No schema.' })
+  // return createElement(Inspector, { data: props })
+  return createElement(Component, props)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(selectComponent)

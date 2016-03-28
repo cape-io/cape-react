@@ -18,7 +18,7 @@ function ProviderLinks({ email, emailToken, emailTokenTxt, googleApps }) {
             <button onClick={handleEmailClick}>{email}</button>
           </li>
         }
-        { googleApps && <li><LoginGoogle login={email} /></li> }
+        { googleApps && false && <li><LoginGoogle login={email} /></li> }
       </ul>
     </div>
   )

@@ -29,7 +29,7 @@ export function getSXX(state, tripleId) {
 export function getXPO(state, path) {
   const subjects = get(state.pos, path, null)
   if (!subjects) return subjects
-  return map(subjects, (nil, id) => getSPO([ id, ...path ]))
+  return map(subjects, (nil, id) => getSPO(state, [ id, ...path ]))
 }
 export function mergeObject(triple, entity) {
   if (!entity) {
@@ -64,6 +64,8 @@ export function selectXPOentity(path) {
   return createSelector(
     selectXPO(path),
     entitySelector,
-    (res, entity) => map(res, triple => triple.set('subject', entity[triple.id[0]]))
+    (res, entity) => map(res, triple =>
+      triple ? triple.set('subject', entity[triple.id[0]]) : null
+    )
   )
 }

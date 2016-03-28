@@ -4,7 +4,6 @@ import get from 'lodash/get'
 import { createHistory } from 'redux-history-sync'
 import { getState as getFieldState } from 'redux-field'
 
-import select from '../redux/select'
 import Login from '../components/Login/Login'
 import { tokenSend } from '../redux/auth'
 
@@ -23,8 +22,23 @@ function mapStateToProps(state, ownProps) {
   const prefix = [ FORM_ID, 'email' ]
   const { validValue, value } = getFieldState(state, { prefix })
   // console.log(valid)
-  const formInfo = select(state, 'form', { id: FORM_ID })
-  let title = formInfo.title
+  const formInfo = {
+    description: 'Enter your email to start the login process.',
+    field: {
+      email: {
+        type: 'email',
+        label: 'Email',
+        required: true,
+      },
+    },
+    submit: {
+      icon: 'log-in',
+      text: 'Log In',
+      showReset: false,
+      showSubmit: false,
+    },
+  }
+  let title = 'Login or Join'
   let status = 'welcome'
   const token = get(ownProps.route, 'params.token')
   const { authenticated, tokenSending, tokenSent } = state.auth
@@ -50,41 +64,6 @@ function mapStateToProps(state, ownProps) {
     type: 'email',
     title,
   }
-
-
-  // if (token && tokenValid === null) {
-  //   return {
-  //     description: 'Preparing to validate your login link. Hold tight.',
-  //     title,
-  //   }
-  // }
-  // const auth = pick(state.auth, 'tokenSending', 'tokenSent')
-  // if (user.userId) {
-  //   if (auth.tokenSending) {
-  //     return {
-  //       auth,
-  //       description: ,
-  //       title,
-  //     }
-  //   }
-  //   if (auth.tokenSent) {
-  //     return {
-  //       description: ,
-  //       title,
-  //     }
-  //   }
-  //   return {
-  //     auth,
-  //     description: 'Select an option to authenticate with',
-  //     title,
-  //     user,
-  //   }
-  // }
-  // return {
-  //   email: user.email,
-  //   ...select(state, 'form', { id: FORM_ID }),
-  //   prefix,
-  // }
 }
 const mapDispatchToProps = {
   createHistory,

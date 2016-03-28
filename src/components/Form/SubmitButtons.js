@@ -2,19 +2,25 @@ import React, { PropTypes } from 'react'
 
 import Icon from '../Icon'
 
-function SubmitButtons({ invalid, showReset, icon, text, resetForm, handleSubmit, pristine }) {
+function SubmitButtons(props) {
+  const { invalid, showReset, icon, text, resetForm, handleSubmit, pristine, showSubmit } = props
   const resetText = 'Reset'
   return (
     <div className="form-group">
       <div className="col-sm-offset-2 col-sm-10">
-        <button className="btn btn-success" onClick={handleSubmit} disabled={invalid}>
-          <Icon symbol={ icon || 'check' } hidden />
-          { ' ' }
-          { text || 'Submit' }
-        </button>
+        { showSubmit &&
+          <button className="btn btn-success" onClick={handleSubmit} disabled={invalid}>
+            <Icon symbol={ icon || 'check' } hidden />
+            { ' ' }
+            { text || 'Submit' }
+          </button>
+        }
         {
           showReset && resetForm &&
-          <button className="btn btn-warning" onClick={resetForm} style={{ marginLeft: 15 }} disabled={pristine}>
+          <button
+            className="btn btn-warning"
+            onClick={resetForm} style={{ marginLeft: 15 }} disabled={pristine}
+          >
             <Icon symbol="remove" hidden />
             { ' ' }
             { resetText }
@@ -27,12 +33,16 @@ function SubmitButtons({ invalid, showReset, icon, text, resetForm, handleSubmit
 }
 
 SubmitButtons.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
   icon: PropTypes.string,
+  invalid: PropTypes.bool,
   text: PropTypes.string,
   pristine: PropTypes.bool.isRequired,
-  showReset: PropTypes.bool.isRequired,
   resetForm: PropTypes.func,
-  handleSubmit: PropTypes.func.isRequired,
+  showReset: PropTypes.bool.isRequired,
+  showSubmit: PropTypes.bool.isRequired,
 }
-
+SubmitButtons.defaultProps = {
+  showSubmit: true,
+}
 export default SubmitButtons

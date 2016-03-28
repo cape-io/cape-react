@@ -1,4 +1,7 @@
 import { createSelector } from 'reselect'
+import keyBy from 'lodash/keyBy'
+import map from 'lodash/map'
+
 import { filterEntity, selectXPOentity } from './graph'
 
 export function getByAltName(type, alternateName) {
@@ -9,7 +12,8 @@ export function entitySchema(type) {
   return state => {
     const subj = selectTypeEntity(state)[0]
     if (!subj) return null
-    return selectXPOentity([ 'domainIncludes', subj.id ])(state)
+    const fields = selectXPOentity([ 'domainIncludes', subj.id ])(state)
+    return keyBy(map(fields, 'subject'), 'alternateName')
   }
 }
 export default {

@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import isFunction from 'lodash/isFunction'
+import isString from 'lodash/isString'
 // Top level "router". Heh.
 import * as routeIndex from './RouteComponents'
 
@@ -27,10 +28,18 @@ Router.propTypes = {
   loading: PropTypes.bool.isRequired,
   route: PropTypes.object.isRequired,
 }
+function selectSessionId(state) {
+  return state.socket.sessionId
+}
+function socketLoading(state) {
+  return !isString(selectSessionId(state))
+}
 function mapStateToProps(state, ownProps) {
   const { route: { isLoading } } = ownProps
+  const checkLoading = isLoading || socketLoading
+  const loading = isFunction(checkLoading) && !!checkLoading(state)
   return {
-    loading: isFunction(isLoading) && isLoading(state),
+    loading,
   }
 }
 export default connect(mapStateToProps)(Router)

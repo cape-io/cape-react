@@ -1,14 +1,19 @@
 import React, { PropTypes } from 'react'
 import FieldGroup from '../Editable/FieldGroup'
 
-function Person({ entity, schema }) {
+const nameFields = [
+  'honorificPrefix', 'givenName', 'additionalName', 'familyName', 'honorificSuffix',
+]
+
+function Person(props) {
   return (
     <div className="container">
-      <FieldGroup entity={entity} schema={schema} />
+      <FieldGroup {...props} fields={nameFields} />
     </div>
   )
 }
 Person.propTypes = {
+  createNewField: PropTypes.func.isRequired,
   entity: PropTypes.object.isRequired,
   schema: PropTypes.object.isRequired,
 }
