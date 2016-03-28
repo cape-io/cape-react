@@ -1,20 +1,23 @@
 import immutable from 'seamless-immutable'
+import get from 'lodash/get'
 import forEach from 'lodash/forEach'
 import map from 'lodash/map'
 import { createSelector } from 'reselect'
+
 import { graphSelector } from '../select'
 import { entitySelector } from '../entity/select'
 
 // SPO
 export const tripleSelector = state => graphSelector(state).triple
 
+export function getSPO(state, tripleId) {
+  return immutable(get(state.spo, tripleId, null))
+}
+
 // Query the store for all facts with specific subject
-export function getSXX(state, triple) {
-  const subjectId = triple[0]
-  const pred = state.spo[subjectId]
-  if (!pred) {
-    return null
-  }
+export function getSXX(state, tripleId) {
+  const pred = state.spo[tripleId[0]]
+  if (!pred) return null
   const res = []
   forEach(pred, predicate => {
     forEach(predicate, value => {
@@ -23,7 +26,11 @@ export function getSXX(state, triple) {
   })
   return res
 }
-
+export function getXPO(state, path) {
+  const subjects = get(state.pos, path, null)
+  if (!subjects) return subjects
+  return map(subjects, (nil, id) => getSPO([ id, ...path ]))
+}
 export function mergeObject(triple, entity) {
   if (!entity) {
     return triple
@@ -45,5 +52,18 @@ export function selectSXXincludeObject(activeEntityIdSelector) {
     entitySelector,
     activeEntityIdSelector,
     getSXXincludeObject
+  )
+}
+export function selectXPO(path) {
+  return createSelector(
+    tripleSelector,
+    state => getXPO(state, path)
+  )
+}
+export function selectXPOentity(path) {
+  return createSelector(
+    selectXPO(path),
+    entitySelector,
+    (res, entity) => map(res, triple => triple.set('subject', entity[triple.id[0]]))
   )
 }

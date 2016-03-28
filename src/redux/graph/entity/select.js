@@ -1,3 +1,4 @@
+import filter from 'lodash/filter'
 import isFunction from 'lodash/isFunction'
 import { createSelector } from 'reselect'
 
@@ -8,4 +9,11 @@ export function selectEntity(entityIdSelect) {
     const entityId = isFunction(entityIdSelect) ? entityIdSelect(state) : entityIdSelect
     return entitySelector(state)[entityId]
   }
+}
+
+export function filterEntity(predicate) {
+  return createSelector(
+    entitySelector,
+    items => filter(items, predicate)
+  )
 }
