@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import { createElement } from 'react'
-import { onChange } from 'redux-field'
+import { onSubmit } from 'redux-field'
 // import Inspector from 'react-json-inspector'
 
 import Component from '../components/Mixer/Me'
 import { isAuthenticated, selectUid } from '../redux/auth'
 import { entityUpdate, selectEntity } from '../redux/graph'
-import { selectFields, selectNewField } from '../redux/select/mixer'
+import { selectFieldPrefix, selectFields, selectNewField } from '../redux/select/mixer'
 import { entitySchema } from '../redux/schema'
 import Loading from '../components/Loading'
 
@@ -23,19 +23,18 @@ function mapStateToProps(state) {
 }
 
 function createNewField(subjectId, type) {
-  const prefix = [ 'CreateObjectAction', subjectId ]
-  return onChange(prefix, type)
+  return onSubmit(selectFieldPrefix(subjectId), type)
 }
 const mapDispatchToProps = {
   createNewField,
   entityUpdate,
 }
 
-function selectComponent(props) {
+function SelectComponent(props) {
   const { authenticated, schema } = props
   if (!authenticated) return createElement(Loading, { message: 'Not authenticated.' })
   if (!schema) return createElement(Loading, { message: 'No schema.' })
   // return createElement(Inspector, { data: props })
   return createElement(Component, props)
 }
-export default connect(mapStateToProps, mapDispatchToProps)(selectComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(SelectComponent)

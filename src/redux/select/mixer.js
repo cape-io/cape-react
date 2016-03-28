@@ -1,5 +1,7 @@
 import forEach from 'lodash/forEach'
-import values from 'lodash/values'
+import identity from 'lodash/identity'
+import { getState } from 'redux-field'
+import { createSelector } from 'reselect'
 
 import { selectUid } from '../auth'
 import { filterEntity, selectSXXincludeObject } from '../graph'
@@ -52,13 +54,25 @@ export function selectFields(state) {
   })
   return entity
 }
-export function selectNewField(entityIdSelect) {
-  return (state) => ({
+export function selectFieldPrefix(subjectId) {
+  return [ 'CreateObjectAction', subjectId ]
+}
+function selectFieldInfo(id, state) {
+  return {
     editable: true,
     label: 'Add new field',
-    id: entityIdSelect(state),
+    id,
     options: [],
     required: true,
+    state: getState(state, { prefix: selectFieldPrefix(id) }),
     type: 'select',
-  })
+  }
+}
+
+export function selectNewField(entityIdSelect) {
+  return createSelector(
+    entityIdSelect,
+    identity,
+    selectFieldInfo
+  )
 }

@@ -1,27 +1,30 @@
 import React, { PropTypes } from 'react'
+import radium from 'radium'
 
 const style = {
   base: {
     background: 'transparent',
     border: 0,
     color: 'grey',
+    fontSize: '2rem',
   },
 }
 
-function Placeholder({ label, ...props }) {
+function Placeholder({ color, label, ...props }) {
   return (
-    <button {...props} style={style.base}>
+    <button {...props} style={[ style.base, { color } ]}>
       { label }
     </button>
   )
 }
 
 Placeholder.propTypes = {
-  className: PropTypes.string,
+  color: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 }
 Placeholder.defaultProps = {
+  color: 'grey',
 }
 
-export default Placeholder
+export default radium(Placeholder)
