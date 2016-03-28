@@ -8,9 +8,9 @@ import Help from './Help'
 
 function EditField(props) {
   const { fieldEvent, form, formEvent, help, id, justCreated, label, type, ...other } = props
-  const { errorMessage, hasError, open, savedValue, suggestion, value } = form
+  const { errorMessage, hasError, open, suggestion, touched, value } = form
   const helpTxt = hasError ? errorMessage : help
-  const openNewField = justCreated && !savedValue
+  const openNewField = justCreated && !touched
   if (!open && !openNewField) {
     const color = props.value ? 'black' : 'lightgrey'
     const text = props.value || label
