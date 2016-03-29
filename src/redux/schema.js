@@ -1,20 +1,36 @@
-// import { createSelector } from 'reselect'
+import { createSelector } from 'reselect'
+import concat from 'lodash/concat'
+import flatten from 'lodash/flatten'
+import identity from 'lodash/identity'
 import keyBy from 'lodash/keyBy'
 import map from 'lodash/map'
 
-import { filterEntity, selectXPOentity } from './graph'
+import { filterEntity, selectSPX, selectXPOentity } from './graph'
 
 export function getByAltName(type, alternateName) {
   return filterEntity({ alternateName, type })
 }
+const selectClassEntities = filterEntity({ type: 'Class' })
+const typeIndex = createSelector(
+  selectClassEntities,
+  items => keyBy(items, 'alternateName')
+)
 export function entitySchema(type) {
-  const selectTypeEntity = filterEntity({ alternateName: type, type: 'Class' })
-  return state => {
-    const subj = selectTypeEntity(state)[0]
-    if (!subj) return null
-    const fields = selectXPOentity([ 'domainIncludes', subj.id ])(state)
-    return keyBy(map(fields, 'subject'), 'alternateName')
-  }
+  return createSelector(
+    typeIndex,
+    identity,
+    (classIndex, state) => {
+      const subj = classIndex[type]
+      if (!subj) return null
+      const subClassOf = selectSPX([ subj.id, 'subClassOf' ])(state)
+      const subClassFields = flatten(map(subClassOf, triple =>
+        selectXPOentity([ 'domainIncludes', triple.id[2] ])(state)
+      ))
+      const classFields = selectXPOentity([ 'domainIncludes', subj.id ])(state)
+      const fields = concat(classFields, subClassFields)
+      return keyBy(map(fields, 'subject'), 'alternateName')
+    }
+  )
 }
 export default {
   form: {
