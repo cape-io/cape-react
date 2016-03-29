@@ -9,7 +9,7 @@ const schemaInfo = {
   email: {
     description: 'An email identifies a location to which email messages are delivered.',
     dataType: 'text',
-    validators: [ 'email' ],
+    validators: [ 'isEmail' ],
   },
   description: {
     description: 'A short description of the item/person.',

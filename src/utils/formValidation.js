@@ -46,9 +46,7 @@ export function fieldValidation(validators) {
     forEach(validatorFuncs, validator => {
       errorResult = validator(value)
       // If we find an error quit early.
-      if (errorResult) {
-        return false
-      }
+      return !errorResult
     })
     // Return the first error or undefined.
     return errorResult || undefined

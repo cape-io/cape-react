@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react'
 
+import { fieldValidation } from '../../utils/formValidation'
 import EditField from './Field'
 import Placeholder from './Placeholder'
 
 function Field({ createNewField, field, justCreated, schema }) {
-  const { name, description } = schema
+  const { name, description, validators } = schema
   if (field) {
     return (
       <EditField
@@ -14,7 +15,8 @@ function Field({ createNewField, field, justCreated, schema }) {
         label={name}
         prefix={[ 'UpdateFieldAction', field.id ]}
         type="text"
-        value={field.value}
+        initialValue={field.value}
+        validate={fieldValidation(validators)}
       />
     )
   }
