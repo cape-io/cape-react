@@ -5,13 +5,13 @@ import partial from 'lodash/partial'
 import { getField } from '../../redux/select/mixer'
 import Field from './FieldEditable'
 
-function FieldGroup({ createNewField, entity, fields, schema, selectField, subject }) {
+function FieldGroup({ createNewField, entity, fields, schema, selectField }) {
   return (
-    <div className="row">
+    <div style={{ display: 'flex' }}>
     { map(fields, fieldId =>
         <Field
           key={fieldId}
-          createNewField={partial(createNewField, subject.id, schema[fieldId].alternateName)}
+          createNewField={partial(createNewField, schema[fieldId].alternateName)}
           field={getField(entity[fieldId])}
           justCreated={selectField.state.value === fieldId}
           schema={schema[fieldId]}
@@ -27,7 +27,6 @@ FieldGroup.propTypes = {
   fields: PropTypes.array.isRequired,
   selectField: PropTypes.object.isRequired,
   schema: PropTypes.object.isRequired,
-  subject: PropTypes.object.isRequired,
 }
 FieldGroup.defaultProps = {}
 

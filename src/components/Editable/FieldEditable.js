@@ -21,7 +21,7 @@ function Field({ createNewField, field, justCreated, schema }) {
   return <Placeholder label={name} onClick={createNewField} title={description} />
 }
 Field.propTypes = {
-  createNewField: PropTypes.func.isRequired,
+  createNewField: PropTypes.func,
   field: PropTypes.object,
   justCreated: PropTypes.bool.isRequired,
   schema: PropTypes.object.isRequired,
