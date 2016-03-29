@@ -26,6 +26,11 @@ export function getSXX(state, tripleId) {
   })
   return res
 }
+export function getSPX(state, path) {
+  const objects = get(state.spo, path, null)
+  if (!objects) return objects
+  return map(objects, triple => immutable(triple))
+}
 export function getXPO(state, path) {
   const subjects = get(state.pos, path, null)
   if (!subjects) return subjects
@@ -52,6 +57,12 @@ export function selectSXXincludeObject(activeEntityIdSelector) {
     entitySelector,
     activeEntityIdSelector,
     getSXXincludeObject
+  )
+}
+export function selectSPX(path) {
+  return createSelector(
+    tripleSelector,
+    state => getSPX(state, path)
   )
 }
 export function selectXPO(path) {
