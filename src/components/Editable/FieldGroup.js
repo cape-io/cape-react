@@ -1,42 +1,13 @@
 import React, { PropTypes } from 'react'
 import map from 'lodash/map'
 import partial from 'lodash/partial'
-import values from 'lodash/values'
 
-import EditField from './Field'
-import Placeholder from './Placeholder'
+import { getField } from '../../redux/select/mixer'
+import Field from './FieldEditable'
 
-function Field({ createNewField, field, justCreated, schema }) {
-  const { name, description } = schema
-  if (field) {
-    return (
-      <EditField
-        help={description}
-        id={field.id}
-        justCreated={justCreated}
-        label={name}
-        prefix={[ 'UpdateFieldAction', field.id ]}
-        type="text"
-        value={field.value}
-      />
-    )
-  }
-  return <Placeholder label={name} onClick={createNewField} title={description} />
-}
-Field.propTypes = {
-  createNewField: PropTypes.func.isRequired,
-  field: PropTypes.object,
-  justCreated: PropTypes.bool.isRequired,
-  schema: PropTypes.object.isRequired,
-}
-function getField(entityField) {
-  if (!entityField) return entityField
-  const fields = values(values(entityField))
-  return find(fields, 'value') || fields[0]
-}
 function FieldGroup({ createNewField, entity, fields, schema, selectField, subject }) {
   return (
-    <div className="row person-name">
+    <div className="row">
     { map(fields, fieldId =>
         <Field
           key={fieldId}
