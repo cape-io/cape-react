@@ -17,3 +17,6 @@ export function filterEntity(predicate) {
     items => filter(items, predicate)
   )
 }
+export function filterEntityFirst(predicate) {
+  return createSelector(filterEntity(predicate), res => res[0])
+}

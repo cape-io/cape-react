@@ -9,6 +9,7 @@ function FieldList({ createNewField, entity, selectField, schema }) {
     <div style={{ display: 'flex' }}>
       { map(entity, (field, fieldId) =>
           <Field
+            key={fieldId}
             field={field}
             justCreated={selectField.state.id === fieldId}
             schema={schema}

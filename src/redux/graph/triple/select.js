@@ -36,6 +36,17 @@ export function getXPO(state, path) {
   if (!subjects) return subjects
   return map(subjects, (nil, id) => getSPO(state, [ id, ...path ]))
 }
+export function getXPX(state, predicate) {
+  const subjects = state.pso[predicate]
+  if (!subjects) return null
+  const res = []
+  forEach(subjects, (objs, subjectId) => {
+    forEach(objs, (nil, objId) => {
+      res.push(getSPO(state, [ subjectId, predicate, objId ]))
+    })
+  })
+  return res
+}
 export function mergeObject(triple, entity) {
   if (!entity) {
     return triple
@@ -59,10 +70,29 @@ export function selectSXXincludeObject(activeEntityIdSelector) {
     getSXXincludeObject
   )
 }
+// Default to get object entity.
+function getEntity(object = true) {
+  const vertex = object ? 'object' : 'subject'
+  return (res, entity) => map(res, triple =>
+    triple && triple.set(vertex, entity[triple[vertex].id]) || null
+  )
+}
+function getEntities(res, entity) {
+  return map(res, triple =>
+    triple && triple.merge({ subject: entity[triple.id[0]], object: entity[triple.id[2]] }) || null
+  )
+}
 export function selectSPX(path) {
   return createSelector(
     tripleSelector,
     state => getSPX(state, path)
+  )
+}
+export function selectSPXentity(path) {
+  return createSelector(
+    selectSPX(path),
+    entitySelector,
+    getEntity()
   )
 }
 export function selectXPO(path) {
@@ -75,8 +105,19 @@ export function selectXPOentity(path) {
   return createSelector(
     selectXPO(path),
     entitySelector,
-    (res, entity) => map(res, triple =>
-      triple ? triple.set('subject', entity[triple.id[0]]) : null
-    )
+    getEntity(false)
+  )
+}
+export function selectXPX(predicate) {
+  return createSelector(
+    tripleSelector,
+    state => getXPX(state, predicate)
+  )
+}
+export function selectXPXentity(predicate) {
+  return createSelector(
+    selectXPX(predicate),
+    entitySelector,
+    getEntities
   )
 }

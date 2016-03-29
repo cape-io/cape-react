@@ -1,34 +1,38 @@
 import { createSelector } from 'reselect'
 import concat from 'lodash/concat'
 import flatten from 'lodash/flatten'
-import identity from 'lodash/identity'
+import get from 'lodash/get'
 import keyBy from 'lodash/keyBy'
+import keys from 'lodash/keys'
 import map from 'lodash/map'
 
-import { filterEntity, selectSPX, selectXPOentity } from './graph'
+import { entitySelector, filterEntityFirst, tripleSelector } from './graph'
+import { propertyInfo } from './schemaInfo'
 
-export function getByAltName(type, alternateName) {
-  return filterEntity({ alternateName, type })
+function selectByKey(collection) {
+  return (nil, id) => collection[id]
 }
-const selectClassEntities = filterEntity({ type: 'Class' })
-const typeIndex = createSelector(
-  selectClassEntities,
-  items => keyBy(items, 'alternateName')
-)
-export function entitySchema(type) {
+function getRangeIncludes(entity, triple, fieldId) {
+  const dataTypes = get(triple.pso, [ 'rangeIncludes', fieldId ], {})
+  return map(dataTypes, selectByKey(entity))
+}
+export function entitySchema(alternateName) {
   return createSelector(
-    typeIndex,
-    identity,
-    (classIndex, state) => {
-      const subj = classIndex[type]
-      if (!subj) return null
-      const subClassOf = selectSPX([ subj.id, 'subClassOf' ])(state)
-      const subClassFields = flatten(map(subClassOf, triple =>
-        selectXPOentity([ 'domainIncludes', triple.id[2] ])(state)
+    filterEntityFirst({ type: 'Class', alternateName }),
+    entitySelector,
+    tripleSelector,
+    (classEntity, entity, triple) => {
+      if (!classEntity) return null
+      const subClassOf = get(triple.spo, [ classEntity.id, 'subClassOf' ], {})
+      const subClassFields = flatten(map(subClassOf, (nil, id) =>
+        keys(get(triple.pos, [ 'domainIncludes', id ], {}))
       ))
-      const classFields = selectXPOentity([ 'domainIncludes', subj.id ])(state)
-      const fields = concat(classFields, subClassFields)
-      return keyBy(map(fields, 'subject'), 'alternateName')
+      const classFields = keys(get(triple.pos, [ 'domainIncludes', classEntity.id ], {}))
+      const fieldIds = concat(classFields, subClassFields)
+      const fields = map(fieldIds, fieldId =>
+        propertyInfo(entity[fieldId], getRangeIncludes(entity, triple, fieldId))
+      )
+      return keyBy(fields, 'alternateName')
     }
   )
 }

@@ -14,8 +14,8 @@ function Person(props) {
   const newSubjField = partial(createNewField, subject.id)
   return (
     <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
+      <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
       <FieldGroup {...props} fields={nameFields} createNewField={newSubjField} />
-      <FieldGroup {...props} fields={[ 'alternateName' ]} createNewField={newSubjField} />
       <FieldList
         entity={entity.email}
         schema={schema.email}
