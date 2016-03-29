@@ -1,5 +1,6 @@
 import forEach from 'lodash/forEach'
 import identity from 'lodash/identity'
+import values from 'lodash/values'
 import { getState } from 'redux-field'
 import { createSelector } from 'reselect'
 
@@ -75,4 +76,10 @@ export function selectNewField(entityIdSelect) {
     identity,
     selectFieldInfo
   )
+}
+
+export function getField(entityField) {
+  if (!entityField) return entityField
+  const fields = values(entityField)
+  return find(fields, 'value') || fields[0]
 }
