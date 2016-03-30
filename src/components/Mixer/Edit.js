@@ -5,7 +5,7 @@ import CreateSelect from './CreateSelect'
 import { connectField } from 'redux-field'
 
 import StaticVal from '../Editable/StaticVal'
-import Image from '../Image'
+import Image from '../Editable/ImageUpload/Uploaded'
 import Wrapper from '../Editable/Wrapper'
 import ImageUpload from '../Editable/ImageUpload/ImageUpload'
 const Field = connectField()(Wrapper)

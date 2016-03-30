@@ -8,13 +8,6 @@ function getInputId(id) {
 class ImageUpload extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      fileHover: false,
-      fileUploading: null,
-      progress: 0,
-      errorMsg: null,
-      warningMsg: null,
-    }
     this.handleFileSelect = this.handleFileSelect.bind(this)
     this.handleFileHover = this.handleFileHover.bind(this)
     this.handleUploaded = this.handleUploaded.bind(this)

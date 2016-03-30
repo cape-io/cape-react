@@ -3,7 +3,7 @@ import partial from 'lodash/partial'
 
 import FieldGroup from '../Editable/FieldGroup'
 import FieldList from '../Editable/FieldList'
-// import Images from '../Editable/Images'
+import Images from '../Editable/ImageUpload/Images'
 
 const nameFields = [
   'honorificPrefix', 'givenName', 'additionalName', 'familyName', 'honorificSuffix',
@@ -15,6 +15,7 @@ function Person(props) {
   return (
     <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
       <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
+      <Images entity={entity.image} schema={schema.image} subject={subject} width={200} />
       <FieldGroup {...props} fields={nameFields} createNewField={newSubjField} />
       <FieldList
         entity={entity.email}

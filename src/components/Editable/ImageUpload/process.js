@@ -1,11 +1,12 @@
 import sha1Hash from 'simple-sha1'
 import last from 'lodash/last'
+import 'isomorphic-fetch'
 
 export function uploadFile(props, fileBuffer, meta) {
-  const { entityUpdate, fieldEvent: { error, saved, savedProgress }, id } = props
-  const { contentSha1, lastModified, name } = meta
+  const { entityUpdate, fieldEvent: { error, saved, savedProgress } } = props
+  const { contentSha1, id, lastModified, name } = meta
   // const file = document.getElementById(inputId).files[0]
-  const ext = last(name.split('.'))
+  const ext = last(name.split('.')).toLowerCase()
   // const { authorizationToken, uploadUrl } = valid[sha1]
   const uploadUrl = '/api/upload/b2'
   const xhr = new XMLHttpRequest()
@@ -27,7 +28,7 @@ export function uploadFile(props, fileBuffer, meta) {
       // console.error(event)
       return error(`Error uploading file. Status: ${xhr.status}`)
     }
-    entityUpdate(JSON.parse(xhr.responseText))
+    // entityUpdate(JSON.parse(xhr.responseText))
     saved()
     return true
   }
@@ -43,11 +44,23 @@ export function uploadFile(props, fileBuffer, meta) {
 }
 
 export function loadSha(props, file, meta) {
+  const { predicate, subjectId } = props
   const reader = new FileReader()
   reader.onloadend = () => sha1Hash(reader.result, contentSha1 => {
     const newMeta = { ...meta, contentSha1 }
-    props.fieldEvent.meta(newMeta)
-    uploadFile(props, reader.result, newMeta)
+    fetch(`/api/upload/get-insert/${predicate}/${subjectId}`, {
+      body: JSON.stringify(newMeta),
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => res.json())
+    .then(res => {
+      props.fieldEvent.meta(res)
+      uploadFile(props, reader.result, res)
+    })
   })
   reader.readAsArrayBuffer(file)
 }
@@ -58,6 +71,7 @@ export function fileMeta(file) {
     fileFormat: file.type,
     lastModified: file.lastModified,
     name: file.name,
+    type: 'ImageObject',
   }
 }
 export function loadImageUrl(props, file) {
@@ -75,7 +89,7 @@ export function loadImageUrl(props, file) {
       meta.width = { unitCode: 'E37', value: img.width, unitText: 'pixel' }
       // Include fileData base64 thing.
       if (file.size < 4100069) {
-        entityUpdate({ id, url: reader.result })
+        // entityUpdate({ id, url: reader.result })
       }
       loadSha(props, file, meta)
     }
