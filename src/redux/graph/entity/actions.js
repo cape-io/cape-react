@@ -19,4 +19,4 @@ export const putAll = createAction(PUT_ALL, values => {
 })
 
 export const UPDATE = 'graph/entity/UPDATE'
-export const update = (payload) => ({ ...createAction(UPDATE)(payload), sendSocket: false })
+export const update = createAction(UPDATE)
