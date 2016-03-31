@@ -13,7 +13,7 @@ function Person(props) {
   const { createNewField, entity, schema, selectField, subject } = props
   const newSubjField = partial(createNewField, subject.id)
   return (
-    <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
+    <div className="container me mixer" style={{ display: 'flex', flexDirection: 'column' }}>
       <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
       <Images {...props} entity={entity.image} schema={schema.image} width={200} />
       <FieldGroup {...props} fields={nameFields} createNewField={newSubjField} />
