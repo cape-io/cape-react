@@ -1,7 +1,7 @@
 import curry from 'lodash/curry'
 import includes from 'lodash/includes'
 
-import { loadImageUrl } from './process'
+import { fileMeta, loadImageUrl } from './process'
 
 export function getInputId(id) {
   return `fileselect-${id}`
@@ -24,7 +24,7 @@ export function blurFileSelect(props) {
 // export function deactivateFileSelect(props) {
 //   return () => { blurFileSelect(props) }
 // }
-// This is just to (un)set the focus.
+// This is just to (un)set the focus. It is called over and over during hover state.
 function _handleFileHover(props, event) {
   console.log('handleFileHover')
   const { form: { focus }, formEvent: { onBlur } } = props

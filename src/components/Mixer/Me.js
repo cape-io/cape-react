@@ -15,7 +15,7 @@ function Person(props) {
   return (
     <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
       <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
-      <Images entity={entity.image} schema={schema.image} subject={subject} width={200} />
+      <Images {...props} entity={entity.image} schema={schema.image} width={200} />
       <FieldGroup {...props} fields={nameFields} createNewField={newSubjField} />
       <FieldList
         entity={entity.email}
@@ -29,9 +29,11 @@ function Person(props) {
 Person.propTypes = {
   createNewField: PropTypes.func.isRequired,
   entity: PropTypes.object.isRequired,
+  entityPut: PropTypes.func.isRequired,
   schema: PropTypes.object.isRequired,
   selectField: PropTypes.object.isRequired,
   subject: PropTypes.object.isRequired,
+  triplePut: PropTypes.func.isRequired,
 }
 
 export default Person

@@ -5,7 +5,7 @@ import { onSubmit } from 'redux-field'
 
 import Component from '../components/Mixer/Me'
 import { isAuthenticated, selectUid } from '../redux/auth'
-import { entityUpdate, selectEntity } from '../redux/graph'
+import { entityPut, selectEntity, triplePut } from '../redux/graph'
 import { selectFieldPrefix, selectFields, selectNewField } from '../redux/select/mixer'
 import { entitySchema } from '../redux/schema'
 import Loading from '../components/Loading'
@@ -27,7 +27,8 @@ function createNewField(subjectId, type) {
 }
 const mapDispatchToProps = {
   createNewField,
-  entityUpdate,
+  entityPut,
+  triplePut,
 }
 
 function SelectComponent(props) {

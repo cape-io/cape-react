@@ -31,7 +31,7 @@ const style = {
 }
 function DropZone(props) {
   const {
-    accept, form, help, subjectId, warningMsg,
+    accept, form, help, subject, warningMsg,
   } = props
   const { errorMessage, focus, hasError } = form
   const className = classNames('dropzone', {
@@ -49,7 +49,7 @@ function DropZone(props) {
   }
   const fileHover = handleFileHover(props)
   const fileSelect = handleFileSelect(props)
-  const inputId = getInputId(subjectId)
+  const inputId = getInputId(subject.id)
   return (
     <div
       className={ className }
@@ -91,7 +91,7 @@ DropZone.propTypes = {
     onFocus: PropTypes.func.isRequired,
   }),
   help: PropTypes.string.isRequired,
-  subjectId: PropTypes.string.isRequired,
+  subject: PropTypes.object.isRequired,
   predicate: PropTypes.string.isRequired,
   progress: PropTypes.number,
   url: PropTypes.string,
