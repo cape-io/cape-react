@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     const { route } = this.props
     return (
-      <div className="container">
+      <div className="main-app-wrap">
         <Router route={route} />
         <Footer />
       </div>
