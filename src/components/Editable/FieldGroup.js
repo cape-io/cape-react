@@ -2,21 +2,26 @@ import React, { PropTypes } from 'react'
 import map from 'lodash/map'
 import partial from 'lodash/partial'
 
-import { getField } from '../../redux/select/mixer'
+import { getField, getPrefix } from '../../redux/select/mixer'
 import Field from './FieldEditable'
 
-function FieldGroup({ createNewField, entity, fields, schema, selectField }) {
+function FieldGroup({ createNewField, entity, fields, prefix, schema, selectField }) {
   return (
     <div style={{ display: 'flex' }}>
-    { map(fields, fieldId =>
-        <Field
-          key={fieldId}
-          createNewField={partial(createNewField, schema[fieldId].alternateName)}
-          field={getField(entity[fieldId])}
-          justCreated={selectField.state.value === fieldId}
-          schema={schema[fieldId]}
-        />
-      )
+    {
+      map(fields, fieldId => {
+        const field = getField(entity[fieldId])
+        return (
+          <Field
+            key={fieldId}
+            onPlaceholderClick={partial(createNewField, schema[fieldId].alternateName)}
+            field={field}
+            justCreated={selectField.state.value === fieldId}
+            prefix={getPrefix(field, prefix)}
+            schema={schema[fieldId]}
+          />
+        )
+      })
     }
     </div>
   )
@@ -25,9 +30,11 @@ FieldGroup.propTypes = {
   createNewField: PropTypes.func.isRequired,
   entity: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
+  prefix: PropTypes.string,
   selectField: PropTypes.object.isRequired,
   schema: PropTypes.object.isRequired,
 }
-FieldGroup.defaultProps = {}
+FieldGroup.defaultProps = {
+}
 
 export default FieldGroup

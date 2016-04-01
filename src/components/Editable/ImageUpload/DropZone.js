@@ -24,9 +24,9 @@ const style = {
   },
   label: {
     cursor: 'pointer',
-    fontSize: '2rem',
+    fontSize: '1.5rem',
     fontWeight: 'normal',
-    padding: 60,
+    padding: '2rem',
   },
 }
 function DropZone(props) {

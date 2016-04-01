@@ -11,19 +11,23 @@ import { entitySchema } from '../redux/schema'
 import Loading from '../components/Loading'
 
 const personSchemaSelector = entitySchema('Person')
+const postalAddressSchema = entitySchema('PostalAddress')
 
 function mapStateToProps(state) {
   return {
     authenticated: isAuthenticated(state),
     entity: selectFields(state),
     selectField: selectNewField(selectUid)(state),
-    schema: personSchemaSelector(state),
+    schema: {
+      Person: personSchemaSelector(state),
+      PostalAddress: postalAddressSchema(state),
+    },
     subject: selectEntity(selectUid)(state),
   }
 }
-
-function createNewField(subjectId, type) {
-  return onSubmit(selectFieldPrefix(subjectId), type)
+// Create a new triple. Predicate is used as default type on backend.
+function createNewField(subjectId, predicate, type) {
+  return onSubmit(selectFieldPrefix(subjectId), { type, predicate })
 }
 const mapDispatchToProps = {
   createNewField,
@@ -34,7 +38,9 @@ const mapDispatchToProps = {
 function SelectComponent(props) {
   const { authenticated, schema } = props
   if (!authenticated) return createElement(Loading, { message: 'Not authenticated.' })
-  if (!schema) return createElement(Loading, { message: 'No schema.' })
+  if (!schema.Person || !schema.PostalAddress) {
+    return createElement(Loading, { message: 'No schema.' })
+  }
   // return createElement(Inspector, { data: props })
   return createElement(Component, props)
 }

@@ -48,3 +48,6 @@ export function getField(entityField) {
   const fields = values(entityField)
   return find(fields, 'value') || fields[0]
 }
+export function getPrefix(field, prefix = 'UpdateFieldAction') {
+  return [ prefix, field.id ]
+}

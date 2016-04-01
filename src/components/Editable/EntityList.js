@@ -1,21 +1,19 @@
 import React, { PropTypes } from 'react'
 import map from 'lodash/map'
 
-import Field from './FieldEditable'
+import FieldGroup from '../Editable/EntityFieldGroup'
 import Placeholder from './Placeholder'
-import { getPrefix } from '../../redux/select/mixer'
 
-function FieldList({ createNewField, entity, selectField, schema }) {
+function EntityList({ createNewField, entity, entitySchema, fields, schema }) {
   const addLabel = entity ? '+' : schema.name
   return (
-    <div style={{ display: 'flex' }}>
-      { map(entity, (field, fieldId) =>
-          <Field
-            key={fieldId}
-            field={field}
-            justCreated={selectField.state.id === fieldId}
-            prefix={getPrefix(field)}
-            schema={schema}
+    <div>
+      { map(entity, (field, entityId) =>
+          <FieldGroup
+            key={entityId}
+            entity={field}
+            fields={fields}
+            schema={entitySchema}
           />
         )
       }
@@ -23,13 +21,15 @@ function FieldList({ createNewField, entity, selectField, schema }) {
     </div>
   )
 }
-FieldList.propTypes = {
+EntityList.propTypes = {
   createNewField: PropTypes.func.isRequired,
   entity: PropTypes.object,
+  entitySchema: PropTypes.object.isRequired,
+  fields: PropTypes.array.isRequired,
   selectField: PropTypes.object.isRequired,
   schema: PropTypes.object.isRequired,
   // subject: PropTypes.object.isRequired,
 }
-FieldList.defaultProps = {}
+EntityList.defaultProps = {}
 
-export default FieldList
+export default EntityList
