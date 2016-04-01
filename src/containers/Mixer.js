@@ -33,6 +33,7 @@ function mapStateToProps(state) {
 }
 // Create a new triple. Predicate is used as default type on backend.
 function createNewField(subjectId, predicate, type) {
+  console.log(subjectId, predicate, type)
   return onSubmit(createObjectPrefix(subjectId), { type, predicate })
 }
 function createNewSubject(objectId, predicate, type) {

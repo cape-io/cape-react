@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import map from 'lodash/map'
 import partial from 'lodash/partial'
 
-import { getField, getPrefix } from '../../redux/select/mixer'
+import { getField } from '../../redux/select/mixer'
 import Field from './FieldEditable'
 
 function FieldGroup({ createNewField, entity, fields, prefix, schema, selectField }) {
@@ -11,13 +11,14 @@ function FieldGroup({ createNewField, entity, fields, prefix, schema, selectFiel
     {
       map(fields, fieldId => {
         const field = getField(entity[fieldId])
+        const fieldName = schema[fieldId].alternateName
         return (
           <Field
             key={fieldId}
-            onPlaceholderClick={partial(createNewField, schema[fieldId].alternateName)}
+            onPlaceholderClick={partial(createNewField, fieldName, fieldName)}
             field={field}
-            justCreated={selectField.state.value === fieldId}
-            prefix={getPrefix(field, prefix)}
+            justCreated={selectField.state.savedValue.type === fieldId}
+            prefix={prefix}
             schema={schema[fieldId]}
           />
         )

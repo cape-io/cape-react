@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import classNames from 'classnames'
 import Textarea from 'react-textarea-autosize'
+import { connectField } from 'redux-field'
 
 import Placeholder from './Placeholder'
 import Input from './input/Input'
@@ -80,4 +81,4 @@ EditField.propTypes = {
   type: PropTypes.string.isRequired,
 }
 
-export default EditField
+export default connectField()(EditField)

@@ -56,7 +56,6 @@ export function getXXO(state, objectId) {
       res.push(getSPO(state, [ subjectId, predicate, objectId ]))
     })
   })
-  console.log(res)
   return res
 }
 export function mergeObject(triple, entity) {

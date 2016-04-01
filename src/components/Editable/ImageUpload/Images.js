@@ -14,22 +14,24 @@ function Images({ entity, entityPut, subject, triplePut, width }) {
         subject={subject}
         triplePut={triplePut}
       />
-      <div className="image-grid" style={{ display: 'flex' }}>
-        { map(entity, (field, fieldId) =>
-            <Uploaded
-              key={fieldId}
-              entity={field}
-              width={width}
-            />
-          )
-        }
-      </div>
+      { entity &&
+        <div className="image-grid" style={{ display: 'flex' }}>
+          { map(entity, (field, fieldId) =>
+              <Uploaded
+                key={fieldId}
+                entity={field}
+                width={width}
+              />
+            )
+          }
+        </div>
+      }
     </div>
   )
 }
 Images.propTypes = {
   // createNewField: PropTypes.func.isRequired,
-  entity: PropTypes.object.isRequired,
+  entity: PropTypes.object,
   entityPut: PropTypes.func.isRequired,
   // selectField: PropTypes.object.isRequired,
   // schema: PropTypes.object.isRequired,
