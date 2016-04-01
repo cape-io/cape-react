@@ -8,7 +8,7 @@ export const DEL = 'graph/triple/DEL'
 export const del = createAction(DEL)
 
 export const PUT = 'graph/triple/PUT'
-// You can send it an array of three values or an object with an id.
+// You send it an object with an id, object, subject and predicate properties.
 export const put = createAction(PUT, ({ predicate, object, subject, id }) => {
   if (!isString(predicate) || !object.id || !subject.id) {
     throw new Error('Triple must include predicate, object, subject.')
