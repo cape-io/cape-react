@@ -12,12 +12,14 @@ function FieldGroup({ createNewField, entity, fields, prefix, schema, selectFiel
       map(fields, fieldId => {
         const field = getField(entity[fieldId])
         const fieldName = schema[fieldId].alternateName
+        const justCreated = (selectField.state.savedValue &&
+          selectField.state.savedValue.type === fieldId)
         return (
           <Field
             key={fieldId}
             onPlaceholderClick={partial(createNewField, fieldName, fieldName)}
             field={field}
-            justCreated={selectField.state.savedValue.type === fieldId}
+            justCreated={justCreated}
             prefix={prefix}
             schema={schema[fieldId]}
           />
