@@ -5,7 +5,7 @@ import EditField from './Field'
 import Placeholder from './Placeholder'
 
 function Field({ createNewField, field, justCreated, schema }) {
-  const { name, description, validators } = schema
+  const { name, description, inputType, validators } = schema
   if (field) {
     return (
       <EditField
@@ -14,7 +14,7 @@ function Field({ createNewField, field, justCreated, schema }) {
         justCreated={justCreated}
         label={name}
         prefix={[ 'UpdateFieldAction', field.id ]}
-        type="text"
+        type={ inputType || 'text' }
         initialValue={field.value}
         validate={fieldValidation(validators)}
       />

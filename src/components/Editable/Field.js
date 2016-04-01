@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connectField } from 'redux-field'
 import classNames from 'classnames'
+import Textarea from 'react-textarea-autosize'
 
 import Placeholder from './Placeholder'
 import Input from './input/Input'
@@ -36,6 +37,16 @@ function EditField(props) {
             style={{ maxWidth: 400 }}
             type={type}
             value={value || props.initialValue}
+          />
+        }
+        { type === 'textarea' &&
+          <Textarea
+            {...other}
+            {...formEvent}
+            className="form-control"
+            id={id}
+            type={type}
+            value={value}
           />
         }
         <EditableButtons

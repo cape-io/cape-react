@@ -8,13 +8,12 @@ import Images from '../Editable/ImageUpload/Images'
 const nameFields = [
   'honorificPrefix', 'givenName', 'additionalName', 'familyName', 'honorificSuffix',
 ]
-
+// <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
 function Person(props) {
   const { createNewField, entity, schema, selectField, subject } = props
   const newSubjField = partial(createNewField, subject.id)
   return (
     <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
-      <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
       <Images {...props} entity={entity.image} schema={schema.image} width={200} />
       <FieldGroup {...props} fields={nameFields} createNewField={newSubjField} />
       <FieldList
@@ -23,6 +22,7 @@ function Person(props) {
         selectField={selectField}
         createNewField={partial(newSubjField, 'email')}
       />
+      <FieldGroup {...props} fields={[ 'description' ]} createNewField={newSubjField} />
     </div>
   )
 }

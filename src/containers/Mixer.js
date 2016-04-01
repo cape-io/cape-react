@@ -3,7 +3,7 @@ import { createElement } from 'react'
 import { onSubmit } from 'redux-field'
 // import Inspector from 'react-json-inspector'
 
-import Component from '../components/Mixer/Me'
+import Component from '../components/Mixer/Person'
 import { isAuthenticated, selectUid } from '../redux/auth'
 import { entityPut, selectEntity, triplePut } from '../redux/graph'
 import { selectFieldPrefix, selectFields, selectNewField } from '../redux/select/mixer'
