@@ -15,8 +15,9 @@ const addressFields = [
 ]
 // <FieldGroup {...props} fields={[ 'name' ]} createNewField={newSubjField} />
 function Person(props) {
-  const { createNewField, entity, schema, selectField, subject } = props
+  const { createNewField, createNewSubject, entity, schema, selectField, subject, subjects } = props
   const newSubjField = partial(createNewField, subject.id)
+  const newSubject = partial(createNewSubject, subject.id)
   return (
     <div className="mixer" style={{ display: 'flex', flexDirection: 'column' }}>
       <Images {...props} entity={entity.image} schema={schema.Person.image} width={200} />
@@ -46,16 +47,26 @@ function Person(props) {
         schema={schema.Person.address}
         selectField={selectField}
       />
+      <EntityList
+        createNewField={partial(newSubject, 'author', 'WebSite')}
+        entity={subjects.WebSite}
+        entitySchema={schema.WebSite.domainIncludes}
+        fields={[ 'url' ]}
+        schema={schema.WebSite}
+        selectField={selectField}
+      />
     </div>
   )
 }
 Person.propTypes = {
   createNewField: PropTypes.func.isRequired,
+  createNewSubject: PropTypes.func.isRequired,
   entity: PropTypes.object.isRequired,
   entityPut: PropTypes.func.isRequired,
   schema: PropTypes.object.isRequired,
   selectField: PropTypes.object.isRequired,
   subject: PropTypes.object.isRequired,
+  subjects: PropTypes.object.isRequired,
   triplePut: PropTypes.func.isRequired,
 }
 

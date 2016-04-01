@@ -5,7 +5,7 @@ import { getState } from 'redux-field'
 import { createSelector } from 'reselect'
 
 import { selectUid } from '../auth'
-import { selectSXXincludeObject } from '../graph'
+import { selectSXXincludeObject, selectXXOentity } from '../graph'
 
 export function activeEntityIdSelector(state, props) {
   return props.route.params && props.route.params.entityId
@@ -20,9 +20,26 @@ export function selectFields(state) {
   })
   return entity
 }
-export function selectFieldPrefix(subjectId) {
+export function selectSubjects(selector = selectUid) {
+  return state => {
+    const objectId = selector(state)
+    if (!objectId) return objectId
+    const getXXO = selectXXOentity(objectId)
+    const subjects = {}
+    forEach(getXXO(state), triple => {
+      if (!subjects[triple.subject.type]) subjects[triple.subject.type] = {}
+      subjects[triple.subject.type][triple.subject.id] = triple.subject
+    })
+    return subjects
+  }
+}
+export function createObjectPrefix(subjectId) {
   return [ 'CreateObjectAction', subjectId ]
 }
+export function createSubjectPrefix(objectId) {
+  return [ 'CreateSubjectAction', objectId ]
+}
+
 function selectFieldInfo(id, state) {
   return {
     editable: true,
@@ -30,7 +47,7 @@ function selectFieldInfo(id, state) {
     id,
     options: [],
     required: true,
-    state: getState(state, { prefix: selectFieldPrefix(id) }),
+    state: getState(state, { prefix: createObjectPrefix(id) }),
     type: 'select',
   }
 }

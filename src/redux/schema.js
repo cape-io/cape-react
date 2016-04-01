@@ -32,7 +32,10 @@ export function entitySchema(alternateName) {
       const fields = map(fieldIds, fieldId =>
         propertyInfo(entity[fieldId], getRangeIncludes(entity, triple, fieldId))
       )
-      return keyBy(fields, 'alternateName')
+      return {
+        ...entity[classEntity.id],
+        domainIncludes: keyBy(fields, 'alternateName'),
+      }
     }
   )
 }

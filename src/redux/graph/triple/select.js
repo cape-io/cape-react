@@ -47,6 +47,18 @@ export function getXPX(state, predicate) {
   })
   return res
 }
+export function getXXO(state, objectId) {
+  const predicates = state.ops[objectId]
+  if (!predicates) return null
+  const res = []
+  forEach(predicates, (subjs, predicate) => {
+    forEach(subjs, (nil, subjectId) => {
+      res.push(getSPO(state, [ subjectId, predicate, objectId ]))
+    })
+  })
+  console.log(res)
+  return res
+}
 export function mergeObject(triple, entity) {
   if (!entity) {
     return triple
@@ -119,5 +131,18 @@ export function selectXPXentity(predicate) {
     selectXPX(predicate),
     entitySelector,
     getEntities
+  )
+}
+export function selectXXO(objectId) {
+  return createSelector(
+    tripleSelector,
+    state => getXXO(state, objectId)
+  )
+}
+export function selectXXOentity(objectId) {
+  return createSelector(
+    selectXXO(objectId),
+    entitySelector,
+    getEntity(false)
   )
 }
