@@ -4,7 +4,8 @@ import { Link } from 'redux-history-sync'
 function Home({ authenticated }) {
   return (
     <div className="home">
-      <h2>Hello!</h2>
+      <h2>CAPE</h2>
+      <p>One place to manage all your profiles.</p>
       { authenticated && <Link to="/mixer/">Mixer</Link> }
       { !authenticated && <Link to="/login/">Login</Link> }
     </div>
