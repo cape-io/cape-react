@@ -6,8 +6,15 @@ import keyBy from 'lodash/keyBy'
 import keys from 'lodash/keys'
 import map from 'lodash/map'
 
-import { entitySelector, filterEntityFirst, tripleSelector } from './graph'
+import { entitySelector, filterEntity, filterEntityFirst, tripleSelector } from './graph'
 import { propertyInfo } from './schemaInfo'
+
+export const selectClassList = filterEntity({ type: 'Class' })
+export const classOptions = createSelector(selectClassList,
+  classList => map(classList, ({ name, description, alternateName }) =>
+    ({ description, label: name, value: alternateName })
+  )
+)
 
 function selectByKey(collection) {
   return (nil, id) => collection[id]

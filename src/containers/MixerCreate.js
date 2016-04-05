@@ -1,36 +1,31 @@
 import { connect } from 'react-redux'
-import groupBy from 'lodash/groupBy'
-import values from 'lodash/values'
-import { getFieldState } from 'redux-field'
-import Component from '../components/Mixer/Mixer'
-import { selectUid } from '../redux/auth'
-import { selectEntity } from '../redux/graph'
+// import groupBy from 'lodash/groupBy'
+// import values from 'lodash/values'
+// import { getFieldState } from 'redux-field'
+
+import Component from '../components/Mixer/CreateSelect'
+// import { selectUid } from '../redux/auth'
+// import { selectEntity } from '../redux/graph'
+import { classOptions } from '../redux/schema'
 
 function mapStateToProps(state) {
-  console.log(selectEntity(selectUid)(state))
+  // const me = selectEntity(selectUid)(state)
   // Pick an entity to edit or create a new one.
   const formId = 'writeEntity'
-  const { entity: { cape }, form } = state
-  const { id } = getFieldState(form, [ formId, 'type' ])
+  const classList = classOptions(state)
+  // const { entity: { cape }, form } = state
+  // const fieldState = getFieldState(form, [ formId, 'type' ])
+  // console.log(fieldState)
   return {
-    create: {
-      field: {
-        editable: true,
-        label: 'Entity Class',
-        id: 'type',
-        options: [
-          'Person',
-          'Organization',
-          'WebApplication',
-        ],
-        required: true,
-        type: 'select',
-      },
-      formId,
-    },
-    id,
+    editable: true,
+    label: 'Entity Class Type',
+    id: 'type',
+    options: classList,
+    required: true,
+    type: 'select',
+    formId,
     title: 'Create Entity',
-    entity: groupBy(values(cape), 'type'),
+    // entity: groupBy(values(cape), 'type'),
   }
 }
 

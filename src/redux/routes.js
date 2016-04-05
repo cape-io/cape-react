@@ -1,5 +1,5 @@
 import createRouter from 'location-info'
-import get from 'lodash/get'
+// import get from 'lodash/get'
 import { createSelector } from 'reselect'
 import { selectActiveKeyDefault } from 'redux-history-sync'
 
@@ -34,8 +34,8 @@ addRoute('mixer', '/mixer/',
     // },
   }
 )
-
-addRoute('mixerEdit', '/mixer/:entityId', {}, { segmentValueCharset: 'a-zA-Z0-9-_~.,+*()!$' })
+addRoute('mixerCreate', '/mixer/create/')
+// addRoute('mixerEdit', '/mixer/:entityId', {}, { segmentValueCharset: 'a-zA-Z0-9-_~.,+*()!$' })
 addRoute('mixerLegacy', '/mixer/:groupId/:typeId/:entityId')
 
 function routeSelector(history) {

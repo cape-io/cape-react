@@ -23,7 +23,7 @@ function CreateSelect({ form, formEvent, id, label, options, type }) {
 CreateSelect.propTypes = {
   form: PropTypes.object.isRequired,
   formEvent: PropTypes.object.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   label: PropTypes.string.isRequired,
   open: PropTypes.bool,
   options: PropTypes.array.isRequired,
@@ -31,5 +31,6 @@ CreateSelect.propTypes = {
   value: PropTypes.any,
 }
 CreateSelect.defaultProps = {
+  id: 'create-select-default',
 }
 export default connectField()(CreateSelect)
