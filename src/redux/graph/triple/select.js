@@ -16,7 +16,7 @@ export function getSPO(state, tripleId) {
 
 // Query the store for all facts with specific subject
 export function getSXX(state, tripleId) {
-  const pred = state.spo[tripleId[0]]
+  const pred = state.spo[tripleId]
   if (!pred) return null
   const res = []
   forEach(pred, predicate => {
@@ -68,7 +68,7 @@ export function mergeObject(triple, entity) {
 export const selectObject = (triple) => triple.id[2]
 
 function getSXXincludeObject(tripleState, entityState, subjectId) {
-  const results = getSXX(tripleState, [ subjectId ])
+  const results = getSXX(tripleState, subjectId)
   return map(results, triple =>
     mergeObject(triple, entityState[selectObject(triple)])
   )

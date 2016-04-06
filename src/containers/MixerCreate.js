@@ -4,26 +4,24 @@ import { connect } from 'react-redux'
 // import { getFieldState } from 'redux-field'
 
 import Component from '../components/Mixer/CreateSelect'
-// import { selectUid } from '../redux/auth'
-// import { selectEntity } from '../redux/graph'
 import { classOptions } from '../redux/schema'
+import { selectMyCreated } from '../redux/select/mixer'
 
 function mapStateToProps(state) {
   // const me = selectEntity(selectUid)(state)
   // Pick an entity to edit or create a new one.
-  const formId = 'writeEntity'
   const classList = classOptions(state)
-  // const { entity: { cape }, form } = state
-  // const fieldState = getFieldState(form, [ formId, 'type' ])
-  // console.log(fieldState)
+  const created = selectMyCreated(state)
+  // console.log('created', created)
   return {
+    created,
     editable: true,
     label: 'Entity Class Type',
     id: 'type',
     options: classList,
     required: true,
     type: 'select',
-    formId,
+    prefix: [ 'writeEntity', 'type' ],
     title: 'Create Entity',
     // entity: groupBy(values(cape), 'type'),
   }

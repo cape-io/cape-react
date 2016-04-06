@@ -1,23 +1,39 @@
 import React, { PropTypes } from 'react'
 import { connectField } from 'redux-field'
 import isString from 'lodash/isString'
+import map from 'lodash/map'
+import { Link } from 'redux-history-sync'
+
 import Editable from '../Editable/Editable'
 import EditableButtons from '../Editable/Buttons'
 import Select from '../Form/Select'
 // Display a list of content types the user can edit.
-function CreateSelect({ form, formEvent, id, label, options, type }) {
+function CreateSelect({ created, form, formEvent, id, label, options, type }) {
   const { value } = form
-  const { onBlur, onFocus, onSelect, onSubmit } = formEvent
 
   return (
-    <Editable form={form} id={id} label={label} type={type}>
-      <Select onBlur={onBlur} onFocus={onFocus} options={options} onSelect={onSelect} />
-      <EditableButtons
-        onSubmit={onSubmit}
-        preventClose
-        value={isString(value) ? value : options[0]}
-      />
-    </Editable>
+    <div>
+      <Editable form={form} id={id} label={label} type={type}>
+        <Select options={options} {...formEvent} />
+        <EditableButtons
+          onSubmit={formEvent.onSubmit}
+          preventClose
+          value={isString(value) ? value : options[0]}
+        />
+      </Editable>
+      { created &&
+        <ul>
+          {
+            map(created, entity => (
+              <li key={entity.id}>
+                {entity.type}
+                <Link href={`/mixer/edit/${entity.id}`}>{entity.id}</Link>
+              </li>
+            ))
+          }
+        </ul>
+      }
+    </div>
   )
 }
 CreateSelect.propTypes = {

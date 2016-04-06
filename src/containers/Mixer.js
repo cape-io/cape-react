@@ -1,32 +1,26 @@
 import { connect } from 'react-redux'
 import { createElement } from 'react'
 import { onSubmit } from 'redux-field'
-import get from 'lodash/get'
-// import Inspector from 'react-json-inspector'
 
 import Component from '../components/Mixer/Person'
 import { isAuthenticated, selectUid } from '../redux/auth'
 import { entityPut, selectEntity, triplePut } from '../redux/graph'
 import {
-  createObjectPrefix, createSubjectPrefix, selectFields, selectSubjects, selectNewField,
+  createObjectPrefix, createSubjectPrefix, selectMyFields, selectMySubjects, selectNewField,
 } from '../redux/select/mixer'
-import { entitySchema } from '../redux/schema'
+import { selectSchema } from '../redux/schema'
 import Loading from '../components/Loading'
-
-const personSchemaSelector = entitySchema('Person')
-const postalAddressSchema = entitySchema('PostalAddress')
-const webSiteSchema = entitySchema('WebSite')
 
 function mapStateToProps(state) {
   return {
     authenticated: isAuthenticated(state),
-    entity: selectFields(state),
+    entity: selectMyFields(state),
     selectField: selectNewField(selectUid)(state),
-    subjects: selectSubjects(selectUid)(state),
+    subjects: selectMySubjects(selectUid)(state),
     schema: {
-      Person: get(personSchemaSelector(state), 'domainIncludes'),
-      PostalAddress: get(postalAddressSchema(state), 'domainIncludes'),
-      WebSite: webSiteSchema(state),
+      Person: selectSchema('Person', state, 'domainIncludes'),
+      PostalAddress: selectSchema('PostalAddress', state, 'domainIncludes'),
+      WebSite: selectSchema('WebSite', state),
     },
     subject: selectEntity(selectUid)(state),
   }

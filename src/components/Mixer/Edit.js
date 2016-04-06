@@ -1,63 +1,59 @@
 import React, { PropTypes } from 'react'
 import map from 'lodash/map'
-
-import CreateSelect from './CreateSelect'
-import { connectField } from 'redux-field'
+// import { connectField } from 'redux-field'
 
 import StaticVal from '../Editable/StaticVal'
-import Image from '../Editable/ImageUpload/Uploaded'
-import Wrapper from '../Editable/Wrapper'
-import ImageUpload from '../Editable/ImageUpload/ImageUpload'
-const Field = connectField()(Wrapper)
-const ImageField = connectField()(ImageUpload)
+import Loading from '../Loading'
+// import CreateSelect from './CreateSelect'
+// import Image from '../Editable/ImageUpload/Uploaded'
+// import Wrapper from '../Editable/Wrapper'
+// import ImageUpload from '../Editable/ImageUpload/ImageUpload'
+// const Field = connectField()(Wrapper)
+// const ImageField = connectField()(ImageUpload)
 
 // Display a list of content types the user can edit.
-function Mixer({ entityUpdate, selectField, objects, subject }) {
+function Mixer({ objects, schema, subject, subjects }) {
+  if (!schema) {
+    return <Loading message="missing schema" />
+  }
   return (
     <div className="container">
       <h1>{subject.type}</h1>
+      <p>{schema.description}</p>
       <ul>
         <StaticVal label="ID" value={subject.id} />
         <StaticVal label="Date Created" value={subject.dateCreated} />
       </ul>
-      <p>Select the kind of field you want to add.</p>
-      <CreateSelect
-        {...selectField}
-        id={`create-obj-${selectField.id}`}
-        prefix={[ 'CreateObjectAction', subject.id ]}
-      />
-      {
-        map(objects, ({ object, predicate }) => {
-          if (object.schemaInfo.inputType === 'image') {
-            if (object.url) return <Image {...object} key={object.id} />
-            return (
-              <ImageField
-                entityUpdate={entityUpdate}
-                key={object.id}
-                {...object}
-                prefix={[ 'UpdateFieldAction', object.id ]}
-              />
-            )
-          }
-          return (
-            <Field
-              key={object.id}
-              {...object}
-              label={`${predicate} (${object.id})`}
-              type={object.schemaInfo.inputType}
-              prefix={[ 'UpdateFieldAction', object.id ]}
-            />
-          )
-        })
+      <h3>Objects</h3>
+      { objects &&
+        map(objects, (objs, predicate) => (
+          <div key={predicate}>
+            {predicate}
+            <ul>
+              { map(objs, obj => <li key={obj.entity.id}>{obj.entity.id}</li>)}
+            </ul>
+          </div>
+        ))
+      }
+      <h3>Subjects</h3>
+      { subjects &&
+        map(subjects, (items, predicate) => (
+          <div key={predicate}>
+            {predicate}
+            <ul>
+              { map(items, item => <li key={item.id}>{item.id} - {item.type}</li>)}
+            </ul>
+          </div>
+        ))
       }
     </div>
   )
 }
 Mixer.propTypes = {
-  entityUpdate: PropTypes.func.isRequired,
-  selectField: PropTypes.object.isRequired,
-  objects: PropTypes.array,
+  schema: PropTypes.object.isRequired,
+  objects: PropTypes.object,
   subject: PropTypes.object.isRequired,
+  subjects: PropTypes.object,
 }
 
 export default Mixer
