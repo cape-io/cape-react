@@ -7,7 +7,7 @@ import Field from './FieldEditable'
 
 function FieldGroup({ createNewField, entity, fields, prefix, schema, selectField }) {
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
     {
       map(fields, fieldId => {
         const field = getField(entity[fieldId])

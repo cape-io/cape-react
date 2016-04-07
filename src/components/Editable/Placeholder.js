@@ -7,6 +7,7 @@ const style = {
     border: 0,
     color: 'grey',
     fontSize: '1.8rem',
+    textAlign: 'left',
   },
 }
 
