@@ -6,3 +6,4 @@ webpack-stats.json
 webpack-assets.json
 src/components/Login-old.js
 static/js
+lib

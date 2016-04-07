@@ -70,13 +70,13 @@ const cardTarget = {
   },
 }
 
-@DropTarget('item', cardTarget, connect => ({
-  connectDropTarget: connect.dropTarget(),
-}))
-@DragSource('item', cardSource, (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-}))
+// @DropTarget('item', cardTarget, connect => ({
+//   connectDropTarget: connect.dropTarget(),
+// }))
+// @DragSource('item', cardSource, (connect, monitor) => ({
+//   connectDragSource: connect.dragSource(),
+//   isDragging: monitor.isDragging(),
+// }))
 export default class Card extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
