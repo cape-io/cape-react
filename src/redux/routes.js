@@ -1,10 +1,9 @@
 import createRouter from 'location-info'
-// import get from 'lodash/get'
-import { createSelector } from 'reselect'
 import { selectActiveKeyDefault } from 'redux-history-sync'
+import { createSelector } from 'reselect'
 
-import { selectUid, tokenValidate } from './auth'
-import { selectSXXincludeObject } from './graph'
+import { tokenValidate } from './auth'
+// import { selectSXXincludeObject } from './graph'
 
 // This takes a state object and returns current history slice and route information.
 
@@ -38,6 +37,7 @@ addRoute('mixerCreate', '/mixer/create/')
 addRoute('mixerEdit', '/mixer/edit/:entityId', {}, { segmentValueCharset: 'a-zA-Z0-9-_~.,+*()!$' })
 addRoute('mixerLegacy', '/mixer/:groupId/:typeId/:entityId')
 
+// We are using the redux-history-sync to put location into state.
 function routeSelector(history) {
   if (!history) return history
   return {
@@ -48,4 +48,5 @@ function routeSelector(history) {
 }
 export { locationInfo }
 // Pass in the state object and return some info about a "route".
+// selectActiveKeyDefault() is a helper function to grab the current location info.
 export default createSelector(selectActiveKeyDefault, routeSelector)
