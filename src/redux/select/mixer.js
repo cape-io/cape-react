@@ -1,3 +1,4 @@
+import filter from 'lodash/filter'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import identity from 'lodash/identity'
@@ -116,4 +117,8 @@ export function getField(entityField) {
 }
 export function getPrefix(field, prefix = 'UpdateFieldAction') {
   return [ prefix, field.id ]
+}
+
+export function peopleFields(schema) {
+  return filter(schema.domainIncludes, item => item.rangeIncludes.alternateName === 'Person')
 }
