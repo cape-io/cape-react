@@ -7,7 +7,7 @@ import Placeholder from './Placeholder'
 function EntityList({ createNewField, entity, entitySchema, fields, schema }) {
   const addLabel = entity ? '+' : schema.name
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       { map(entity, (field, entityId) =>
           <FieldGroup
             key={entityId}

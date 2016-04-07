@@ -8,7 +8,7 @@ import { getPrefix } from '../../redux/select/mixer'
 function FieldList({ createNewField, entity, selectField, schema }) {
   const addLabel = entity ? '+' : schema.name
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       { map(entity, (field, fieldId) =>
           <Field
             key={fieldId}
