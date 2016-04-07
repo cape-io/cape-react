@@ -8,6 +8,7 @@ import Loading from '../Loading'
 // import Image from '../Editable/ImageUpload/Uploaded'
 // import Wrapper from '../Editable/Wrapper'
 // import ImageUpload from '../Editable/ImageUpload/ImageUpload'
+import { peopleFields } from '../../redux/select/mixer'
 // const Field = connectField()(Wrapper)
 // const ImageField = connectField()(ImageUpload)
 
@@ -16,6 +17,7 @@ function Mixer({ objects, schema, subject, subjects }) {
   if (!schema) {
     return <Loading message="missing schema" />
   }
+  const personFields = peopleFields(schema)
   return (
     <div className="container">
       <h1>{subject.type}</h1>
@@ -24,6 +26,16 @@ function Mixer({ objects, schema, subject, subjects }) {
         <StaticVal label="ID" value={subject.id} />
         <StaticVal label="Date Created" value={subject.dateCreated} />
       </ul>
+      { personFields.length &&
+        <div>
+          <h3>Add Person</h3>
+          <ul>
+            {
+              map(personFields, item => <li key={item.id}>{item.alternateName}</li>)
+            }
+          </ul>
+        </div>
+      }
       <h3>Objects</h3>
       { objects &&
         map(objects, (objs, predicate) => (
