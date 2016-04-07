@@ -25,9 +25,6 @@ const socket = createSocketMiddleware(io(location))
 import * as reducer from './reducer'
 import defaultState from './defaultState'
 
-// Custom api.
-import { loadSchema } from './actions'
-
 import DevTools from '../containers/DevTools'
 
 // Define the middeware we want to apply to the store.
@@ -65,7 +62,5 @@ export default function configureStore(initialState) {
     })
   }
   syncHistoryWithStore(store, window, historyCache)
-
-  store.dispatch(loadSchema())
   return store
 }
