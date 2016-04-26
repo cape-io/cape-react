@@ -1,12 +1,15 @@
 import React, { PropTypes } from 'react'
 import { connectField } from 'redux-field'
+
+import { schemaInfo } from '../../redux/schemaInfo'
+import { fieldValidation } from '../../utils/formValidation'
 import Wrapper from '../Editable/Wrapper'
 const Field = connectField()(Wrapper)
 
 import ProviderLinks from './ProviderLinks'
 
 function Login(props) {
-  const { description, field, status, title, ...rest } = props
+  const { description, gravatar, status, title, ...rest } = props
   return (
     <div>
       { title && <h2>{ title }</h2> }
@@ -15,11 +18,15 @@ function Login(props) {
         <Field
           {...rest}
           open
-          validate={field.email.validate}
+          validate={fieldValidation(schemaInfo.email.validators)}
         />
       }
-      { props.gravatar &&
-        <img className="col-md-2" src={props.gravatar} alt="user image" style={{ width: 100 }} />
+      { gravatar &&
+        <img
+          className="col-md-2" style={{ width: 100 }}
+          src={gravatar.thumbnailUrl}
+          alt={gravatar.displayName}
+        />
       }
       { status === 'valid' &&
         <ProviderLinks {...rest} />
@@ -31,9 +38,8 @@ function Login(props) {
 Login.propTypes = {
   description: PropTypes.string,
   emailToken: PropTypes.func.isRequired,
-  field: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
-  gravatar: PropTypes.string,
+  gravatar: PropTypes.object,
   prefix: PropTypes.array.isRequired,
   status: PropTypes.string.isRequired,
   title: PropTypes.string,

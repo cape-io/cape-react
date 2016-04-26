@@ -12,7 +12,7 @@ function getDescription(status, props = {}) {
   const options = {
     welcome: 'Enter your email to start the login or join process.',
     tokenSending: `Emailing a login link to ${props.tokenSending}.`,
-    tokenSent: `Login link has been sent to ${props.tokenSent}. Please check your email.`,
+    tokenSent: `${props.tokenSent.message} Please check your email.`,
     tokenValidating: 'Preparing to validate your login link. Hold tight.',
     valid: 'Select an option to authenticate with.',
   }
