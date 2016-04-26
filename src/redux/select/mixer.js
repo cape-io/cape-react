@@ -2,15 +2,21 @@ import filter from 'lodash/filter'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import identity from 'lodash/identity'
+import isArray from 'lodash/isArray'
 import map from 'lodash/map'
 import mapValues from 'lodash/mapValues'
+import some from 'lodash/some'
 import values from 'lodash/values'
 import { getState } from 'redux-field'
 import { createSelector } from 'reselect'
 
 import { selectUid } from '../auth'
-import { entitySelector, selectSXXincludeObject, selectXXOentity, tripleSelector } from '../graph'
+import {
+  entitySelector, selectSXXincludeObject, selectXXOentity, tripleSelector,
+} from 'redux-graph'
+
 import { classIndex, getSchema } from '../schema'
+import { fieldValidation } from '../../utils/formValidation'
 
 export function activeEntityIdSelector(state, props) {
   return props.route.params && props.route.params.entityId
@@ -116,9 +122,24 @@ export function getField(entityField) {
   return find(fields, 'value') || fields[0]
 }
 export function getPrefix(field, prefix = 'UpdateFieldAction') {
+  if (isArray(prefix)) return prefix
   return [ prefix, field.id ]
 }
 
-export function peopleFields(schema) {
-  return filter(schema.domainIncludes, item => item.rangeIncludes.alternateName === 'Person')
+export function peopleFields(domainIncludes) {
+  return filter(domainIncludes, item =>
+    some(item.rangeIncludes, { alternateName: 'Person' })
+  )
+}
+export function toOptions(fields) {
+  return map(fields, ({ alternateName, name }) => ({ value: alternateName, label: name }))
+}
+export function schemaProps(schema) {
+  const { name, description, inputType, validators } = schema
+  return {
+    help: description,
+    label: name,
+    type: inputType || 'text',
+    validate: fieldValidation(validators),
+  }
 }

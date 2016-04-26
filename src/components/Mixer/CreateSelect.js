@@ -6,7 +6,7 @@ import { Link } from 'redux-history-sync'
 
 import Editable from '../Editable/Editable'
 import EditableButtons from '../Editable/Buttons'
-import Select from '../Form/Select'
+import Select from '../Editable/Select'
 // Display a list of content types the user can edit.
 function CreateSelect({ created, form, formEvent, id, label, options, type }) {
   const { value } = form

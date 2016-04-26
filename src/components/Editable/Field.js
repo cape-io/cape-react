@@ -9,7 +9,8 @@ import EditableButtons from './Buttons'
 import Help from './Help'
 
 function EditField(props) {
-  const { fieldEvent, form, formEvent, help, id, justCreated, label, type, ...other } = props
+  const { buttons, fieldEvent, form, formEvent, help, id, justCreated, label, type, ...other,
+  } = props
   const { errorMessage, hasError, open, status, suggestion, touched, value } = form
   const helpTxt = hasError ? errorMessage : help
   const openNewField = justCreated && !touched
@@ -49,11 +50,13 @@ function EditField(props) {
             value={value}
           />
         }
-        <EditableButtons
-          {...fieldEvent}
-          {...formEvent}
-          disabled={hasError}
-        />
+        { buttons &&
+          <EditableButtons
+            {...fieldEvent}
+            {...formEvent}
+            disabled={hasError}
+          />
+        }
       </div>
       { (helpTxt || suggestion) &&
         <Help
@@ -68,6 +71,7 @@ function EditField(props) {
 }
 
 EditField.propTypes = {
+  buttons: PropTypes.bool.isRequired,
   className: PropTypes.string,
   fieldEvent: PropTypes.object.isRequired,
   formEvent: PropTypes.object.isRequired,
@@ -80,5 +84,7 @@ EditField.propTypes = {
   preventClose: PropTypes.bool,
   type: PropTypes.string.isRequired,
 }
-
+EditField.defaultProps = {
+  buttons: true,
+}
 export default connectField()(EditField)

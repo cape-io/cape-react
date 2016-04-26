@@ -4,7 +4,7 @@ import { onSubmit } from 'redux-field'
 
 import Component from '../components/Mixer/Person'
 import { isAuthenticated, selectUid } from '../redux/auth'
-import { entityPut, selectEntity, triplePut } from '../redux/graph'
+import { entityPut, selectEntity, triplePut } from 'redux-graph'
 import {
   createObjectPrefix, createSubjectPrefix, selectMyFields, selectMySubjects, selectNewField,
 } from '../redux/select/mixer'

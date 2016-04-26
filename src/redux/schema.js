@@ -7,7 +7,7 @@ import keys from 'lodash/keys'
 import map from 'lodash/map'
 import orderBy from 'lodash/orderBy'
 
-import { entitySelector, filterEntity, filterEntityFirst, tripleSelector } from './graph'
+import { entitySelector, filterEntity, filterEntityFirst, tripleSelector } from 'redux-graph'
 import { propertyInfo } from './schemaInfo'
 
 export const selectClassList = filterEntity({ type: 'Class' })

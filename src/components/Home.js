@@ -6,7 +6,12 @@ function Home({ authenticated }) {
     <div className="home">
       <h2>CAPE</h2>
       <p>One place to manage all your profiles.</p>
-      { authenticated && <Link to="/mixer/">Mixer</Link> }
+      { authenticated &&
+        <ul>
+          <li><Link to="/mixer/">Mixer</Link></li>
+          <li><Link to="/mixer/create/">Mixer Create</Link></li>
+        </ul>
+      }
       { !authenticated && <Link to="/login/">Login</Link> }
     </div>
   )

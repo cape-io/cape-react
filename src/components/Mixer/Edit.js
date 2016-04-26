@@ -4,7 +4,7 @@ import map from 'lodash/map'
 
 import StaticVal from '../Editable/StaticVal'
 import Loading from '../Loading'
-// import CreateSelect from './CreateSelect'
+import AddPerson from './AddPerson'
 // import Image from '../Editable/ImageUpload/Uploaded'
 // import Wrapper from '../Editable/Wrapper'
 // import ImageUpload from '../Editable/ImageUpload/ImageUpload'
@@ -17,25 +17,17 @@ function Mixer({ objects, schema, subject, subjects }) {
   if (!schema) {
     return <Loading message="missing schema" />
   }
-  const personFields = peopleFields(schema)
+  const { description, domainIncludes } = schema
+  const personFields = peopleFields(domainIncludes)
   return (
     <div className="container">
       <h1>{subject.type}</h1>
-      <p>{schema.description}</p>
+      <p>{description}</p>
       <ul>
         <StaticVal label="ID" value={subject.id} />
         <StaticVal label="Date Created" value={subject.dateCreated} />
       </ul>
-      { personFields.length &&
-        <div>
-          <h3>Add Person</h3>
-          <ul>
-            {
-              map(personFields, item => <li key={item.id}>{item.alternateName}</li>)
-            }
-          </ul>
-        </div>
-      }
+      { !!personFields.length && <AddPerson fields={personFields} schema={domainIncludes} /> }
       <h3>Objects</h3>
       { objects &&
         map(objects, (objs, predicate) => (

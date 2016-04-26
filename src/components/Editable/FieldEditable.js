@@ -1,31 +1,27 @@
 import React, { PropTypes } from 'react'
 
-import { fieldValidation } from '../../utils/formValidation'
 import EditField from './Field'
 import Placeholder from './Placeholder'
-import { getPrefix } from '../../redux/select/mixer'
+import { getPrefix, schemaProps } from '../../redux/select/mixer'
 
 function Field({ onPlaceholderClick, field, justCreated, prefix, schema, ...rest }) {
-  const { name, description, inputType, validators } = schema
   if (field) {
     return (
       <EditField
         {...rest}
-        help={description}
+        {...schemaProps(schema)}
         id={field.id}
         justCreated={justCreated}
-        label={name}
-        type={ inputType || 'text' }
         initialValue={field.value}
         prefix={getPrefix(field, prefix)}
-        validate={fieldValidation(validators)}
       />
     )
   }
+  const { description, name } = schema
   return <Placeholder label={name} onClick={onPlaceholderClick} title={description} />
 }
 Field.propTypes = {
-  onPlaceholderClick: PropTypes.func.isRequired,
+  onPlaceholderClick: PropTypes.func,
   field: PropTypes.object,
   justCreated: PropTypes.bool.isRequired,
   prefix: PropTypes.string,

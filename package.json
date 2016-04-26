@@ -75,6 +75,7 @@
     "redbox-react": "^1.2.2",
     "redux": "^3.3.1",
     "redux-field": "^3.1.3",
+    "redux-graph": "^1.0.2",
     "redux-history-sync": "^1.4.0",
     "redux-localstorage": "^1.0.0-rc4",
     "redux-logger": "^2.5.0",
