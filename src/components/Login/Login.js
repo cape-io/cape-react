@@ -11,7 +11,7 @@ import ProviderLinks from './ProviderLinks'
 function Login(props) {
   const { description, gravatar, status, title, ...rest } = props
   return (
-    <div>
+    <div className="col-md-8">
       { title && <h2>{ title }</h2> }
       { description && <p className="lead">{ description }</p> }
       { !status.startsWith('token') &&
