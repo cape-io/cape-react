@@ -10,6 +10,8 @@ import ProviderLinks from './ProviderLinks'
 
 function Login(props) {
   const { description, gravatar, status, title, ...rest } = props
+  const validators = [ ...schemaInfo.email.validators, 'isRequired' ]
+  const validate = fieldValidation(validators)
   return (
     <div className="col-md-8">
       { title && <h2>{ title }</h2> }
@@ -18,7 +20,8 @@ function Login(props) {
         <Field
           {...rest}
           open
-          validate={fieldValidation(schemaInfo.email.validators)}
+          preventClose
+          validate={validate}
         />
       }
       { gravatar &&

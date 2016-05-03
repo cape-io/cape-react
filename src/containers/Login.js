@@ -20,7 +20,7 @@ function getDescription(status, props = {}) {
 }
 function mapStateToProps(state, ownProps) {
   const prefix = [ FORM_ID, 'email' ]
-  const { validValue, value } = getFieldState(state, { prefix })
+  const { saving, validValue, value } = getFieldState(state, { prefix })
   // console.log(valid)
   const formInfo = {
     description: 'Enter your email to start the login process.',
@@ -46,7 +46,7 @@ function mapStateToProps(state, ownProps) {
   else if (token) status = 'tokenValidating'
   else if (tokenSending) status = 'tokenSending'
   else if (tokenSent) status = 'tokenSent'
-  else if (validValue) {
+  else if (saving && validValue) {
     status = 'valid'
     title = validValue.memberOf ? 'Login' : 'Join'
   }
