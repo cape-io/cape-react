@@ -37,12 +37,14 @@ function EditField(props) {
             value={value}
           />
         }
-        <EditableButtons
-          {...fieldEvent}
-          {...formEvent}
-          disabled={hasError}
-          preventClose={preventClose}
-        />
+        { props.buttons &&
+          <EditableButtons
+            {...fieldEvent}
+            {...formEvent}
+            disabled={hasError}
+            preventClose={preventClose}
+          />
+        }
       </div>
       { (helpTxt || suggestion) &&
         <Help
@@ -57,6 +59,7 @@ function EditField(props) {
 }
 
 EditField.propTypes = {
+  buttons: PropTypes.bool.isRequired,
   fieldEvent: PropTypes.object.isRequired,
   formEvent: PropTypes.object.isRequired,
   className: PropTypes.string,
@@ -68,5 +71,7 @@ EditField.propTypes = {
   type: PropTypes.string.isRequired,
   value: PropTypes.string,
 }
-
+EditField.defaultProps = {
+  buttons: true,
+}
 export default EditField
