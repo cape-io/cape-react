@@ -1,7 +1,9 @@
 import React, { PropTypes } from 'react'
 import map from 'lodash/map'
-// import { connectField } from 'redux-field'
+import partial from 'lodash/partial'
 
+import FieldGroup from '../Editable/FieldGroup'
+import Images from '../Editable/ImageUpload/Images'
 import StaticVal from '../Editable/StaticVal'
 import Loading from '../Loading'
 import AddPerson from './AddPerson'
@@ -13,12 +15,13 @@ import { peopleFields } from '../../redux/select/mixer'
 // const ImageField = connectField()(ImageUpload)
 
 // Display a list of content types the user can edit.
-function Mixer({ objects, schema, subject, subjects }) {
-  if (!schema) {
-    return <Loading message="missing schema" />
+function MixerEdit({ entity, objects, schema, subject, subjects, ...props }) {
+  if (!schema || !entity) {
+    return <Loading message="missing schema or entity" />
   }
   const { description, domainIncludes } = schema
   const personFields = peopleFields(domainIncludes)
+  const newSubjField = partial(props.createNewField, subject.id)
   return (
     <div className="container">
       <h1>{subject.type}</h1>
@@ -27,6 +30,16 @@ function Mixer({ objects, schema, subject, subjects }) {
         <StaticVal label="ID" value={subject.id} />
         <StaticVal label="Date Created" value={subject.dateCreated} />
       </ul>
+      <Images
+        {...props}
+        entity={entity.image} schema={schema.domainIncludes.image} subject={subject} width={200}
+      />
+      <FieldGroup
+        {...props}
+        createNewField={newSubjField}
+        entity={entity}
+        fields={[ 'name' ]} schema={schema.domainIncludes}
+      />
       { !!personFields.length && <AddPerson fields={personFields} schema={domainIncludes} /> }
       <h3>Objects</h3>
       { objects &&
@@ -53,11 +66,14 @@ function Mixer({ objects, schema, subject, subjects }) {
     </div>
   )
 }
-Mixer.propTypes = {
+MixerEdit.propTypes = {
+  createNewField: PropTypes.func.isRequired,
+  createNewSubject: PropTypes.func.isRequired,
+  entity: PropTypes.object.isRequired,
   schema: PropTypes.object.isRequired,
   objects: PropTypes.object,
   subject: PropTypes.object.isRequired,
   subjects: PropTypes.object,
 }
 
-export default Mixer
+export default MixerEdit

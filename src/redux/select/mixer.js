@@ -21,15 +21,17 @@ import { fieldValidation } from '../../utils/formValidation'
 export function activeEntityIdSelector(state, props) {
   return props.route.params && props.route.params.entityId
 }
-
-const selectSXX = selectSXXincludeObject(selectUid)
-export function selectMyFields(state) {
+export function buildEntity(subject) {
   const entity = {}
-  forEach(selectSXX(state), obj => {
+  forEach(subject, obj => {
     if (!entity[obj.predicate]) entity[obj.predicate] = {}
     entity[obj.predicate][obj.object.id] = obj.object
   })
   return entity
+}
+const selectUserSubject = selectSXXincludeObject(selectUid)
+export function selectMyFields(state) {
+  return buildEntity(selectUserSubject(state))
 }
 export function selectMySubjects(selector = selectUid) {
   return state => {
@@ -76,26 +78,13 @@ export function selectSubjects(id, entity, triple) {
   )
 }
 
-export const selectTriples = createSelector(
-  selectEntityId,
-  entitySelector,
-  tripleSelector,
-  classIndex,
-  (id, entity, triple, classList) => ({
-    subject: entity[id],
-    objects: selectObjects(id, entity, triple),
-    schema: getSchema(classList[entity[id].type], entity, triple),
-    subjects: selectSubjects(id, entity, triple),
-
-  })
-)
+const selectEntitySubject = selectSXXincludeObject(selectEntityId)
+export function selectEntityFields(state, props) {
+  return buildEntity(selectEntitySubject(state, props))
+}
 export function createObjectPrefix(subjectId) {
   return [ 'CreateObjectAction', subjectId ]
 }
-export function createSubjectPrefix(objectId) {
-  return [ 'CreateSubjectAction', objectId ]
-}
-
 function selectFieldInfo(id, state) {
   return {
     editable: true,
@@ -114,6 +103,27 @@ export function selectNewField(entityIdSelect) {
     identity,
     selectFieldInfo
   )
+}
+
+export const selectTriples = createSelector(
+  selectEntityId,
+  entitySelector,
+  tripleSelector,
+  classIndex,
+  selectEntityFields,
+  selectNewField(selectEntityId),
+  (id, entity, triple, classList, subject, selectField) => ({
+    entity: subject,
+    selectField,
+    subject: entity[id],
+    objects: selectObjects(id, entity, triple),
+    schema: getSchema(classList[entity[id].type], entity, triple),
+    subjects: selectSubjects(id, entity, triple),
+  })
+)
+
+export function createSubjectPrefix(objectId) {
+  return [ 'CreateSubjectAction', objectId ]
 }
 
 export function getField(entityField) {

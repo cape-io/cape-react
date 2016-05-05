@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import partial from 'lodash/partial'
+import { Link } from 'redux-history-sync'
 
 import FieldGroup from '../Editable/FieldGroup'
 import FieldList from '../Editable/FieldList'
@@ -55,6 +56,7 @@ function Person(props) {
         schema={schema.WebSite}
         selectField={selectField}
       />
+      <Link to="/mixer/create/">Mixer Create</Link>
     </div>
   )
 }

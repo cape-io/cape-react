@@ -13,6 +13,7 @@ function CreateSelect({ created, form, formEvent, id, label, options, type }) {
 
   return (
     <div>
+      <h2>Create or select entity</h2>
       <Editable form={form} id={id} label={label} type={type}>
         <Select options={options} {...formEvent} />
         <EditableButtons
