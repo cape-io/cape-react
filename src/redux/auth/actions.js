@@ -1,6 +1,7 @@
+import noop from 'lodash/noop'
+
 import createAction from '../createAction'
 
-export const LOGOUT = 'auth/LOGOUT'
 export const PROVIDERS = 'auth/PROVIDERS'
 
 // The comment above export defines the expected payload to the action creator.
@@ -9,6 +10,13 @@ export const PROVIDERS = 'auth/PROVIDERS'
 // User object.
 export const LOGIN = 'auth/LOGIN'
 export const login = createAction(LOGIN)
+// Logout the user.
+export const LOGOUT = 'auth/LOGOUT'
+function logoutMeta() {
+  return { cookie: { name: 'sid' } }
+}
+export const logout = createAction(LOGOUT, noop, logoutMeta)
+
 // Set the sid cookie token.
 export const SET_SID = 'auth/SET_SID'
 export const setSid = createAction(SET_SID)

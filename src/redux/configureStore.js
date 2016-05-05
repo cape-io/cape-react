@@ -16,9 +16,11 @@ const historyCache = createHistoryCache()
 
 // Socket.io linking
 import io from 'socket.io-client'
-import { middleware as createSocketMiddleware } from 'cape-redux-socket'
+import {
+  addCookieMeta, cookieMiddleware, middleware as createSocketMiddleware,
+} from 'cape-redux-socket'
 const location = process.env.SOCKET_LOC || ''
-const socket = createSocketMiddleware(io(location))
+const socket = createSocketMiddleware(io(location), { getEmitAction: addCookieMeta })
 
 // Redux Reducers.
 // Our reducer index.
@@ -30,6 +32,7 @@ import DevTools from '../containers/DevTools'
 // Define the middeware we want to apply to the store.
 const middleware = [
   historyMiddleware(window.history, historyCache),
+  cookieMiddleware,
   socket,
   thunk,
 ]
