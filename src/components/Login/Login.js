@@ -36,7 +36,12 @@ function Login(props) {
         <ProviderLinks {...rest} />
       }
       { status === 'tokenSent' &&
-        <img src="https://unsplash.it/300" width="300" height="300" alt="placeholder" />
+        <div>
+          <p className="tiny"><small>
+            Random image to look at while you wait for the login email.
+          </small></p>
+          <img src="https://unsplash.it/300" width="300" height="300" alt="placeholder" />
+        </div>
       }
     </div>
   )
