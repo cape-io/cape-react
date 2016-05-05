@@ -35,6 +35,9 @@ function Login(props) {
       { status === 'valid' &&
         <ProviderLinks {...rest} />
       }
+      { status === 'tokenSent' &&
+        <img src="https://unsplash.it/300" width="300" height="300" alt="placeholder" />
+      }
     </div>
   )
 }
