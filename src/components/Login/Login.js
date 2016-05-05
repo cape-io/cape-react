@@ -21,6 +21,7 @@ function Login(props) {
           {...rest}
           open
           preventClose
+          savingTxt="Finding your infomation..."
           validate={validate}
         />
       }
